@@ -115,6 +115,25 @@ clean_runs <- function(runs_dir = "runs", keep = NULL) {
   }
 }
 
+#' Write data into the run directory
+#'
+#' Provide a function that will write data into the active run
+#' directory (if and when it's avaialble).
+#'
+#' @param name Name of data to write (subsequent writes with the same name
+#' will overwrite).
+#' @param write_fn Function that writes the data. The function will be
+#' passed a single `run_dir` argument.
+#'
+#' @export
+write_run_data <- function(name, write_fn) {
+  run_dir <- run_dir()
+  if (!is.null(run_dir))
+    write_fn(run_dir)
+  else
+    .globals$run_dir$pending_writes[[name]] <- write_fn
+}
+
 
 # check for a run_dir provided by the environment
 environment_run_dir <- function() {
@@ -125,17 +144,6 @@ environment_run_dir <- function() {
     NULL
 }
 
-# helper function to write run data. writes to any active run_dir
-# we have. if no run_dir is active then queue it as a pending write
-# in case a run_directory becomes active. write_fn should take a
-# single run_dir argument
-write_run_data <- function(name, write_fn) {
-  run_dir <- run_dir()
-  if (!is.null(run_dir))
-    write_fn(run_dir)
-  else
-    .globals$run_dir$pending_writes[[name]] <- write_fn
-}
 
 
 have_run_dir <- function() {
