@@ -8,7 +8,7 @@ Authors@R: c(
   )
 Description: Create and manage unique directories for each 'TensorFlow' 
   training run. Provides a unique, timestamped directory for each run
-  along with functions to retreive the directory of the latest run or 
+  along with functions to retrieve the directory of the latest run or 
   latest several runs. 
 License: Apache License 2.0
 URL: https://github.com/rstudio/tfruns
