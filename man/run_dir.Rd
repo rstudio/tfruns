@@ -53,3 +53,16 @@ You can also establish a run directory by defining the
 \code{TENSORFLOW_RUN_DIR} environment variable (this is technically equivalent
 to calling \code{use_run_dir()} within an R script).
 }
+\examples{
+\dontrun{
+library(tfruns)
+
+run_dir <- use_run_dir()
+
+latest_run()
+latest_runs(n = 2)
+
+clean_runs(keep = 10)
+}
+
+}

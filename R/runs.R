@@ -30,6 +30,17 @@
 #'
 #' @name run_dir
 #'
+#' @examples \dontrun{
+#' library(tfruns)
+#'
+#' run_dir <- use_run_dir()
+#'
+#' latest_run()
+#' latest_runs(n = 2)
+#'
+#' clean_runs(keep = 10)
+#' }
+#'
 #' @export
 use_run_dir <- function(run_dir = NULL, runs_dir = "runs", quiet = FALSE) {
 
