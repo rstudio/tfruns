@@ -2,67 +2,18 @@
 % Please edit documentation in R/runs.R
 \name{run_dir}
 \alias{run_dir}
-\alias{initialize_run}
-\alias{run_dir}
-\alias{latest_run}
-\alias{latest_runs}
-\alias{clean_runs}
-\title{Run Directory}
+\title{Training run directory}
 \usage{
-initialize_run(run_dir = NULL, runs_dir = "runs", quiet = FALSE)
-
 run_dir()
-
-latest_run(runs_dir = "runs")
-
-latest_runs(runs_dir = "runs", n)
-
-clean_runs(runs_dir = "runs", keep = NULL)
 }
-\arguments{
-\item{run_dir}{Path to run directory (\code{NULL} to automatically create a
-timestamped directory within the \code{runs_dir})}
-
-\item{runs_dir}{Parent directory for runs}
-
-\item{quiet}{\code{FALSE} to prevent printing the path to the run dir}
-
-\item{n}{Number of recent runs}
-
-\item{keep}{Number of most recent runs to keep when cleaning runs.}
+\value{
+Current run direcotry (or \code{NULL} if no run directory is in use)
 }
 \description{
-Timestamped directory for storing training/logging data in a separate
-location for each training run.
-}
-\details{
-The \code{initialize_run()} function establishes a unique run directory (by default
-in a sub-directory named "runs") and stores it's value for saving various
-artifacts of training (e.g. model checkpoints, tensorflow logs, etc.).
-
-The \code{run_dir()} function returns the current run directory (\code{NULL} if none
-yet established).
-
-If you utilize the automatic creation of run directories within the "runs"
-directory then you can use the \code{latest_run()} and \code{latest_runs()} functions
-to get the path(s) to the most recently created run directories and the
-\code{clean_runs()} function to remove previously created run directories.
+Returns the current run directory (if any)
 }
 \note{
 You can also establish a run directory by defining the
 \code{TENSORFLOW_RUN_DIR} environment variable (this is technically equivalent
-to calling \code{initialize_run()} within an R script).
-}
-\examples{
-\dontrun{
-library(tfruns)
-
-run_dir <- initialize_run()
-
-latest_run()
-latest_runs(n = 2)
-
-clean_runs(keep = 10)
-}
-
+to calling \code{\link[=initialize_run]{initialize_run()}} within an R script).
 }

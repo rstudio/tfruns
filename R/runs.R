@@ -1,6 +1,6 @@
 
 
-#' Run Directory
+#' Initialize training run directory
 #'
 #' Timestamped directory for storing training/logging data in a separate
 #' location for each training run.
@@ -8,9 +8,6 @@
 #' The `initialize_run()` function establishes a unique run directory (by default
 #' in a sub-directory named "runs") and stores it's value for saving various
 #' artifacts of training (e.g. model checkpoints, tensorflow logs, etc.).
-#'
-#' The `run_dir()` function returns the current run directory (`NULL` if none
-#' yet established).
 #'
 #' If you utilize the automatic creation of run directories within the "runs"
 #' directory then you can use the `latest_run()` and `latest_runs()` functions
@@ -25,20 +22,10 @@
 #'   timestamped directory within the `runs_dir`)
 #' @param runs_dir Parent directory for runs
 #' @param quiet `FALSE` to prevent printing the path to the run dir
-#' @param keep Number of most recent runs to keep when cleaning runs.
-#' @param n Number of recent runs
-#'
-#' @name run_dir
 #'
 #' @examples \dontrun{
 #' library(tfruns)
-#'
 #' run_dir <- initialize_run()
-#'
-#' latest_run()
-#' latest_runs(n = 2)
-#'
-#' clean_runs(keep = 10)
 #' }
 #'
 #' @export
@@ -71,7 +58,18 @@ initialize_run <- function(run_dir = NULL, runs_dir = "runs", quiet = FALSE) {
   invisible(run_dir)
 }
 
-#' @rdname run_dir
+
+
+#' Training run directory
+#'
+#' Returns the current run directory (if any)
+#'
+#' @return Current run direcotry (or `NULL` if no run directory is in use)
+#'
+#' @note You can also establish a run directory by defining the
+#'  `TENSORFLOW_RUN_DIR` environment variable (this is technically equivalent
+#'  to calling [initialize_run()] within an R script).
+#'
 #' @export
 run_dir <- function() {
 
@@ -86,7 +84,7 @@ run_dir <- function() {
     # set the environment variable as our current run directory
     initialize_run(environment_run_dir())
 
-  # no run_dir currently established
+    # no run_dir currently established
   } else {
 
     NULL
@@ -95,22 +93,35 @@ run_dir <- function() {
 }
 
 
-#' @rdname run_dir
+#' Enumerate recent training runs
+#'
+#' @inheritParams initialize_run
+#' @param n Number of recent runs
+#'
 #' @export
 latest_run <- function(runs_dir = "runs") {
   list_runs(runs_dir, latest_n = 1)
 }
 
 
-#' @rdname run_dir
+#' @rdname latest_run
 #' @export
 latest_runs <- function(runs_dir = "runs", n) {
   list_runs(runs_dir, latest_n = n)
 }
 
 
-
-#' @rdname run_dir
+#' Clean run directories
+#'
+#' Remove run directories from the filesystem.
+#'
+#' @inheritParams initialize_run
+#' @param keep Number of most recent runs to keep when cleaning runs.
+#'  `NULL` (the default) to remove all previous runs.
+#'
+#' @examples \dontrun{
+#' clean_runs(keep = 10)
+#' }
 #' @export
 clean_runs <- function(runs_dir = "runs", keep = NULL) {
   remove_runs <- list_runs(runs_dir)
@@ -125,6 +136,7 @@ clean_runs <- function(runs_dir = "runs", keep = NULL) {
     unlink(remove_runs, recursive = TRUE)
   }
 }
+
 
 #' Write data into the run directory
 #'
