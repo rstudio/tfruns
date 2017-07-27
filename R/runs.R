@@ -5,7 +5,7 @@
 #' Timestamped directory for storing training/logging data in a separate
 #' location for each training run.
 #'
-#' The `use_run_dir()` function establishes a unique run directory (by default
+#' The `initialize_run()` function establishes a unique run directory (by default
 #' in a sub-directory named "runs") and stores it's value for saving various
 #' artifacts of training (e.g. model checkpoints, tensorflow logs, etc.).
 #'
@@ -19,7 +19,7 @@
 #'
 #' @note You can also establish a run directory by defining the
 #'   `TENSORFLOW_RUN_DIR` environment variable (this is technically equivalent
-#'   to calling `use_run_dir()` within an R script).
+#'   to calling `initialize_run()` within an R script).
 #'
 #' @param run_dir Path to run directory (`NULL` to automatically create a
 #'   timestamped directory within the `runs_dir`)
@@ -33,7 +33,7 @@
 #' @examples \dontrun{
 #' library(tfruns)
 #'
-#' run_dir <- use_run_dir()
+#' run_dir <- initialize_run()
 #'
 #' latest_run()
 #' latest_runs(n = 2)
@@ -42,7 +42,7 @@
 #' }
 #'
 #' @export
-use_run_dir <- function(run_dir = NULL, runs_dir = "runs", quiet = FALSE) {
+initialize_run <- function(run_dir = NULL, runs_dir = "runs", quiet = FALSE) {
 
   # if no run_dir is specified by the caller then figure out the right value
   if (is.null(run_dir)) {
@@ -84,7 +84,7 @@ run_dir <- function() {
   } else if (!is.null(environment_run_dir())) {
 
     # set the environment variable as our current run directory
-    use_run_dir(environment_run_dir())
+    initialize_run(environment_run_dir())
 
   # no run_dir currently established
   } else {

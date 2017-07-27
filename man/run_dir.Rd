@@ -2,14 +2,14 @@
 % Please edit documentation in R/runs.R
 \name{run_dir}
 \alias{run_dir}
-\alias{use_run_dir}
+\alias{initialize_run}
 \alias{run_dir}
 \alias{latest_run}
 \alias{latest_runs}
 \alias{clean_runs}
 \title{Run Directory}
 \usage{
-use_run_dir(run_dir = NULL, runs_dir = "runs", quiet = FALSE)
+initialize_run(run_dir = NULL, runs_dir = "runs", quiet = FALSE)
 
 run_dir()
 
@@ -36,7 +36,7 @@ Timestamped directory for storing training/logging data in a separate
 location for each training run.
 }
 \details{
-The \code{use_run_dir()} function establishes a unique run directory (by default
+The \code{initialize_run()} function establishes a unique run directory (by default
 in a sub-directory named "runs") and stores it's value for saving various
 artifacts of training (e.g. model checkpoints, tensorflow logs, etc.).
 
@@ -51,13 +51,13 @@ to get the path(s) to the most recently created run directories and the
 \note{
 You can also establish a run directory by defining the
 \code{TENSORFLOW_RUN_DIR} environment variable (this is technically equivalent
-to calling \code{use_run_dir()} within an R script).
+to calling \code{initialize_run()} within an R script).
 }
 \examples{
 \dontrun{
 library(tfruns)
 
-run_dir <- use_run_dir()
+run_dir <- initialize_run()
 
 latest_run()
 latest_runs(n = 2)

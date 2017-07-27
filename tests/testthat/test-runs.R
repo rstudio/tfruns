@@ -1,8 +1,8 @@
 context("runs")
 
-run_dir <- use_run_dir()
+run_dir <- initialize_run()
 
-test_that("run dir is created by use_run_dir", {
+test_that("run dir is created by initialize_run()", {
   expect_true(dir.exists(run_dir))
 })
 
@@ -21,6 +21,6 @@ test_that("clean_runs removes runs", {
 
 test_that("environent variable can establish a run directory", {
   Sys.setenv(TENSORFLOW_RUN_DIR = tempdir())
-  use_run_dir()
+  initialize_run()
   expect_identical(run_dir(), Sys.getenv("TENSORFLOW_RUN_DIR"))
 })
