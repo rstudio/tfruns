@@ -11,6 +11,7 @@ Description: Create and manage unique directories for each 'TensorFlow'
   along with functions to retrieve the directory of the latest run or 
   latest several runs. 
 License: Apache License 2.0
+Imports: htmltools
 URL: https://github.com/rstudio/tfruns
 BugReports: https://github.com/rstudio/tfruns/issues
 Encoding: UTF-8
