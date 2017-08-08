@@ -5,14 +5,14 @@
 #' a training run. Optionally read overrides of the default values from a
 #' "flags.yml" config file and/or command line arguments.
 #'
-#' @param FLAGS Named list of flags
 #' @param name Flag name
 #' @param default Flag default value
 #' @param description Flag description
+#' @param ... One or more flag definitions
 #' @param config The configuration to use. Defaults to the active configuration
 #'   for the current environment (as specified by the `R_CONFIG_ACTIVE`
 #'   environment variable), or `default` when unset.
-#' @param file The configuration file to read
+#' @param file The flags YAML file to read
 #' @param arguments The command line arguments (as a character vector) to be
 #'   parsed.
 #'
@@ -37,61 +37,111 @@
 #' library(tfruns)
 #'
 #' # define flags and parse flag values from flags.yml and the command line
-#' FLAGS <- flags() %>%
-#'   flag_numeric('learning_rate', 0.01, 'Initial learning rate.') %>%
-#'   flag_integer('max_steps', 5000, 'Number of steps to run trainer.') %>%
-#'   flag_string('data_dir', 'MNIST-data', 'Directory for training data') %>%
-#'   flag_boolean('fake_data', FALSE, 'If true, use fake data for testing') %>%
-#'   flags_parse()
+#' FLAGS <- flags(
+#'   flag_numeric('learning_rate', 0.01, 'Initial learning rate.'),
+#'   flag_integer('max_steps', 5000, 'Number of steps to run trainer.'),
+#'   flag_string('data_dir', 'MNIST-data', 'Directory for training data'),
+#'   flag_boolean('fake_data', FALSE, 'If true, use fake data for testing')
+#' )
 #' }
 #'
 #' @export
-flags <- function() {
-  structure(class = "tfruns_flags",
+flags <- function(...,
+                  config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
+                  file = "flags.yml",
+                  arguments = commandArgs(TRUE)) {
+
+  # warn if the user has supplied a 'file' argument but no such file exists
+  if (!missing(file) && !file.exists(file)) {
+    warning(sprintf("configuration file '%s' does not exist", file))
+    file <- NULL # prevent errors/warnings downstream
+  }
+
+  # create an empty FLAGS structure
+  FLAGS <- structure(class = "tfruns_flags",
     types = character(),
     defaults = list(),
     docstrings = character(),
     list()
   )
+
+  # resolve flag definitions (accept a list)
+  flag_defs <- list(...)
+  if (length(flag_defs) == 1 && !inherits(flag_defs[[1]], "tfruns_flag"))
+    flag_defs <- flag_defs[[1]]
+
+  # add the flags
+  for (flag in flag_defs)
+    FLAGS <- add_flag(FLAGS, flag$name, flag$type, flag$default, flag$description)
+
+  # parse the command line / config file
+  FLAGS <- parse_flags(FLAGS, config, file, arguments)
+
+  # write flags
+  write_run_data("flags", FLAGS)
+
+  # return flags
+  FLAGS
 }
 
 #' @rdname flags
 #' @export
-flag_numeric <- function(FLAGS, name, default, description = NULL) {
-  add_flag(FLAGS, name, "numeric", as.numeric(default), description)
+flag_numeric <- function(name, default, description = NULL) {
+  flag_definition(
+    name = name,
+    type = "numeric",
+    default = as.numeric(default),
+    description = description
+  )
 }
 
 #' @rdname flags
 #' @export
-flag_integer <- function(FLAGS, name, default, description = NULL) {
-  add_flag(FLAGS, name, "integer", as.integer(default), description)
+flag_integer <- function(name, default, description = NULL) {
+  flag_definition(
+    name = name,
+    type = "integer",
+    default = as.integer(default),
+    description = description
+  )
 }
 
 #' @rdname flags
 #' @export
-flag_boolean <- function(FLAGS, name, default, description = NULL) {
-  add_flag(FLAGS, name, "boolean", as.logical(default), description)
+flag_boolean <- function(name, default, description = NULL) {
+  flag_definition(
+    name = name,
+    type = "boolean",
+    default = as.logical(default),
+    description = description
+  )
 }
 
 #' @rdname flags
 #' @export
-flag_string <- function(FLAGS, name, default, description = NULL) {
-  add_flag(FLAGS, name, "string", as.character(default), description)
+flag_string <- function(name, default, description = NULL) {
+  flag_definition(
+    name = name,
+    type = "string",
+    default = as.character(default),
+    description = description
+  )
 }
 
-#' @rdname flags
-#' @export
-flags_parse <- function(FLAGS,
-                        config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
-                        file = "flags.yml",
-                        arguments = commandArgs(TRUE)) {
+flag_definition <- function(name, type, default, description) {
+  structure(class = "tfruns_flag", list(
+    name = name,
+    type = type,
+    default = default,
+    description = description
+  ))
+}
 
-  # warn if the user has supplied a 'file' argument but no such file exists
-  if (!missing(file) && !file.exists(file))
-    warning(sprintf("configuration file '%s' does not exist", file))
+
+parse_flags <- function(FLAGS, config, file, arguments) {
 
   # read configuration file if it exists
-  if (file.exists(file)) {
+  if (!is.null(file) && file.exists(file)) {
 
     # first load the raw YAML so we can provide defaults from FLAGS
     # (this obviates the need to also provide the defaults in flags.yml)
@@ -153,9 +203,6 @@ flags_parse <- function(FLAGS,
     )
     FLAGS[[name]] <- value
   }
-
-  # write flags
-  write_run_data("flags", FLAGS)
 
   # return flags
   FLAGS

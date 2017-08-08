@@ -6,39 +6,36 @@
 \alias{flag_integer}
 \alias{flag_boolean}
 \alias{flag_string}
-\alias{flags_parse}
 \title{Flags for a training run}
 \usage{
-flags()
-
-flag_numeric(FLAGS, name, default, description = NULL)
-
-flag_integer(FLAGS, name, default, description = NULL)
-
-flag_boolean(FLAGS, name, default, description = NULL)
-
-flag_string(FLAGS, name, default, description = NULL)
-
-flags_parse(FLAGS, config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
+flags(..., config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
   file = "flags.yml", arguments = commandArgs(TRUE))
+
+flag_numeric(name, default, description = NULL)
+
+flag_integer(name, default, description = NULL)
+
+flag_boolean(name, default, description = NULL)
+
+flag_string(name, default, description = NULL)
 }
 \arguments{
-\item{FLAGS}{Named list of flags}
+\item{...}{One or more flag definitions}
+
+\item{config}{The configuration to use. Defaults to the active configuration
+for the current environment (as specified by the \code{R_CONFIG_ACTIVE}
+environment variable), or \code{default} when unset.}
+
+\item{file}{The flags YAML file to read}
+
+\item{arguments}{The command line arguments (as a character vector) to be
+parsed.}
 
 \item{name}{Flag name}
 
 \item{default}{Flag default value}
 
 \item{description}{Flag description}
-
-\item{config}{The configuration to use. Defaults to the active configuration
-for the current environment (as specified by the \code{R_CONFIG_ACTIVE}
-environment variable), or \code{default} when unset.}
-
-\item{file}{The configuration file to read}
-
-\item{arguments}{The command line arguments (as a character vector) to be
-parsed.}
 }
 \value{
 Named list of training flags
@@ -71,12 +68,12 @@ will be converted using \code{\link[=yaml.load]{yaml.load()}}.
 library(tfruns)
 
 # define flags and parse flag values from flags.yml and the command line
-FLAGS <- flags() \%>\%
-  flag_numeric('learning_rate', 0.01, 'Initial learning rate.') \%>\%
-  flag_integer('max_steps', 5000, 'Number of steps to run trainer.') \%>\%
-  flag_string('data_dir', 'MNIST-data', 'Directory for training data') \%>\%
-  flag_boolean('fake_data', FALSE, 'If true, use fake data for testing') \%>\%
-  flags_parse()
+FLAGS <- flags(
+  flag_numeric('learning_rate', 0.01, 'Initial learning rate.'),
+  flag_integer('max_steps', 5000, 'Number of steps to run trainer.'),
+  flag_string('data_dir', 'MNIST-data', 'Directory for training data'),
+  flag_boolean('fake_data', FALSE, 'If true, use fake data for testing')
+)
 }
 
 }
