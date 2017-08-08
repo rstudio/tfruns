@@ -104,7 +104,8 @@ flags_parse <- function(FLAGS,
     if (is.list(config_yaml[["default"]])) {
       # synthesize default section based on what's already in the config file
       # and the defaults provided inline
-      config_yaml[["default"]] <- config::merge(as.vector(FLAGS), config_yaml[["default"]])
+      config_yaml[["default"]] <- config::merge(as.vector(FLAGS),
+                                                config_yaml[["default"]])
     } else {
       # synthesize default section from the values at the top level
       default <- config_yaml

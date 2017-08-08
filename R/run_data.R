@@ -13,7 +13,7 @@
 #' @param data Data to write:
 #'
 #'   - "flags" --- Named list of training flags
-#'   - "source" --- Character vector of source file paths
+#'   - "source" --- Directory to copy source files from
 #'   - "properties" --- Named list of arbitrary properties.
 #'   - "metrics" --- Data frame with training run metrics
 #'     (see *Metrics Data Frame* below).
@@ -34,6 +34,8 @@
 #'   # write into data_dir here
 #' })
 #' ````
+#'
+#' @keywords internal
 #'
 #' @export
 write_run_data <- function(type, data) {
@@ -71,10 +73,27 @@ write_run_data <- function(type, data) {
   } else if (identical(type, "source")) {
 
     write_fn <- function(data_dir) {
+
+      # enumerate source files
+      files <- list.files(path = data,
+                          pattern = utils::glob2rx("*.r"),
+                          recursive = TRUE,
+                          ignore.case = TRUE,
+                          include.dirs = TRUE)
+
+      # ensure clean source dir
       sources_dir <- file.path(data_dir, "source")
       unlink(sources_dir, recursive = TRUE)
       dir.create(sources_dir)
-      file.copy(data, sources_dir)
+
+      # copy the sources
+      for (file in files) {
+        dir <- dirname(file)
+        target_dir <- file.path(sources_dir, dir)
+        if (!utils::file_test("-d", target_dir))
+          dir.create(target_dir, recursive = TRUE)
+        file.copy(from = file, to = target_dir)
+      }
     }
 
   # custom type
