@@ -18,7 +18,7 @@ test_that("flags are written to run_dir", {
 })
 
 test_that("sources are written to run_dir", {
-  expect_run_data("source", "utils.R")
+  expect_run_data("source.tar.gz")
 })
 
 test_that("metrics are written to run_dir", {
