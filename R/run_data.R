@@ -73,27 +73,7 @@ write_run_data <- function(type, data) {
   } else if (identical(type, "source")) {
 
     write_fn <- function(data_dir) {
-
-      # enumerate source files
-      files <- list.files(path = data,
-                          pattern = utils::glob2rx("*.r"),
-                          recursive = TRUE,
-                          ignore.case = TRUE,
-                          include.dirs = TRUE)
-
-      # ensure clean source dir
-      sources_dir <- file.path(data_dir, "source")
-      unlink(sources_dir, recursive = TRUE)
-      dir.create(sources_dir)
-
-      # copy the sources
-      for (file in files) {
-        dir <- dirname(file)
-        target_dir <- file.path(sources_dir, dir)
-        if (!utils::file_test("-d", target_dir))
-          dir.create(target_dir, recursive = TRUE)
-        file.copy(from = file, to = target_dir)
-      }
+      write_source_archive(data, data_dir, "source.tar.gz")
     }
 
   # custom type
@@ -110,6 +90,42 @@ write_run_data <- function(type, data) {
     write_fn(meta_dir(run_dir))
   else
     .globals$run_dir$pending_writes[[type]] <- write_fn
+}
+
+write_source_archive <- function(sources_dir, data_dir, archive) {
+
+  # normalize data_dir since we'll be changing the working dir
+  data_dir <- normalizePath(data_dir)
+
+  # enumerate source files
+  files <- list.files(path = sources_dir,
+                      pattern = utils::glob2rx("*.r"),
+                      recursive = TRUE,
+                      ignore.case = TRUE,
+                      include.dirs = TRUE)
+
+  # create temp dir for sources
+  sources_dir <- file.path(tempfile("tfruns-sources"), "source")
+  on.exit(unlink(sources_dir), add = TRUE)
+  dir.create(sources_dir, recursive = TRUE)
+
+  # copy the sources to the temp dir
+  for (file in files) {
+    dir <- dirname(file)
+    target_dir <- file.path(sources_dir, dir)
+    if (!utils::file_test("-d", target_dir))
+      dir.create(target_dir, recursive = TRUE)
+    file.copy(from = file, to = target_dir)
+  }
+
+  # create the tarball
+  wd <- getwd()
+  on.exit(setwd(wd), add = TRUE)
+  setwd(file.path(sources_dir, ".."))
+  utils::tar(file.path(data_dir, archive),
+             files = "source",
+             compression = "gzip",
+             tar = "internal")
 }
 
 
