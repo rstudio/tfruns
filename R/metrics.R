@@ -59,7 +59,7 @@ view_run_metrics <- function(metrics) {
   lib_dir <- system.file("lib", package = "tfruns")
   file.copy(from = file.path(lib_dir, c("d3.min.js","c3.min.js", "c3.min.css")),
             to = viewer_dir)
-  metrics_viewer_html <- system.file("metrics_viewer", package = "tfruns")
+  metrics_viewer_html <- system.file("views", "metrics", package = "tfruns")
   file.copy(from = file.path(metrics_viewer_html, c("metrics.js", "metrics.css")),
             to = viewer_dir)
 
@@ -82,7 +82,7 @@ update_run_metrics <- function(viewer, metrics) {
 
   # re-write index.html with embedded history
   history_json <- jsonlite::toJSON(metrics, dataframe = "columns", na = "null")
-  history_html <- system.file("metrics_viewer", "index.html", package = "tfruns")
+  history_html <- system.file("views", "metrics", "index.html", package = "tfruns")
   history_html_lines <- readLines(history_html, encoding = "UTF-8")
   history_html_lines <- sprintf(history_html_lines, history_json)
   writeLines(history_html_lines, file.path(viewer$viewer_dir, "index.html"))
