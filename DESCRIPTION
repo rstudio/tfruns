@@ -1,7 +1,7 @@
 Package: tfruns
 Type: Package
 Title: Training Run Directories for 'TensorFlow'
-Version: 0.9.0.9001
+Version: 0.9.0.9002
 Authors@R: c(
   person("JJ", "Allaire", role = c("aut", "cre"), email = "jj@rstudio.com"),
   person(family = "RStudio", role = c("cph", "fnd")),
@@ -18,7 +18,11 @@ License: Apache License 2.0
 URL: https://github.com/rstudio/tfruns
 BugReports: https://github.com/rstudio/tfruns/issues
 Imports:
-  jsonlite
+  utils,
+  jsonlite,
+  yaml,
+  config,
+  magrittr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
