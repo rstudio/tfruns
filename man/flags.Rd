@@ -2,7 +2,7 @@
 % Please edit documentation in R/flags.R
 \name{flags}
 \alias{flags}
-\alias{flag_numeric}
+\alias{flag_float}
 \alias{flag_integer}
 \alias{flag_boolean}
 \alias{flag_string}
@@ -11,7 +11,7 @@
 flags(..., config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
   file = "flags.yml", arguments = commandArgs(TRUE))
 
-flag_numeric(name, default, description = NULL)
+flag_float(name, default, description = NULL)
 
 flag_integer(name, default, description = NULL)
 
@@ -69,7 +69,7 @@ library(tfruns)
 
 # define flags and parse flag values from flags.yml and the command line
 FLAGS <- flags(
-  flag_numeric('learning_rate', 0.01, 'Initial learning rate.'),
+  flag_float('learning_rate', 0.01, 'Initial learning rate.'),
   flag_integer('max_steps', 5000, 'Number of steps to run trainer.'),
   flag_string('data_dir', 'MNIST-data', 'Directory for training data'),
   flag_boolean('fake_data', FALSE, 'If true, use fake data for testing')

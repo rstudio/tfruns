@@ -38,7 +38,7 @@
 #'
 #' # define flags and parse flag values from flags.yml and the command line
 #' FLAGS <- flags(
-#'   flag_numeric('learning_rate', 0.01, 'Initial learning rate.'),
+#'   flag_float('learning_rate', 0.01, 'Initial learning rate.'),
 #'   flag_integer('max_steps', 5000, 'Number of steps to run trainer.'),
 #'   flag_string('data_dir', 'MNIST-data', 'Directory for training data'),
 #'   flag_boolean('fake_data', FALSE, 'If true, use fake data for testing')
@@ -86,11 +86,11 @@ flags <- function(...,
 
 #' @rdname flags
 #' @export
-flag_numeric <- function(name, default, description = NULL) {
+flag_float <- function(name, default, description = NULL) {
   flag_definition(
     name = name,
-    type = "numeric",
-    default = as.numeric(default),
+    type = "float",
+    default = as.double(default),
     description = description
   )
 }
@@ -196,7 +196,7 @@ parse_flags <- function(FLAGS, config, file, arguments) {
     name <- names[[i]]
     type <- types[[i]]
     value <- switch(type,
-      numeric = as.double(flags[[name]]),
+      float = as.double(flags[[name]]),
       integer = as.integer(flags[[name]]),
       boolean = as.logical(flags[[name]]),
       string = as.character(flags[[name]])
