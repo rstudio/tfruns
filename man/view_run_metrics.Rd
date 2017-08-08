@@ -10,7 +10,7 @@ view_run_metrics(metrics)
 update_run_metrics(viewer, metrics)
 }
 \arguments{
-\item{metrics}{Data frame containing run metrics.}
+\item{metrics}{Data frame containing run metrics}
 
 \item{viewer}{Viewer object returned from \code{view_run_metrics()}.}
 }
@@ -19,7 +19,11 @@ Interactive D3 visualization of metrics for a training run. Metrics will
 be displayed in the RStudio Viewer (if available), otherwise will be
 displayed in an external web browser.
 }
-\section{Metrics data format}{
+\note{
+Metrics named \code{"acc"} or \code{"accuracy"} will automatically use \code{1.0} as the
+maximum value on their y-axis scale.
+}
+\section{Metrics Data Frame}{
 
 
 Metrics should be passed as a data frame with one column for each metric.
@@ -31,17 +35,11 @@ $ acc     : num  0.873 0.942 NA NA NA ...
 $ val_loss: num  0.174 0.121 NA NA NA ...
 $ val_acc : num  0.949 0.964 NA NA NA ...
 }
-}
 
-\section{Plotting}{
-
-
-Metrics and their corresponding validation metric will be plotted together
-if you preface the name of the validation metric with \code{"val_"} (e.g. for a
-metric named \code{"loss"} provide validation metrics in \code{"val_loss"}).
-
-Metrics named \code{"acc"} or \code{"accuracy"} will automatically use \code{1.0} as the
-maximum value on their y-axis scale.
+If both metrics and validation metrics are provided, you should preface the
+name of the validation metric with \code{"val_"} (e.g. for a metric named \code{"loss"}
+provide validation metrics in \code{"val_loss"}). This indicates that the metrics
+are related which is useful e.g. when plotting metrics.
 }
 
 \section{Realtime Updates}{

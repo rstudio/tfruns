@@ -153,8 +153,11 @@ flags_parse <- function(FLAGS,
     FLAGS[[name]] <- value
   }
 
-  # write and return FLAGS
-  write_run_flags(FLAGS)
+  # write flags
+  write_run_data("flags", FLAGS)
+
+  # return flags
+  FLAGS
 }
 
 #' @export
@@ -186,8 +189,11 @@ add_flag <- function(FLAGS, name, type, default, description) {
   attr(FLAGS, "descriptions") <- c(attr(FLAGS, "descriptions"),
                                    ifelse(is.null(description), NA, description))
 
-  # write and return FLAGS
-  write_run_flags(FLAGS)
+  # write flags
+  write_run_data("flags", FLAGS)
+
+  # return flags
+  FLAGS
 }
 
 # parse command line arguments

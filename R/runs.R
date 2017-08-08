@@ -46,6 +46,9 @@ initialize_run <- function(run_dir = NULL, runs_dir = "runs", quiet = FALSE) {
   # this is new definition for the run_dir, save it
   .globals$run_dir$path <- run_dir
 
+  # write source files
+  write_run_data("source", list.files(pattern = utils::glob2rx("*.R")))
+
   # execute any pending writes
   for (name in ls(.globals$run_dir$pending_writes))
     .globals$run_dir$pending_writes[[name]](meta_dir(run_dir))

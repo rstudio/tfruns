@@ -7,16 +7,12 @@
 #'
 #' @inheritParams write_run_metrics
 #'
+#' @param metrics Data frame containing run metrics
 #' @param viewer Viewer object returned from `view_run_metrics()`.
 #'
 #' @template roxlate-metrics-format
 #'
-#' @section Plotting:
-#'
-#'   Metrics and their corresponding validation metric will be plotted together
-#'   if you preface the name of the validation metric with `"val_"` (e.g. for a
-#'   metric named `"loss"` provide validation metrics in `"val_loss"`).
-#'
+#' @note
 #'   Metrics named `"acc"` or `"accuracy"` will automatically use `1.0` as the
 #'   maximum value on their y-axis scale.
 #'
