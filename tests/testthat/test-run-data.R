@@ -27,6 +27,13 @@ test_that("metrics are written to run_dir", {
   expect_run_data("metrics.json")
 })
 
+test_that("properites are written to run_dir", {
+  write_run_data("properties", list(foo = "bar", index = 42))
+  expect_run_data("properties", "foo")
+  expect_run_data("properties", "index")
+  expect_equal(readLines(file.path(run_dir, "tfruns.d", "properties", "foo")), "bar")
+})
+
 test_that("custom run data can be written", {
   write_run_data("foo", function(data_dir) {
     file.create(file.path(data_dir, "foo"))

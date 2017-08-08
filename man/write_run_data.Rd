@@ -15,7 +15,8 @@ also specify a custom type (see \emph{Custom Types} section below).}
 \itemize{
 \item "flags" --- Named list of training flags
 \item "source" --- Directory to copy source files from
-\item "properties" --- Named list of arbitrary properties.
+\item "properties" --- Named list of arbitrary properties. Note
+that properties will be stored as strings.
 \item "metrics" --- Data frame with training run metrics
 (see \emph{Metrics Data Frame} below).
 \item "evaluation" --- Named list of evaluation metrics.

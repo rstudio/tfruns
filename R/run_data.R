@@ -14,7 +14,8 @@
 #'
 #'   - "flags" --- Named list of training flags
 #'   - "source" --- Directory to copy source files from
-#'   - "properties" --- Named list of arbitrary properties.
+#'   - "properties" --- Named list of arbitrary properties. Note
+#'     that properties will be stored as strings.
 #'   - "metrics" --- Data frame with training run metrics
 #'     (see *Metrics Data Frame* below).
 #'   - "evaluation" --- Named list of evaluation metrics.
@@ -45,8 +46,8 @@ write_run_data <- function(type, data) {
   # automatically for known types, for unknown types the `data`
   # argument is the write_fn
 
-  # helper function to write simple property pags
-  properties_write_fn <- function(type) {
+  # helper function to write simple named lists of values
+  named_list_write_fn <- function(type) {
     function(data_dir) {
       jsonlite::write_json(
         data,
@@ -57,10 +58,23 @@ write_run_data <- function(type, data) {
     }
   }
 
-  # simple property-bag
-  if (type %in% c("flags", "properties", "evaluation")) {
+  # simple named list
+  if (type %in% c("flags", "evaluation")) {
 
-    write_fn <- properties_write_fn(type)
+    write_fn <- named_list_write_fn(type)
+
+  # properties (written individually to support multiple writes)
+  } else if (identical(type, "properties")) {
+
+    write_fn <- function(data_dir) {
+      properties_dir <- file.path(data_dir, "properties")
+      if (!utils::file_test("-d", properties_dir))
+        dir.create(properties_dir, recursive = TRUE)
+      for (name in names(data)) {
+        property_file <- file.path(properties_dir, name)
+        writeLines(as.character(data[[name]]), property_file)
+      }
+    }
 
   # metrics data frame
   } else if (identical(type, "metrics")) {
