@@ -70,16 +70,16 @@ view_run_metrics <- function(metrics) {
 #' @export
 update_run_metrics <- function(viewer, metrics) {
 
-  # re-write index.html with embedded history
-  history_json <- jsonlite::toJSON(metrics, dataframe = "columns", na = "null")
-  history_html <- system.file("views", "metrics", "index.html", package = "tfruns")
-  history_html_lines <- readLines(history_html, encoding = "UTF-8")
-  history_html_lines <- sprintf(history_html_lines, history_json)
-  writeLines(history_html_lines, file.path(viewer$viewer_dir, "index.html"))
+  # re-write index.html with embedded metrics
+  metrics_json <- jsonlite::toJSON(metrics, dataframe = "columns", na = "null")
+  metrics_html <- system.file("views", "metrics", "index.html", package = "tfruns")
+  metrics_html_lines <- readLines(metrics_html, encoding = "UTF-8")
+  metrics_html_lines <- sprintf(metrics_html_lines, metrics_json)
+  writeLines(metrics_html_lines, file.path(viewer$viewer_dir, "index.html"))
 
   # write metrics.json for polling
-  history_json <- file.path(viewer$viewer_dir, "metrics.json")
-  write_metrics_json(metrics, history_json)
+  metrics_json_path <- file.path(viewer$viewer_dir, "metrics.json")
+  write_metrics_json(metrics, metrics_json_path)
 }
 
 # write metrics as json
