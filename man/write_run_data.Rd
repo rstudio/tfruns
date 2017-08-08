@@ -11,7 +11,7 @@ write_run_data(name, write_fn)
 will overwrite).}
 
 \item{write_fn}{Function that writes the data. The function will be
-passed a single \code{run_dir} argument.}
+passed a single \code{data_dir} argument.}
 }
 \description{
 Provide a function that will write data into the active run
