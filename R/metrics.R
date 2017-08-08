@@ -5,23 +5,13 @@
 #' be displayed in the RStudio Viewer (if available), otherwise will be
 #' displayed in an external web browser.
 #'
-#' @param metrics Data frame containing run metrics.
+#' @inheritParams write_run_metrics
+#'
 #' @param viewer Viewer object returned from `view_run_metrics()`.
 #'
-#' @section Data Format:
+#' @template roxlate-metrics-format
 #'
-#'   Metrics should be passed as a data frame with one column for each metric to
-#'   be plotted. If the metrics are not yet complete (e.g. only metrics for the
-#'   first several epochs are provided) then metrics in yet to be completed
-#'   epochs should use `NA` as their values. For example:
-#'
-#'   ```
-#'   data.frame':	30 obs. of  4 variables:
-#'   $ loss    : num  0.423 0.201 NA NA NA ...
-#'   $ acc     : num  0.873 0.942 NA NA NA ...
-#'   $ val_loss: num  0.174 0.121 NA NA NA ...
-#'   $ val_acc : num  0.949 0.964 NA NA NA ...
-#'   ```
+#' @section Plotting:
 #'
 #'   Metrics and their corresponding validation metric will be plotted together
 #'   if you preface the name of the validation metric with `"val_"` (e.g. for a
@@ -89,7 +79,12 @@ update_run_metrics <- function(viewer, metrics) {
 
   # write metrics.json for polling
   history_json <- file.path(viewer$viewer_dir, "metrics.json")
-  jsonlite::write_json(metrics, history_json, dataframe = "columns", na = "null")
+  write_metrics_json(metrics, history_json)
+}
+
+# write metrics as json
+write_metrics_json <- function(metrics, path) {
+  jsonlite::write_json(metrics, path, dataframe = "columns", na = "null")
 }
 
 # non-rstudio viewer function

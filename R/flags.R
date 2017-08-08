@@ -154,7 +154,7 @@ flags_parse <- function(FLAGS,
   }
 
   # write and return FLAGS
-  write_flags(FLAGS)
+  write_run_flags(FLAGS)
 }
 
 #' @export
@@ -187,20 +187,7 @@ add_flag <- function(FLAGS, name, type, default, description) {
                                    ifelse(is.null(description), NA, description))
 
   # write and return FLAGS
-  write_flags(FLAGS)
-}
-
-
-# write flags as json to run direcotory (if any)
-write_flags <- function(FLAGS) {
-  write_run_data("flags", function(data_dir) {
-    jsonlite::write_json(FLAGS,
-      path = file.path(data_dir, "flags.json"),
-      auto_unbox = TRUE, # length-1 vectors as scalar
-      pretty = TRUE,     # formatted output
-      force = TRUE)      # flags as unclassed named list
-  })
-  FLAGS
+  write_run_flags(FLAGS)
 }
 
 # parse command line arguments

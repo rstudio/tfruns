@@ -138,35 +138,6 @@ clean_runs <- function(runs_dir = "runs", keep = NULL) {
 }
 
 
-#' Write data into the run directory
-#'
-#' Provide a function that will write data into the active run
-#' directory (if and when it's avaialble).
-#'
-#' @param name Name of data to write (subsequent writes with the same name
-#' will overwrite).
-#' @param write_fn Function that writes the data. The function will be
-#' passed a single `data_dir` argument.
-#'
-#' @export
-write_run_data <- function(name, write_fn) {
-  run_dir <- run_dir()
-  if (!is.null(run_dir))
-    write_fn(meta_dir(run_dir))
-  else
-    .globals$run_dir$pending_writes[[name]] <- write_fn
-}
-
-
-# get the meta dir for a run dir
-meta_dir <- function(run_dir) {
-  meta_dir <- file.path(run_dir, "tfruns.d")
-  if (!utils::file_test("-d", meta_dir))
-    dir.create(meta_dir, recursive = TRUE)
-  meta_dir
-}
-
-
 # check for a run_dir provided by the environment
 environment_run_dir <- function() {
   run_dir <- Sys.getenv("TENSORFLOW_RUN_DIR", unset = NA)

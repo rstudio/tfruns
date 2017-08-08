@@ -19,11 +19,11 @@ Interactive D3 visualization of metrics for a training run. Metrics will
 be displayed in the RStudio Viewer (if available), otherwise will be
 displayed in an external web browser.
 }
-\section{Data Format}{
+\section{Metrics data format}{
 
 
-Metrics should be passed as a data frame with one column for each metric to
-be plotted. If the metrics are not yet complete (e.g. only metrics for the
+Metrics should be passed as a data frame with one column for each metric.
+If the metrics are not yet complete (e.g. only metrics for the
 first several epochs are provided) then metrics in yet to be completed
 epochs should use \code{NA} as their values. For example:\preformatted{data.frame':	30 obs. of  4 variables:
 $ loss    : num  0.423 0.201 NA NA NA ...
@@ -31,6 +31,10 @@ $ acc     : num  0.873 0.942 NA NA NA ...
 $ val_loss: num  0.174 0.121 NA NA NA ...
 $ val_acc : num  0.949 0.964 NA NA NA ...
 }
+}
+
+\section{Plotting}{
+
 
 Metrics and their corresponding validation metric will be plotted together
 if you preface the name of the validation metric with \code{"val_"} (e.g. for a
