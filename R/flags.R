@@ -78,7 +78,7 @@ flags <- function(...,
   FLAGS <- parse_flags(FLAGS, config, file, arguments)
 
   # write flags
-  write_run_data("flags", FLAGS)
+  write_run_metadata("flags", FLAGS)
 
   # return flags
   FLAGS
@@ -236,9 +236,6 @@ add_flag <- function(FLAGS, name, type, default, description) {
   attr(FLAGS, "defaults") <- c(attr(FLAGS, "defaults"), default)
   attr(FLAGS, "descriptions") <- c(attr(FLAGS, "descriptions"),
                                    ifelse(is.null(description), NA, description))
-
-  # write flags
-  write_run_data("flags", FLAGS)
 
   # return flags
   FLAGS

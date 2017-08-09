@@ -47,7 +47,7 @@ initialize_run <- function(run_dir = NULL, runs_dir = "runs", quiet = FALSE) {
   .globals$run_dir$path <- run_dir
 
   # write source files
-  write_run_data("source", getwd())
+  write_run_metadata("source", getwd())
 
   # execute any pending writes
   for (name in ls(.globals$run_dir$pending_writes))

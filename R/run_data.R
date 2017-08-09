@@ -1,16 +1,16 @@
 
 
-#' Write data into the current run directory
+#' Write run metadata into the current run directory
 #'
-#' Record various types of training run data. This function can be called
-#' even when a run directory isn't active (data will only be written if
+#' Record various types of training run metadata This function can be called
+#' even when a run directory isn't active (metadata will only be written if
 #' and when a run directory is initialized).
 #'
-#' @param type Type of data to write. Standard types include "flags",
+#' @param type Type of metadata to write. Standard types include "flags",
 #'   "sources", "properties", "metrics", and "evaluation". You can
 #'   also specify a custom type (see *Custom Types* section below).
 #'
-#' @param data Data to write:
+#' @param data Metadata to write:
 #'
 #'   - "flags" --- Named list of training flags
 #'   - "source" --- Directory to copy source files from
@@ -31,7 +31,7 @@
 #' single `data_dir` argument. For example:
 #'
 #' ```r
-#' write_run_data("images", function(data_dir) {
+#' write_run_metadata("images", function(data_dir) {
 #'   # write into data_dir here
 #' })
 #' ````
@@ -39,7 +39,7 @@
 #' @keywords internal
 #'
 #' @export
-write_run_data <- function(type, data) {
+write_run_metadata <- function(type, data) {
 
   # we need to create a write_fn so that the write can be deferred
   # until after a run_dir is actually established. Create the function
