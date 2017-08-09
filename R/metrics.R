@@ -80,7 +80,10 @@ update_run_metrics <- function(viewer, metrics) {
 
 # write metrics as json
 write_metrics_json <- function(metrics, path) {
-  jsonlite::write_json(metrics, path, dataframe = "columns", na = "null")
+  jsonlite::write_json(metrics, path,
+                       pretty = TRUE,
+                       dataframe = "columns",
+                       na = "null")
 }
 
 # non-rstudio viewer function
