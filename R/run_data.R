@@ -104,6 +104,9 @@ write_run_data <- function(type, data) {
     write_fn(meta_dir(run_dir))
   else
     .globals$run_dir$pending_writes[[type]] <- write_fn
+
+  # return nothing
+  invisible(NULL)
 }
 
 write_source_archive <- function(sources_dir, data_dir, archive) {
