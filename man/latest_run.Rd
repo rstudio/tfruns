@@ -10,9 +10,13 @@ latest_run(runs_dir = "runs")
 latest_runs(runs_dir = "runs", n)
 }
 \arguments{
-\item{runs_dir}{Parent directory for runs}
+\item{runs_dir}{Directory containing runs}
 
 \item{n}{Number of recent runs}
+}
+\value{
+Path to run directory or \code{NULL} if no run
+directories were found.
 }
 \description{
 Enumerate recent training runs

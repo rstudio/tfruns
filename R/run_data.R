@@ -99,9 +99,8 @@ write_run_metadata <- function(type, data) {
 
   # check for a run_dir. if we have one write the run data, otherwise
   # defer the write until we (maybe) acquire a run_dir later
-  run_dir <- run_dir()
-  if (!is.null(run_dir))
-    write_fn(meta_dir(run_dir))
+  if (is_run_active())
+    write_fn(meta_dir(run_dir()))
   else
     .globals$run_dir$pending_writes[[type]] <- write_fn
 

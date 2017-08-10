@@ -7,13 +7,10 @@
 run_dir()
 }
 \value{
-Current run direcotry (or \code{NULL} if no run directory is in use)
+Active run direcotry (or current working directory as a fallback)
 }
 \description{
-Returns the current run directory (if any)
-}
-\note{
-You can also establish a run directory by defining the
-\code{TENSORFLOW_RUN_DIR} environment variable (this is technically equivalent
-to calling \code{\link[=initialize_run]{initialize_run()}} within an R script).
+Returns the current training run directory. If a training run is
+not currently active (see \code{\link[=is_run_active]{is_run_active()}}) then the current
+working directory is returned.
 }

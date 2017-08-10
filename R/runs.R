@@ -1,105 +1,53 @@
 
 
-#' Initialize training run directory
-#'
-#' Timestamped directory for storing training/logging data in a separate
-#' location for each training run.
-#'
-#' The `initialize_run()` function establishes a unique run directory (by default
-#' in a sub-directory named "runs") and stores it's value for saving various
-#' artifacts of training (e.g. model checkpoints, tensorflow logs, etc.).
-#'
-#' If you utilize the automatic creation of run directories within the "runs"
-#' directory then you can use the `latest_run()` and `latest_runs()` functions
-#' to get the path(s) to the most recently created run directories and the
-#' `clean_runs()` function to remove previously created run directories.
-#'
-#' @note You can also establish a run directory by defining the
-#'   `TENSORFLOW_RUN_DIR` environment variable (this is technically equivalent
-#'   to calling `initialize_run()` within an R script).
-#'
-#' @param run_dir Path to run directory (`NULL` to automatically create a
-#'   timestamped directory within the `runs_dir`)
-#' @param runs_dir Parent directory for runs
-#' @param quiet `FALSE` to prevent printing the path to the run dir
-#'
-#' @examples \dontrun{
-#' library(tfruns)
-#' run_dir <- initialize_run()
-#' }
-#'
-#' @export
-initialize_run <- function(run_dir = NULL, runs_dir = "runs", quiet = FALSE) {
-
-  # if no run_dir is specified by the caller then figure out the right value
-  if (is.null(run_dir)) {
-    run_dir <- environment_run_dir() # check e.g. TENSORFLOW_RUN_DIR
-    if (is.null(run_dir))
-      run_dir <- unique_dir(runs_dir, format = "%Y-%m-%dT%H-%M-%SZ")
-  }
-
-  # create the directory if necessary
-  if (!utils::file_test("-d", run_dir))
-    if (!dir.create(run_dir, recursive = TRUE))
-      stop("Unable to create run directory at ", run_dir)
-
-  # this is new definition for the run_dir, save it
-  .globals$run_dir$path <- run_dir
-
-  # write source files
-  write_run_metadata("source", getwd())
-
-  # execute any pending writes
-  for (name in ls(.globals$run_dir$pending_writes))
-    .globals$run_dir$pending_writes[[name]](meta_dir(run_dir))
-
-  # show message
-  if (!quiet)
-    message(paste("Using run directory at:", run_dir))
-
-  # return invisibly
-  invisible(run_dir)
-}
-
-
-
 #' Training run directory
 #'
-#' Returns the current run directory (if any)
+#' Returns the current training run directory. If a training run is
+#' not currently active (see [is_run_active()]) then the current
+#' working directory is returned.
 #'
-#' @return Current run direcotry (or `NULL` if no run directory is in use)
-#'
-#' @note You can also establish a run directory by defining the
-#'  `TENSORFLOW_RUN_DIR` environment variable (this is technically equivalent
-#'  to calling [initialize_run()] within an R script).
+#' @return Active run direcotry (or current working directory as a fallback)
 #'
 #' @export
 run_dir <- function() {
 
   # do we already have a run_dir?
-  if (!is.null(.globals$run_dir$path)) {
+  if (is_run_active()) {
 
     .globals$run_dir$path
 
   # is there an environment variable that could establish a run_dir?
   } else if (!is.null(environment_run_dir())) {
 
-    # set the environment variable as our current run directory
-    initialize_run(environment_run_dir())
+    # intialize from environment variable
+    initialize_run()
 
     # no run_dir currently established
   } else {
 
-    NULL
+    getwd()
 
   }
 }
 
 
+#' Check for an active training run
+#'
+#' @return `TRUE` if a training tun is currently active
+#'
+#' @export
+is_run_active <- function() {
+  !is.null(.globals$run_dir$path)
+}
+
+
 #' Enumerate recent training runs
 #'
-#' @inheritParams initialize_run
+#' @param runs_dir Directory containing runs
 #' @param n Number of recent runs
+#'
+#' @return Path to run directory or `NULL` if no run
+#'   directories were found.
 #'
 #' @export
 latest_run <- function(runs_dir = "runs") {
@@ -118,7 +66,7 @@ latest_runs <- function(runs_dir = "runs", n) {
 #'
 #' Remove run directories from the filesystem.
 #'
-#' @inheritParams initialize_run
+#' @inheritParams latest_run
 #' @param keep Number of most recent runs to keep when cleaning runs.
 #'  `NULL` (the default) to remove all previous runs.
 #'
@@ -138,22 +86,6 @@ clean_runs <- function(runs_dir = "runs", keep = NULL) {
   } else {
     unlink(remove_runs, recursive = TRUE)
   }
-}
-
-
-# check for a run_dir provided by the environment
-environment_run_dir <- function() {
-  run_dir <- Sys.getenv("TENSORFLOW_RUN_DIR", unset = NA)
-  if (!is.na(run_dir))
-    run_dir
-  else
-    NULL
-}
-
-
-
-have_run_dir <- function() {
-  !is.null(run_dir())
 }
 
 
@@ -180,6 +112,33 @@ list_runs <- function(runs_dir = "runs", latest_n = NULL) {
 }
 
 
+initialize_run <- function() {
+
+  # get the runs dir and run dir from the environment (if available)
+  runs_dir <- environment_runs_dir(default = "runs")
+  run_dir <- environment_run_dir(default = unique_dir(runs_dir,
+                                                      format = "%Y-%m-%dT%H-%M-%SZ"))
+
+  # create the directory if necessary
+  if (!utils::file_test("-d", run_dir))
+    if (!dir.create(run_dir, recursive = TRUE))
+      stop("Unable to create run directory at ", run_dir)
+
+  # this is new definition for the run_dir, save it
+  .globals$run_dir$path <- run_dir
+
+  # write source files
+  write_run_metadata("source", getwd())
+
+  # execute any pending writes
+  for (name in ls(.globals$run_dir$pending_writes))
+    .globals$run_dir$pending_writes[[name]](meta_dir(run_dir))
+
+  # return invisibly
+  invisible(run_dir)
+
+}
+
 unique_dir <- function(parent_dir, prefix = NULL, format = "%Y-%m-%dT%H-%M-%SZ") {
   while(TRUE) {
     dir <- file.path(parent_dir,
@@ -190,6 +149,26 @@ unique_dir <- function(parent_dir, prefix = NULL, format = "%Y-%m-%dT%H-%M-%SZ")
       Sys.sleep(0.1)
   }
 }
+
+# check for a runs_dir provided by the environment
+environment_runs_dir <- function(default = NULL) {
+  runs_dir <- Sys.getenv("TENSORFLOW_RUNS_DIR", unset = NA)
+  if (!is.na(runs_dir))
+    runs_dir
+  else
+    default
+}
+
+# check for a run_dir provided by the environment
+environment_run_dir <- function(default = NULL) {
+  run_dir <- Sys.getenv("TENSORFLOW_RUN_DIR", unset = NA)
+  if (!is.na(run_dir))
+    run_dir
+  else
+    default
+}
+
+
 
 
 

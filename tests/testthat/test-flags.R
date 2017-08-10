@@ -2,6 +2,8 @@ context("flags")
 
 source("utils.R")
 
+run_dir <- initialize_run()
+
 test_that("flags can be defined", {
   FLAGS <- define_flags()
   expect_equivalent(FLAGS, readRDS("flags.rds"))
