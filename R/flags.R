@@ -74,8 +74,13 @@ flags <- function(...,
   for (flag in flag_defs)
     FLAGS <- add_flag(FLAGS, flag$name, flag$type, flag$default, flag$description)
 
+  # check for --help
+  if ("--help" %in% arguments)
+    print_flags_and_quit(FLAGS)
+
   # parse the command line / config file
-  FLAGS <- parse_flags(FLAGS, config, file, arguments)
+  if (length(flag_defs) > 0)
+    FLAGS <- parse_flags(FLAGS, config, file, arguments)
 
   # write flags
   write_run_metadata("flags", FLAGS)
@@ -210,12 +215,20 @@ parse_flags <- function(FLAGS, config, file, arguments) {
 
 #' @export
 as.data.frame.tfruns_flags <- function(x, ...) {
-  data.frame(stringsAsFactors = FALSE,
-    name = names(x),
-    type = attr(x, "types"),
-    value = as.character(x),
-    description = attr(x, "descriptions")
-  )
+  if (length(x) > 0) {
+    data.frame(stringsAsFactors = FALSE,
+      name = names(x),
+      type = attr(x, "types"),
+      value = as.character(x),
+      description = attr(x, "descriptions")
+    )
+  } else {
+    data.frame(stringsAsFactors = FALSE,
+      name = character(),
+      type = character(),
+      value = character(),
+      description = character())
+  }
 }
 
 #' @export
@@ -281,6 +294,29 @@ parse_command_line <- function(arguments) {
 
 }
 
+print_flags_and_quit <- function(FLAGS) {
+  flags_df <- as.data.frame(FLAGS)
+  if (nrow(flags_df) > 0) {
+    max_name_len <- max(nchar(flags_df$name))
+    cat("\nOptions:\n")
+    for (i in 1:nrow(flags_df)) {
+      row <- flags_df[i,]
+      flag <- paste0("  --", gsub("_", "-", row$name))
+      flag <- format(flag, width = max_name_len + 4)
+      description <- row$description
+      if (is.na(description))
+        description <- ""
+      else
+        description <- paste0(description, " ")
+      description <- paste0(description, "(", row$value, ")")
+      cat(sprintf("%s    %s\n", flag, description))
+    }
+    cat("\n")
+  }
+
+  fn_quit <- utils::getFromNamespace("quit", asNamespace("base"))
+  fn_quit(save = "no")
+}
 
 
 
