@@ -9,7 +9,7 @@ training_run(file = "train.R", runs_dir = "runs", flags = NULL,
   encoding = getOption("encoding"))
 }
 \arguments{
-\item{file}{Path to training script}
+\item{file}{Path to training script (defaults to "train.R")}
 
 \item{runs_dir}{Directory to create run directories within}
 

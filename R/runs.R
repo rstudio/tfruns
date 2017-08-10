@@ -16,13 +16,7 @@ run_dir <- function() {
 
     .globals$run_dir$path
 
-  # is there an environment variable that could establish a run_dir?
-  } else if (!is.null(environment_run_dir())) {
-
-    # intialize from environment variable
-    initialize_run()
-
-    # no run_dir currently established
+  # no run_dir currently established
   } else {
 
     getwd()
@@ -37,7 +31,16 @@ run_dir <- function() {
 #'
 #' @export
 is_run_active <- function() {
-  !is.null(.globals$run_dir$path)
+  # check global state, if it's null then see if we can bootstrap
+  # from a TENSORFLOW_RUN_DIR environment variable
+  if (!is.null(.globals$run_dir$path)) {
+    TRUE
+  } else if (!is.null(environment_run_dir())) {
+    initialize_run()
+    TRUE
+  } else {
+    FALSE
+  }
 }
 
 
