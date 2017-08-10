@@ -186,11 +186,27 @@ parse_flags <- function(FLAGS, config, file, arguments) {
   # merge with command line arguments (if any)
   flags <- config::merge(flags, parse_command_line(arguments))
 
+  # merge with flags provided via training_run()
+  tr_flags <- .globals$run_dir$flags
+  tr_flag_names <- names(tr_flags)
+  if (!is.null(tr_flags) && !is.null(tr_flag_names)) {
+    tr_flags <- as.character(tr_flags)
+    tr_flags_arguments <- character()
+    for (i in 1:length(tr_flags)) {
+      if (nzchar(tr_flag_names[[i]])) {
+        name <- paste0("--", tr_flag_names[[i]])
+        value <- tr_flags[[i]]
+      }
+      tr_flags_arguments <- c(tr_flags_arguments, name, value)
+    }
+    flags <- config::merge(flags, parse_command_line(tr_flags_arguments))
+  }
+
   # discover undeclared arguments
   undeclared <- setdiff(names(flags), names(FLAGS))
   if (length(undeclared) > 0) {
     stop("The following flags were provided but not declared: ",
-         paste(undeclared), sep = ", ", call. = FALSE)
+         paste(undeclared, collapse = ", "), call. = FALSE)
   }
 
   # set discovered values in FLAGS (set one at a time so that

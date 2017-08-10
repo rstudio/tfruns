@@ -129,10 +129,13 @@ list_runs <- function(runs_dir = "runs", latest_n = NULL) {
 }
 
 
-initialize_run <- function() {
+initialize_run <- function(runs_dir = "runs", flags = NULL) {
+
+  # clear any existing run
+  clear_run()
 
   # get the runs dir and run dir from the environment (if available)
-  runs_dir <- environment_runs_dir(default = "runs")
+  runs_dir <- environment_runs_dir(default = runs_dir)
   run_dir <- environment_run_dir(default = unique_dir(runs_dir,
                                                       format = "%Y-%m-%dT%H-%M-%SZ"))
 
@@ -143,6 +146,9 @@ initialize_run <- function() {
 
   # this is new definition for the run_dir, save it
   .globals$run_dir$path <- run_dir
+
+  # save flags (they'll get processed later in flags())
+  .globals$run_dir$flags <- flags
 
   # write source files
   write_run_metadata("source", getwd())
@@ -155,6 +161,13 @@ initialize_run <- function() {
   invisible(run_dir)
 
 }
+
+clear_run <- function() {
+  .globals$run_dir$path <- NULL
+  .globals$run_dir$flags <- NULL
+  .globals$run_dir$pending_writes <- new.env(parent = emptyenv())
+}
+
 
 unique_dir <- function(parent_dir, prefix = NULL, format = "%Y-%m-%dT%H-%M-%SZ") {
   while(TRUE) {
