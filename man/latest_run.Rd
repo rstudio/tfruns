@@ -10,7 +10,7 @@ latest_run(runs_dir = "runs")
 latest_runs(runs_dir = "runs", n)
 }
 \arguments{
-\item{runs_dir}{Directory containing runs}
+\item{runs_dir}{Directory containing runs.}
 
 \item{n}{Number of recent runs}
 }

@@ -43,7 +43,8 @@ is_run_active <- function() {
 
 #' Enumerate recent training runs
 #'
-#' @param runs_dir Directory containing runs
+#' @param runs_dir Directory containing runs.
+#'
 #' @param n Number of recent runs
 #'
 #' @return Path to run directory or `NULL` if no run
@@ -51,6 +52,10 @@ is_run_active <- function() {
 #'
 #' @export
 latest_run <- function(runs_dir = "runs") {
+
+  if (missing(runs_dir))
+    runs_dir <- environment_runs_dir(default = "runs")
+
   list_runs(runs_dir, latest_n = 1)
 }
 
@@ -58,6 +63,10 @@ latest_run <- function(runs_dir = "runs") {
 #' @rdname latest_run
 #' @export
 latest_runs <- function(runs_dir = "runs", n) {
+
+  if (missing(runs_dir))
+    runs_dir <- environment_runs_dir(default = "runs")
+
   list_runs(runs_dir, latest_n = n)
 }
 
@@ -75,6 +84,10 @@ latest_runs <- function(runs_dir = "runs", n) {
 #' }
 #' @export
 clean_runs <- function(runs_dir = "runs", keep = NULL) {
+
+  if (missing(runs_dir))
+    runs_dir <- environment_runs_dir(default = "runs")
+
   remove_runs <- list_runs(runs_dir)
   if (!is.null(keep)) {
     if (!is.numeric(keep))
@@ -90,6 +103,10 @@ clean_runs <- function(runs_dir = "runs", keep = NULL) {
 
 
 list_runs <- function(runs_dir = "runs", latest_n = NULL) {
+
+  if (missing(runs_dir))
+    runs_dir <- environment_runs_dir(default = "runs")
+
   if (file.exists(runs_dir)) {
     runs <- list.files(runs_dir,
                        pattern = "\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}-\\d{2}Z",
