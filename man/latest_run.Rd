@@ -3,7 +3,7 @@
 \name{latest_run}
 \alias{latest_run}
 \alias{latest_runs}
-\title{Enumerate recent training runs}
+\title{Enumerate recent training run directories}
 \usage{
 latest_run(runs_dir = "runs")
 
@@ -15,9 +15,8 @@ latest_runs(runs_dir = "runs", n)
 \item{n}{Number of recent runs}
 }
 \value{
-Path to run directory or \code{NULL} if no run
-directories were found.
+Character vector with run directory path(s)
 }
 \description{
-Enumerate recent training runs
+Enumerate recent training run directories
 }

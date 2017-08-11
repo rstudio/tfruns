@@ -15,15 +15,15 @@ clean_runs <- function(runs_dir = "runs", keep = NULL) {
   if (missing(runs_dir))
     runs_dir <- environment_runs_dir(default = "runs")
 
-  remove_runs <- list_runs(runs_dir)$run_dir
+  all_runs <- file.path(runs_dir, list_run_dirs(runs_dir))
   if (!is.null(keep)) {
     if (!is.numeric(keep))
       stop("keep must be a numeric value")
-    if (keep >= length(remove_runs))
+    if (keep >= length(all_runs))
       invisible(0)
     else
-      unlink(remove_runs[keep+1:length(remove_runs)], recursive = TRUE)
+      unlink(all_runs[keep+1:length(all_runs)], recursive = TRUE)
   } else {
-    unlink(remove_runs, recursive = TRUE)
+    unlink(all_runs, recursive = TRUE)
   }
 }

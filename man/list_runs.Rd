@@ -18,7 +18,3 @@ Data frame with \code{created} (POSIXct) and \code{run_dir} (path relative to
 \description{
 List training runs
 }
-\details{
-The \code{list_runs()} function returns a data frame. To view the runs pass the
-data frame to the \code{View()} function (e.g. \code{View(list_runs())}).
-}
