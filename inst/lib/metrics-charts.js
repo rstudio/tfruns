@@ -240,21 +240,6 @@ var MetricsCharts = (function () {
 
 })();
 
-function init_metrics() {
-
-  // get the container
-  var container = document.getElementById("c3-container");
-
-  // get the metrics json and parse it
-  var metricsJson = document.getElementById('metrics').innerHTML;
-  var metrics = JSON.parse(metricsJson);
-
-  // initialize
-  new MetricsCharts(container, metrics, "metrics.json", true);
-
-}
-
-init_metrics();
 
 
 

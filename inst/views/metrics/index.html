@@ -13,12 +13,26 @@
 
 <script type="application/json" id="metrics">%s</script>
 
+<script type="text/javascript" src="metrics-charts.js"></script>
+
 </head>
 
 <body>
 
 <div id="c3-container"></div>
 
-<script type="text/javascript" src="metrics.js"></script>
+<script type="text/javascript">
+
+// get the container
+var container = document.getElementById("c3-container");
+
+// get the metrics json and parse it
+var metricsJson = document.getElementById('metrics').innerHTML;
+var metrics = JSON.parse(metricsJson);
+
+// initialize
+new MetricsCharts(container, metrics, "metrics.json", true);
+
+</script>
 
 </body>

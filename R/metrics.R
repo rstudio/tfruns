@@ -43,10 +43,12 @@ view_run_metrics <- function(metrics) {
 
   # copy dependencies to the viewer dir
   lib_dir <- system.file("lib", package = "tfruns")
-  file.copy(from = file.path(lib_dir, c("d3.min.js","c3.min.js", "c3.min.css")),
+  file.copy(from = file.path(lib_dir, c("d3.min.js",
+                                        "c3.min.js", "c3.min.css",
+                                        "metrics-charts.js")),
             to = viewer_dir)
   metrics_viewer_html <- system.file("views", "metrics", package = "tfruns")
-  file.copy(from = file.path(metrics_viewer_html, c("metrics.js", "metrics.css")),
+  file.copy(from = file.path(metrics_viewer_html, c("metrics.css")),
             to = viewer_dir)
 
   # write the history
