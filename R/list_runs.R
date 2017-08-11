@@ -15,8 +15,10 @@ list_runs <- function(runs_dir = "runs", latest_n = NULL) {
 
   # default empty run list
   run_list <- data.frame(stringsAsFactors = FALSE,
-    created = double(),
-    run_dir = character()
+    type = character(),
+    run_dir = character(),
+    completed = logical(),
+    created = double()
   )
 
   if (file.exists(runs_dir)) {
@@ -118,6 +120,7 @@ run_record <- function(runs_dir, run) {
 
   # core columns
   columns <- list()
+  columns$type <- read_property("type")
   columns$run_dir <- run
 
   # flags
@@ -144,9 +147,6 @@ run_record <- function(runs_dir, run) {
 
   # completed indicator (from metrics NA values)
   columns$completed <- completed
-
-  # type
-  columns$type <- read_property("type")
 
   columns$created <- as.POSIXct(run, format = "%Y-%m-%dT%H-%M-%SZ")
 
