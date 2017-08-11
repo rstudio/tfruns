@@ -12,7 +12,7 @@ list_runs(runs_dir = "runs", latest_n = NULL)
 \item{latest_n}{Limit to a number of (most recent runs)}
 }
 \value{
-Data frame with \code{created} (POSIXct) and \code{run_dir} (path relative to
+A data frame with \code{created} (POSIXct) and \code{run_dir} (path relative to
 \code{runs_dir}).
 }
 \description{

@@ -4,7 +4,7 @@
 #' @param runs_dir Directory containing runs.
 #' @param latest_n Limit to a number of (most recent runs)
 #'
-#' @return Data frame with `created` (POSIXct) and `run_dir` (path relative to
+#' @return A data frame with `created` (POSIXct) and `run_dir` (path relative to
 #'   `runs_dir`).
 #'
 #' @export
@@ -36,7 +36,7 @@ list_runs <- function(runs_dir = "runs", latest_n = NULL) {
   }
 
   # return run_list
-  run_list
+  tibble::as_tibble(run_list)
 }
 
 
@@ -103,7 +103,7 @@ run_record <- function(runs_dir, run) {
   columns$created <- as.POSIXct(run, format = "%Y-%m-%dT%H-%M-%SZ")
 
   # convert to data frame for calls to rbind
-  as.data.frame(columns, stringsAsFactors = FALSE)
+  tibble::as_data_frame(columns)
 }
 
 
