@@ -18,32 +18,37 @@ list_runs <- function(runs_dir = "runs", latest_n = NULL) {
   if (missing(runs_dir))
     runs_dir <- environment_runs_dir(default = "runs")
 
-  empty_run_list <- function() {
-    data.frame(stringsAsFactors = FALSE,
-      created = double(),
-      run_dir = character()
-    )
-  }
+  # default empty run list
+  run_list <- data.frame(stringsAsFactors = FALSE,
+    created = double(),
+    run_dir = character()
+  )
 
   if (file.exists(runs_dir)) {
+
+    # list files in runs_dir
     runs <- list.files(runs_dir,
                        pattern = "\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}-\\d{2}Z",
                        full.names = FALSE)
     if (length(runs) > 0) {
+
+      # filter and order runs
       runs <- runs[order(runs, decreasing = TRUE)]
       if (!is.null(latest_n))
         runs <- runs[1:min(length(runs),latest_n)]
-      runs <- data.frame(created = as.POSIXct(runs, format = "%Y-%m-%dT%H-%M-%SZ"),
-                         run_dir = file.path(runs_dir, runs),
-                         stringsAsFactors = FALSE)
-      runs <- runs[order(runs$created , decreasing = TRUE ),]
-      runs
-    } else {
-      empty_run_list()
+
+      # create data frame
+      run_list <- data.frame(stringsAsFactors = FALSE,
+        created = as.POSIXct(runs, format = "%Y-%m-%dT%H-%M-%SZ"),
+        run_dir = file.path(runs_dir, runs)
+      )
+      run_list <- run_list[order(run_list$created , decreasing = TRUE ),]
     }
   }
-  else
-    empty_run_list()
+
+  # return run_list
+  run_list
+
 }
 
 
@@ -75,5 +80,11 @@ latest_runs <- function(runs_dir = "runs", n) {
   list_runs(runs_dir, latest_n = n)$run_dir
 }
 
+
+combine_runs <- function(x, y) {
+  x[, c(as.character(setdiff(colnames(y), colnames(x))))] <- NA
+  y[, c(as.character(setdiff(colnames(x), colnames(y))))] <- NA
+  return(rbind(x, y))
+}
 
 

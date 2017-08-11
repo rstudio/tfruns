@@ -11,7 +11,9 @@ test_that("run_dir can read the run_dir", {
 })
 
 test_that("list runs returns a data frame", {
-  expect_true(is.data.frame(list_runs()))
+  runs <- list_runs()
+  expect_true(is.data.frame(runs))
+  expect_true(all(c("created", "run_dir") %in% colnames(runs)))
 })
 
 test_that("latest_run retreives run_dir", {
