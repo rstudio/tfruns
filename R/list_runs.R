@@ -87,18 +87,51 @@ run_record <- function(runs_dir, run) {
   # compute run name and meta dir
   run_dir <- file.path(runs_dir, run)
   meta_dir <- file.path(run_dir, "tfruns.d")
+  props_dir <- file.path(meta_dir, "properties")
+  if (!utils::file_test("-d", props_dir))
+    props_dir <- NULL
+
+  # function to read a property
+  read_property <- function(name) {
+    if (!is.null(props_dir)) {
+      props_file <- file.path(props_dir, name)
+      if (file.exists(props_file))
+        readLines(props_file)
+      else
+        NA
+    } else {
+      NA
+    }
+  }
+
+  # function to read columns from a json file
+  read_json_columns <- function(file, prefix) {
+    json_path <- file.path(meta_dir, file)
+    if (file.exists(json_path)) {
+      columns <- jsonlite::read_json(json_path)
+      names(columns) <- paste0(prefix, "_", names(columns))
+      columns
+    } else {
+      NULL
+    }
+  }
 
   # core columns
   columns <- list()
   columns$run_dir <- run
 
   # flags
-  flags_json_path <- file.path(meta_dir, "flags.json")
-  if (file.exists(flags_json_path)) {
-    flags_json <- jsonlite::read_json(flags_json_path)
-    names(flags_json) <- paste0("flag_", names(flags_json))
-    columns <- append(columns, flags_json)
-  }
+  columns <- append(columns, read_json_columns("flags.json", "flag"))
+
+  # metrics
+
+  # evaluation
+  columns <- append(columns, read_json_columns("evaluation.json", "eval"))
+
+  # completed indicator (from metrics NA values)
+
+  # type
+  columns$type <- read_property("type")
 
   columns$created <- as.POSIXct(run, format = "%Y-%m-%dT%H-%M-%SZ")
 
