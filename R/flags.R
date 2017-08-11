@@ -57,6 +57,11 @@ flags <- function(...,
     file <- NULL # prevent errors/warnings downstream
   }
 
+  # get config from training_run() if available and it's not specified
+  if (missing(config) && !is.null(.globals$run_dir$config))
+    config <- .globals$run_dir$config
+
+
   # create an empty FLAGS structure
   FLAGS <- structure(class = "tfruns_flags",
     types = character(),

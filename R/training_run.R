@@ -2,6 +2,8 @@
 #'
 #' Run a training script with the specified `flags` within a unique run directory.
 #'
+#'
+#' @inheritParams  flags
 #' @param file Path to training script (defaults to "train.R")
 #' @param runs_dir Directory to create run directories within
 #' @param flags Named character vector with flag values (see [flags()])
@@ -16,6 +18,7 @@
 #' @export
 training_run <- function(file = "train.R",
                          runs_dir = "runs",
+                         config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
                          flags = NULL,
                          echo = FALSE,
                          envir = parent.frame(),
@@ -35,7 +38,7 @@ training_run <- function(file = "train.R",
   }
 
   # setup run context
-  run_dir <- initialize_run(runs_dir, flags)
+  run_dir <- initialize_run(runs_dir, config, flags)
   on.exit(clear_run(), add = TRUE)
 
   # notify user of run dir (print full path if it's not relative to the invocation dir)
@@ -55,7 +58,9 @@ training_run <- function(file = "train.R",
   invisible(absolute_run_dir)
 }
 
-initialize_run <- function(runs_dir = "runs", flags = NULL) {
+initialize_run <- function(runs_dir = "runs",
+                           config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
+                           flags = NULL) {
 
   # clear any existing run
   clear_run()
@@ -73,7 +78,8 @@ initialize_run <- function(runs_dir = "runs", flags = NULL) {
   # this is new definition for the run_dir, save it
   .globals$run_dir$path <- run_dir
 
-  # save flags (they'll get processed later in flags())
+  # save config and flags (they'll get processed later in flags())
+  .globals$run_dir$config <- config
   .globals$run_dir$flags <- flags
 
   # write source files
@@ -90,6 +96,7 @@ initialize_run <- function(runs_dir = "runs", flags = NULL) {
 
 clear_run <- function() {
   .globals$run_dir$path <- NULL
+  .globals$run_dir$config <- NULL
   .globals$run_dir$flags <- NULL
   .globals$run_dir$pending_writes <- new.env(parent = emptyenv())
 }

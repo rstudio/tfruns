@@ -4,7 +4,8 @@
 \alias{training_run}
 \title{Training run}
 \usage{
-training_run(file = "train.R", runs_dir = "runs", flags = NULL,
+training_run(file = "train.R", runs_dir = "runs",
+  config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"), flags = NULL,
   echo = FALSE, envir = parent.frame(), chdir = TRUE,
   encoding = getOption("encoding"))
 }
@@ -12,6 +13,10 @@ training_run(file = "train.R", runs_dir = "runs", flags = NULL,
 \item{file}{Path to training script (defaults to "train.R")}
 
 \item{runs_dir}{Directory to create run directories within}
+
+\item{config}{The configuration to use. Defaults to the active configuration
+for the current environment (as specified by the \code{R_CONFIG_ACTIVE}
+environment variable), or \code{default} when unset.}
 
 \item{flags}{Named character vector with flag values (see \code{\link[=flags]{flags()}})}
 
