@@ -6,6 +6,7 @@
 #' @inheritParams  flags
 #' @param file Path to training script (defaults to "train.R")
 #' @param runs_dir Directory to create run directories within
+#' @param type Run type (defaults to "local")
 #' @param flags Named character vector with flag values (see [flags()])
 #' @param echo Print expressions within training script
 #' @param envir The environment in which the script should be evaluated
@@ -18,6 +19,7 @@
 #' @export
 training_run <- function(file = "train.R",
                          runs_dir = "runs",
+                         type = "local",
                          config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
                          flags = NULL,
                          echo = FALSE,
@@ -38,7 +40,12 @@ training_run <- function(file = "train.R",
   }
 
   # setup run context
-  run_dir <- initialize_run(runs_dir, config, flags)
+  run_dir <- initialize_run(
+    runs_dir = runs_dir,
+    type = type,
+    config = config,
+    flags = flags
+  )
   on.exit(clear_run(), add = TRUE)
 
   # notify user of run dir (print full path if it's not relative to the invocation dir)
@@ -59,6 +66,7 @@ training_run <- function(file = "train.R",
 }
 
 initialize_run <- function(runs_dir = "runs",
+                           type = "local",
                            config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
                            flags = NULL) {
 
@@ -81,6 +89,9 @@ initialize_run <- function(runs_dir = "runs",
   # save config and flags (they'll get processed later in flags())
   .globals$run_dir$config <- config
   .globals$run_dir$flags <- flags
+
+  # write type
+  write_run_metadata("properties", list(type = type))
 
   # write source files
   write_run_metadata("source", getwd())

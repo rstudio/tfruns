@@ -4,7 +4,7 @@
 \alias{training_run}
 \title{Training run}
 \usage{
-training_run(file = "train.R", runs_dir = "runs",
+training_run(file = "train.R", runs_dir = "runs", type = "local",
   config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"), flags = NULL,
   echo = FALSE, envir = parent.frame(), chdir = TRUE,
   encoding = getOption("encoding"))
@@ -13,6 +13,8 @@ training_run(file = "train.R", runs_dir = "runs",
 \item{file}{Path to training script (defaults to "train.R")}
 
 \item{runs_dir}{Directory to create run directories within}
+
+\item{type}{Run type (defaults to "local")}
 
 \item{config}{The configuration to use. Defaults to the active configuration
 for the current environment (as specified by the \code{R_CONFIG_ACTIVE}
