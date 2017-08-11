@@ -37,11 +37,13 @@ list_runs <- function(runs_dir = "runs", latest_n = NULL) {
       if (!is.null(latest_n))
         runs <- runs[1:min(length(runs),latest_n)]
 
-      # create data frame
-      run_list <- data.frame(stringsAsFactors = FALSE,
-        created = as.POSIXct(runs, format = "%Y-%m-%dT%H-%M-%SZ"),
-        run_dir = file.path(runs_dir, runs)
-      )
+      # popuate data frame from runs
+      for (run in runs) {
+        run_df <- run_record(runs_dir, run)
+        run_list <- combine_runs(run_list, run_df)
+      }
+
+      # order decreasing
       run_list <- run_list[order(run_list$created , decreasing = TRUE ),]
     }
   }
@@ -50,6 +52,31 @@ list_runs <- function(runs_dir = "runs", latest_n = NULL) {
   run_list
 
 }
+
+
+run_record <- function(runs_dir, run) {
+
+  # compute run_dir and meta dir
+  run_dir <- file.path(runs_dir, run)
+  meta_dir <- file.path(run_dir, "tfruns.d")
+
+  # core columns
+  columns <- list()
+  columns$created <- as.POSIXct(run, format = "%Y-%m-%dT%H-%M-%SZ")
+  columns$run_dir <- run_dir
+
+  # flags
+  flags_json_path <- file.path(meta_dir, "flags.json")
+  if (file.exists(flags_json_path)) {
+    flags_json <- jsonlite::read_json(flags_json_path)
+    names(flags_json) <- paste0("flag_", names(flags_json))
+    columns <- append(columns, flags_json)
+  }
+
+  # convert to data frame for calls to rbind
+  as.data.frame(columns, stringsAsFactors = FALSE)
+}
+
 
 
 #' Enumerate recent training runs
@@ -82,9 +109,17 @@ latest_runs <- function(runs_dir = "runs", n) {
 
 
 combine_runs <- function(x, y) {
-  x[, c(as.character(setdiff(colnames(y), colnames(x))))] <- NA
-  y[, c(as.character(setdiff(colnames(x), colnames(y))))] <- NA
-  return(rbind(x, y))
+  if (nrow(x) == 0)
+    y
+  else if (nrow(y) == 0)
+    x
+  else {
+    x[, c(as.character(setdiff(colnames(y), colnames(x))))] <- NA
+    y[, c(as.character(setdiff(colnames(x), colnames(y))))] <- NA
+    rbind(x, y)
+  }
+
+
 }
 
 
