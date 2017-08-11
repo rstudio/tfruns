@@ -14,9 +14,6 @@ var MetricsCharts = (function () {
         _metric_names.push(keys[k]);
     }
 
-    // determine the initial height of charts
-    var chart_height = _container.offsetHeight / _metric_names.length;
-
     // create a C3 chart for each metric
     var total_epochs = get_total_epochs(metrics);
     for (var i = 0; i<_metric_names.length; i++) {
@@ -62,9 +59,6 @@ var MetricsCharts = (function () {
         data: {
           columns: chart_columns(metric, metrics)
         },
-        size: {
-          height: chart_height
-        },
         transition: {
           duration: 20
         }
@@ -83,8 +77,10 @@ var MetricsCharts = (function () {
       auto_update();
 
     // auto resize if requested
-    if (auto_resize)
+    if (auto_resize) {
+      resize();
       window.addEventListener("resize", resize);
+    }
   };
 
   // periodically update metrics from a url
