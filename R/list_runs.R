@@ -124,11 +124,26 @@ run_record <- function(runs_dir, run) {
   columns <- append(columns, read_json_columns("flags.json", "flag"))
 
   # metrics
+  completed <- TRUE
+  metrics_json_path <- file.path(meta_dir, "metrics.json")
+  if (file.exists(metrics_json_path)) {
+    # read metrics
+    metrics <- jsonlite::read_json(metrics_json_path)
+    if (length(metrics) > 0) {
+      # NA indicates incomple run
+      completed <- all(!is.na(metrics[[1]]))
+      for (metric in names(metrics)) {
+        last_value <- max(which(!is.na(metrics[[metric]])))
+        columns[[paste0("metric_", metric)]] <- last_value
+      }
+    }
+  }
 
   # evaluation
   columns <- append(columns, read_json_columns("evaluation.json", "eval"))
 
   # completed indicator (from metrics NA values)
+  columns$completed <- completed
 
   # type
   columns$type <- read_property("type")
