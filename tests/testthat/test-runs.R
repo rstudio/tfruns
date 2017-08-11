@@ -10,6 +10,10 @@ test_that("run_dir can read the run_dir", {
   expect_identical(run_dir, run_dir())
 })
 
+test_that("list runs returns a data frame", {
+  expect_true(is.data.frame(list_runs()))
+})
+
 test_that("latest_run retreives run_dir", {
   expect_identical(run_dir, latest_run())
 })
@@ -21,6 +25,7 @@ test_that("clean_runs removes runs", {
 
 test_that("environent variable can establish a run directory", {
   Sys.setenv(TENSORFLOW_RUN_DIR = tempdir())
+  on.exit(Sys.unsetenv("TENSORFLOW_RUN_DIR"), add = TRUE)
   initialize_run()
   expect_identical(run_dir(), Sys.getenv("TENSORFLOW_RUN_DIR"))
 })

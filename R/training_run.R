@@ -54,3 +54,55 @@ training_run <- function(file = "train.R",
   # return the run_dir
   invisible(absolute_run_dir)
 }
+
+initialize_run <- function(runs_dir = "runs", flags = NULL) {
+
+  # clear any existing run
+  clear_run()
+
+  # get the runs dir and run dir from the environment (if available)
+  runs_dir <- environment_runs_dir(default = runs_dir)
+  run_dir <- environment_run_dir(default = unique_dir(runs_dir,
+                                                      format = "%Y-%m-%dT%H-%M-%SZ"))
+
+  # create the directory if necessary
+  if (!utils::file_test("-d", run_dir))
+    if (!dir.create(run_dir, recursive = TRUE))
+      stop("Unable to create run directory at ", run_dir)
+
+  # this is new definition for the run_dir, save it
+  .globals$run_dir$path <- run_dir
+
+  # save flags (they'll get processed later in flags())
+  .globals$run_dir$flags <- flags
+
+  # write source files
+  write_run_metadata("source", getwd())
+
+  # execute any pending writes
+  for (name in ls(.globals$run_dir$pending_writes))
+    .globals$run_dir$pending_writes[[name]](meta_dir(run_dir))
+
+  # return invisibly
+  invisible(run_dir)
+
+}
+
+clear_run <- function() {
+  .globals$run_dir$path <- NULL
+  .globals$run_dir$flags <- NULL
+  .globals$run_dir$pending_writes <- new.env(parent = emptyenv())
+}
+
+unique_dir <- function(parent_dir, prefix = NULL, format = "%Y-%m-%dT%H-%M-%SZ") {
+  while(TRUE) {
+    dir <- file.path(parent_dir,
+                     paste0(prefix, strftime(Sys.time(), format = format, tz = "GMT")))
+    if (!file.exists(dir))
+      return(dir)
+    else
+      Sys.sleep(0.1)
+  }
+}
+
+
