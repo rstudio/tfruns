@@ -75,8 +75,7 @@ initialize_run <- function(runs_dir = "runs",
 
   # get the runs dir and run dir from the environment (if available)
   runs_dir <- environment_runs_dir(default = runs_dir)
-  run_dir <- environment_run_dir(default = unique_dir(runs_dir,
-                                                      format = "%Y-%m-%dT%H-%M-%SZ"))
+  run_dir <- unique_dir(runs_dir, format = "%Y-%m-%dT%H-%M-%SZ")
 
   # create the directory if necessary
   if (!utils::file_test("-d", run_dir))

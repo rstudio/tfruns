@@ -25,9 +25,3 @@ test_that("clean_runs removes runs", {
   expect_length(latest_run(), 0)
 })
 
-test_that("environent variable can establish a run directory", {
-  Sys.setenv(TENSORFLOW_RUN_DIR = tempdir())
-  on.exit(Sys.unsetenv("TENSORFLOW_RUN_DIR"), add = TRUE)
-  initialize_run()
-  expect_identical(run_dir(), Sys.getenv("TENSORFLOW_RUN_DIR"))
-})
