@@ -1,17 +1,14 @@
 
 #' List training runs
 #'
-#' @param runs_dir Directory containing runs.
 #' @param latest_n Limit to a number of (most recent runs)
+#' @param runs_dir Directory containing runs.
 #'
 #' @return A data frame with `created` (POSIXct) and `run_dir` (path relative to
 #'   `runs_dir`).
 #'
 #' @export
-list_runs <- function(runs_dir = "runs", latest_n = NULL) {
-
-  if (missing(runs_dir))
-    runs_dir <- environment_runs_dir(default = "runs")
+list_runs <- function(latest_n = NULL, runs_dir = "runs") {
 
   # default empty run list
   run_list <- data.frame(stringsAsFactors = FALSE,
@@ -51,17 +48,13 @@ list_runs <- function(runs_dir = "runs", latest_n = NULL) {
 #'
 #' @export
 latest_run <- function(runs_dir = "runs") {
-  if (missing(runs_dir))
-    runs_dir <- environment_runs_dir(default = "runs")
   latest_runs(runs_dir, n = 1)
 }
 
 
 #' @rdname latest_run
 #' @export
-latest_runs <- function(runs_dir = "runs", n) {
-  if (missing(runs_dir))
-    runs_dir <- environment_runs_dir(default = "runs")
+latest_runs <- function(n, runs_dir = "runs") {
   file.path(runs_dir, list_run_dirs(runs_dir, latest_n = n))
 }
 

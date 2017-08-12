@@ -10,11 +10,7 @@
 #' clean_runs(keep = 10)
 #' }
 #' @export
-clean_runs <- function(runs_dir = "runs", keep = NULL) {
-
-  if (missing(runs_dir))
-    runs_dir <- environment_runs_dir(default = "runs")
-
+clean_runs <- function(keep = NULL, runs_dir = "runs") {
   all_runs <- file.path(runs_dir, list_run_dirs(runs_dir))
   if (!is.null(keep)) {
     if (!is.numeric(keep))

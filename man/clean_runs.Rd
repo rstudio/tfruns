@@ -4,13 +4,13 @@
 \alias{clean_runs}
 \title{Clean run directories}
 \usage{
-clean_runs(runs_dir = "runs", keep = NULL)
+clean_runs(keep = NULL, runs_dir = "runs")
 }
 \arguments{
-\item{runs_dir}{Directory containing runs.}
-
 \item{keep}{Number of most recent runs to keep when cleaning runs.
 \code{NULL} (the default) to remove all previous runs.}
+
+\item{runs_dir}{Directory containing runs.}
 }
 \description{
 Remove run directories from the filesystem.

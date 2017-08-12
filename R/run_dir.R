@@ -34,14 +34,6 @@ is_run_active <- function() {
 }
 
 
-# check for a runs_dir provided by the environment
-environment_runs_dir <- function(default = NULL) {
-  runs_dir <- Sys.getenv("TENSORFLOW_RUNS_DIR", unset = NA)
-  if (!is.na(runs_dir))
-    runs_dir
-  else
-    default
-}
 
 
 

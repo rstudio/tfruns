@@ -7,7 +7,7 @@
 \usage{
 latest_run(runs_dir = "runs")
 
-latest_runs(runs_dir = "runs", n)
+latest_runs(n, runs_dir = "runs")
 }
 \arguments{
 \item{runs_dir}{Directory containing runs.}
