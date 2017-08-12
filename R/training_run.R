@@ -18,10 +18,10 @@
 #'
 #' @export
 training_run <- function(file = "train.R",
-                         runs_dir = "runs",
                          type = "local",
                          config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
                          flags = NULL,
+                         runs_dir = "runs",
                          echo = FALSE,
                          envir = parent.frame(),
                          chdir = TRUE,
@@ -41,10 +41,10 @@ training_run <- function(file = "train.R",
 
   # setup run context
   run_dir <- initialize_run(
-    runs_dir = runs_dir,
     type = type,
     config = config,
-    flags = flags
+    flags = flags,
+    runs_dir = runs_dir
   )
   on.exit(clear_run(), add = TRUE)
 
@@ -65,10 +65,10 @@ training_run <- function(file = "train.R",
   invisible(absolute_run_dir)
 }
 
-initialize_run <- function(runs_dir = "runs",
-                           type = "local",
+initialize_run <- function(type = "local",
                            config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
-                           flags = NULL) {
+                           flags = NULL,
+                           runs_dir = "runs") {
 
   # clear any existing run
   clear_run()
