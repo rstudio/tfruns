@@ -6,7 +6,7 @@
 \usage{
 training_run(file = "train.R", type = "local",
   config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"), flags = NULL,
-  runs_dir = "runs", echo = FALSE, envir = parent.frame(), chdir = TRUE,
+  run_dir = NULL, echo = FALSE, envir = parent.frame(),
   encoding = getOption("encoding"))
 }
 \arguments{
@@ -20,14 +20,11 @@ environment variable), or \code{default} when unset.}
 
 \item{flags}{Named character vector with flag values (see \code{\link[=flags]{flags()}})}
 
-\item{runs_dir}{Directory to create run directories within}
+\item{run_dir}{Directory to store run data within}
 
 \item{echo}{Print expressions within training script}
 
 \item{envir}{The environment in which the script should be evaluated}
-
-\item{chdir}{If \code{TRUE} the R working directory is temporarily changed to the
-directory containing file for evaluating.}
 
 \item{encoding}{The encoding of the training script; see \code{\link[=file]{file()}}.}
 }
