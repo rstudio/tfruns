@@ -169,7 +169,7 @@ run_record <- function(run_dir) {
     metrics <- jsonlite::read_json(metrics_json_path)
     if (length(metrics) > 0) {
       for (metric in names(metrics)) {
-        last_value <- metrics[[metric]][[max(which(!is.na(metrics[[metric]])))]]
+        last_value <- metrics[[metric]][[max(which(!is.null(metrics[[metric]])))]]
         columns[[paste0("metric_", metric)]] <- last_value
       }
     }
