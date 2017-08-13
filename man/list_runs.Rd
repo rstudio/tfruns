@@ -4,12 +4,12 @@
 \alias{list_runs}
 \title{List training runs}
 \usage{
-list_runs(latest_n = NULL, runs_dir = "runs")
+list_runs(latest_n = NULL, project_dir = ".")
 }
 \arguments{
 \item{latest_n}{Limit to a number of (most recent runs)}
 
-\item{runs_dir}{Directory containing runs.}
+\item{project_dir}{Project to list runs for}
 }
 \value{
 A data frame with \code{created} (POSIXct) and \code{run_dir} (path relative to

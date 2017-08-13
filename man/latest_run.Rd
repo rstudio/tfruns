@@ -5,12 +5,12 @@
 \alias{latest_runs}
 \title{Enumerate recent training run directories}
 \usage{
-latest_run(runs_dir = "runs")
+latest_run(project_dir = ".")
 
-latest_runs(n, runs_dir = "runs")
+latest_runs(n, project_dir = ".")
 }
 \arguments{
-\item{runs_dir}{Directory containing runs.}
+\item{project_dir}{Project to list runs for}
 
 \item{n}{Number of recent runs}
 }

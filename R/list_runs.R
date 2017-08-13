@@ -2,13 +2,16 @@
 #' List training runs
 #'
 #' @param latest_n Limit to a number of (most recent runs)
-#' @param runs_dir Directory containing runs.
+#' @param project_dir Project to list runs for
 #'
 #' @return A data frame with `created` (POSIXct) and `run_dir` (path relative to
 #'   `runs_dir`).
 #'
 #' @export
-list_runs <- function(latest_n = NULL, runs_dir = "runs") {
+list_runs <- function(latest_n = NULL, project_dir = ".") {
+
+  # compute runs_dir
+  runs_dir <- file.path(project_dir, runs_dir())
 
   # default empty run list
   run_list <- data.frame(stringsAsFactors = FALSE,
@@ -20,12 +23,12 @@ list_runs <- function(latest_n = NULL, runs_dir = "runs") {
 
   if (file.exists(runs_dir)) {
 
-    # list files in runs_dir
-    runs <- list_run_dirs(runs_dir, latest_n = latest_n)
+    # list runs
+    runs <- list_run_dirs(latest_n = latest_n, project_dir = project_dir)
 
     # popuate data frame from runs
     for (run in runs) {
-      run_df <- run_record(runs_dir, run)
+      run_df <- run_record(run)
       run_list <- combine_runs(run_list, run_df)
     }
 
@@ -47,22 +50,22 @@ list_runs <- function(latest_n = NULL, runs_dir = "runs") {
 #' @return Character vector with run directory path(s)
 #'
 #' @export
-latest_run <- function(runs_dir = "runs") {
-  latest_runs(runs_dir, n = 1)
+latest_run <- function(project_dir = ".") {
+  latest_runs(n = 1, project_dir = project_dir)
 }
 
 
 #' @rdname latest_run
 #' @export
-latest_runs <- function(n, runs_dir = "runs") {
-  file.path(runs_dir, list_run_dirs(runs_dir, latest_n = n))
+latest_runs <- function(n, project_dir = ".") {
+  list_run_dirs(latest_n = n, project_dir = project_dir)
 }
 
 
-list_run_dirs <- function(runs_dir, latest_n = NULL) {
+list_run_dirs <- function(latest_n = NULL, project_dir = ".") {
 
   # list directories
-  runs <- list.files(runs_dir,
+  runs <- list.files(file.path(project_dir, runs_dir()),
                      pattern = "\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}-\\d{2}Z",
                      full.names = FALSE)
 
@@ -74,13 +77,16 @@ list_run_dirs <- function(runs_dir, latest_n = NULL) {
   }
 
   # return runs
-  runs
+  if (identical(project_dir, "."))
+    file.path(runs_dir(), runs)
+  else
+    file.path(project_dir, runs_dir(), runs)
 }
 
-run_record <- function(runs_dir, run) {
+run_record <- function(run_dir) {
 
   # compute run name and meta dir
-  run_dir <- file.path(runs_dir, run)
+  run <- basename(run_dir)
   meta_dir <- file.path(run_dir, "tfruns.d")
   props_dir <- file.path(meta_dir, "properties")
   if (!utils::file_test("-d", props_dir))
