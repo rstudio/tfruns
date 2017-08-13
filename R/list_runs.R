@@ -37,6 +37,10 @@ list_runs <- function(latest_n = NULL, project_dir = ".") {
 
   }
 
+  # convert date columns
+  run_list$start <- as.POSIXct(run_list$start, tz = "GMT", origin = "1970-01-01")
+  run_list$end <- as.POSIXct(run_list$end, tz = "GMT", origin = "1970-01-01")
+
   # return run_list
   tibble::as_tibble(run_list)
 }
@@ -92,20 +96,38 @@ run_record <- function(run_dir) {
   if (!utils::file_test("-d", props_dir))
     props_dir <- NULL
 
-  # functions to read properites
-  read_property <- function(name) {
-    if (!is.null(props_dir)) {
-      props_file <- file.path(props_dir, name)
-      if (file.exists(props_file))
-        readLines(props_file)
-      else
-        NA
-    } else {
-      NA
-    }
+  # read all properties into a list
+  read_properties <- function() {
+    properties <- list.files(props_dir)
+    values <- lapply(properties, function(file) {
+      readLines(file.path(props_dir, file))
+    })
+    names(values) <- properties
+    values
   }
-  read_timestamp_property <- function(name) {
-    as.POSIXct(as.numeric(read_property(name)), tz = 'GMT', origin = '1970-01-01')
+
+  # type converters for properties
+  as_type <- function(properties, name, converter) {
+    value <- properties[[name]]
+    if (is.null(value))
+      NULL
+    else
+      converter(value)
+  }
+  as_numeric <- function(properties, name) {
+    as_type(properties, name, as.numeric)
+  }
+  as_integer <- function(properties, name) {
+    as_type(properties, name, as.integer)
+  }
+  as_logical <- function(properties, name) {
+    as_type(properties, name, function(value) {
+      if (value %in% c("TRUE", "true", "yes", "1"))
+        value <- TRUE
+      else if (value %in% c("FALSE", "false", "no", "0"))
+        value <- FALSE
+      as.logical(value)
+    })
   }
 
   # function to read columns from a json file
@@ -122,8 +144,19 @@ run_record <- function(run_dir) {
 
   # core columns
   columns <- list()
-  columns$type <- read_property("type")
   columns$run_dir <- run_dir
+
+  # read properties and do type conversions for known values
+  properties <- read_properties()
+  properties$start <- as_numeric(properties, "start")
+  properties$end <- as_numeric(properties, "end")
+  properties$samples <- as_integer(properties, "samples")
+  properties$validation_samples <- as_integer(properties, "validation_samples")
+  properties$epochs <- as_integer(properties, "epochs")
+  properties$batch_size <- as_integer(properties, "batch_size")
+
+  # add properties to columns
+  columns <- append(columns, properties)
 
   # evaluation
   columns <- append(columns, read_json_columns("evaluation.json", "eval"))
@@ -135,10 +168,8 @@ run_record <- function(run_dir) {
     # read metrics
     metrics <- jsonlite::read_json(metrics_json_path)
     if (length(metrics) > 0) {
-      # NA indicates incomple run
-      completed <- all(!is.na(metrics[[1]]))
       for (metric in names(metrics)) {
-        last_value <- max(which(!is.na(metrics[[metric]])))
+        last_value <- metrics[[metric]][[max(which(!is.na(metrics[[metric]])))]]
         columns[[paste0("metric_", metric)]] <- last_value
       }
     }
@@ -146,10 +177,6 @@ run_record <- function(run_dir) {
 
   # flags
   columns <- append(columns, read_json_columns("flags.json", "flag"))
-
-  # start/end/completed
-  columns$start <- read_timestamp_property("start")
-  columns$end <- read_timestamp_property("end")
 
   # convert to data frame for calls to rbind
   tibble::as_data_frame(columns)

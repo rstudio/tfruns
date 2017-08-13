@@ -35,14 +35,16 @@ training_run <- function(file = "train.R",
     flags = flags,
     run_dir = run_dir
   )
-  on.exit(clear_run(), add = TRUE)
-
-  # notify user of run dir
-  message("Using run directory ", run_dir)
 
   # write begin and end times
   write_run_property("start", as.double(Sys.time()))
   on.exit(write_run_property("end", as.double(Sys.time())), add = TRUE)
+
+  # clear run on exit
+  on.exit(clear_run(), add = TRUE)
+
+  # notify user of run dir
+  message("Using run directory ", run_dir)
 
   # perform the run
   source(file = file, local = envir, echo = echo, encoding = encoding)
