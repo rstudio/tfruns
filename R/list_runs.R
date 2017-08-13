@@ -17,8 +17,8 @@ list_runs <- function(latest_n = NULL, project_dir = ".") {
   run_list <- data.frame(stringsAsFactors = FALSE,
     type = character(),
     run_dir = character(),
-    completed = logical(),
-    created = double()
+    start = numeric(),
+    end = numeric()
   )
 
   if (file.exists(runs_dir)) {
@@ -32,8 +32,8 @@ list_runs <- function(latest_n = NULL, project_dir = ".") {
       run_list <- combine_runs(run_list, run_df)
     }
 
-    # order decreasing
-    run_list <- run_list[order(run_list$created , decreasing = TRUE ),]
+    # most recent runs first
+    run_list <- run_list[order(run_list$start , decreasing = TRUE ),]
 
   }
 
@@ -92,7 +92,7 @@ run_record <- function(run_dir) {
   if (!utils::file_test("-d", props_dir))
     props_dir <- NULL
 
-  # function to read a property
+  # functions to read properites
   read_property <- function(name) {
     if (!is.null(props_dir)) {
       props_file <- file.path(props_dir, name)
@@ -103,6 +103,9 @@ run_record <- function(run_dir) {
     } else {
       NA
     }
+  }
+  read_timestamp_property <- function(name) {
+    as.POSIXct(as.numeric(read_property(name)), tz = 'GMT', origin = '1970-01-01')
   }
 
   # function to read columns from a json file
@@ -120,10 +123,10 @@ run_record <- function(run_dir) {
   # core columns
   columns <- list()
   columns$type <- read_property("type")
-  columns$run_dir <- run
+  columns$run_dir <- run_dir
 
-  # flags
-  columns <- append(columns, read_json_columns("flags.json", "flag"))
+  # evaluation
+  columns <- append(columns, read_json_columns("evaluation.json", "eval"))
 
   # metrics
   completed <- TRUE
@@ -141,13 +144,12 @@ run_record <- function(run_dir) {
     }
   }
 
-  # evaluation
-  columns <- append(columns, read_json_columns("evaluation.json", "eval"))
+  # flags
+  columns <- append(columns, read_json_columns("flags.json", "flag"))
 
-  # completed indicator (from metrics NA values)
-  columns$completed <- completed
-
-  columns$created <- as.POSIXct(run, format = "%Y-%m-%dT%H-%M-%SZ")
+  # start/end/completed
+  columns$start <- read_timestamp_property("start")
+  columns$end <- read_timestamp_property("end")
 
   # convert to data frame for calls to rbind
   tibble::as_data_frame(columns)

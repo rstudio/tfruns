@@ -108,6 +108,12 @@ write_run_metadata <- function(type, data) {
   invisible(NULL)
 }
 
+write_run_property <- function(name, value) {
+  properties <- list()
+  properties[[name]] <- value
+  write_run_metadata("properties", properties)
+}
+
 write_source_archive <- function(sources_dir, data_dir, archive) {
 
   # normalize data_dir since we'll be changing the working dir

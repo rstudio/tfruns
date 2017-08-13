@@ -38,7 +38,11 @@ training_run <- function(file = "train.R",
   on.exit(clear_run(), add = TRUE)
 
   # notify user of run dir
-  message("Using run directory at ", run_dir)
+  message("Using run directory ", run_dir)
+
+  # write begin and end times
+  write_run_property("start", as.double(Sys.time()))
+  on.exit(write_run_property("end", as.double(Sys.time())), add = TRUE)
 
   # perform the run
   source(file = file, local = envir, echo = echo, encoding = encoding)
@@ -57,7 +61,7 @@ initialize_run <- function(type = "local",
 
   # generate the run_dir
   if (is.null(run_dir))
-    run_dir <- unique_dir("runs", format = "%Y-%m-%dT%H-%M-%SZ")
+    run_dir <- unique_dir("runs")
 
   # create the directory if necessary
   if (!utils::file_test("-d", run_dir))
