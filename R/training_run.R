@@ -48,12 +48,12 @@ training_run <- function(file = "train.R",
   message("Using run directory ", run_dir)
 
   # perform the run
+  write_run_property("completed", FALSE)
   withCallingHandlers({
       source(file = file, local = envir, echo = echo, encoding = encoding)
       write_run_property("completed", TRUE)
     },
     error = function(e) {
-      write_run_property("completed", FALSE)
       write_run_property("error", e$message)
       stop(e)
     }
