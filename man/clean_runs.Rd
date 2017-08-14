@@ -10,9 +10,9 @@ clean_runs(keep = NULL, runs_dir = "runs")
 \item{keep}{Number of most recent runs to keep when cleaning runs.
 \code{NULL} (the default) to remove all previous runs.}
 
-\item{runs_dir}{Directory containing runs. Defaults to "runs"
-beneath the current working directory (or to the value of the
-\code{tfruns.runs_dir} R option if specified).}
+\item{runs_dir}{Directory containing runs. Defaults to "runs" beneath the
+current working directory (or to the value of the \code{tfruns.runs_dir} R
+option if specified).}
 }
 \description{
 Remove run directories from the filesystem.

@@ -1,16 +1,19 @@
 
 #' List training runs
 #'
-#' @param latest_n Limit to a number of (most recent runs)
-#' @param runs_dir Directory containing runs. Defaults to "runs"
-#'   beneath the current working directory (or to the value of the
-#'   `tfruns.runs_dir` R option if specified).
+#' @param subset Logical expression indicating rows to keep (missing values are
+#'   taken as false). See [subset()].
+#' @param latest_n Limit listing to the `latest_n` most recent runs
+#' @param runs_dir Directory containing runs. Defaults to "runs" beneath the
+#'   current working directory (or to the value of the `tfruns.runs_dir` R
+#'   option if specified).
 #'
-#' @return A data frame with `created` (POSIXct) and `run_dir` (path relative to
-#'   `runs_dir`).
+#' @return Data frame with training runs.
 #'
 #' @export
-list_runs <- function(latest_n = NULL, runs_dir = getOption("tfruns.runs_dir", "runs")) {
+list_runs <- function(subset = NULL,
+                      latest_n = NULL,
+                      runs_dir = getOption("tfruns.runs_dir", "runs")) {
 
   # default empty run list
   run_list <- NULL
@@ -37,6 +40,7 @@ list_runs <- function(latest_n = NULL, runs_dir = getOption("tfruns.runs_dir", "
     # convert date columns
     run_list$start <- as.POSIXct(run_list$start, tz = "GMT", origin = "1970-01-01")
     run_list$end <- as.POSIXct(run_list$end, tz = "GMT", origin = "1970-01-01")
+
   } else {
     run_list <- tibble::data_frame(
       type = character(),
@@ -44,6 +48,13 @@ list_runs <- function(latest_n = NULL, runs_dir = getOption("tfruns.runs_dir", "
       start = numeric(),
       end = numeric()
     )
+  }
+
+  # apply subset
+  if (!missing(subset)) {
+    subset_call <- substitute(subset)
+    rows <- eval(subset_call, run_list)
+    run_list <- run_list[rows, ]
   }
 
   # return run_list

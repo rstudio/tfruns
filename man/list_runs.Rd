@@ -4,18 +4,21 @@
 \alias{list_runs}
 \title{List training runs}
 \usage{
-list_runs(latest_n = NULL, runs_dir = getOption("tfruns.runs_dir", "runs"))
+list_runs(subset = NULL, latest_n = NULL,
+  runs_dir = getOption("tfruns.runs_dir", "runs"))
 }
 \arguments{
-\item{latest_n}{Limit to a number of (most recent runs)}
+\item{subset}{Logical expression indicating rows to keep (missing values are
+taken as false). See \code{\link[=subset]{subset()}}.}
 
-\item{runs_dir}{Directory containing runs. Defaults to "runs"
-beneath the current working directory (or to the value of the
-\code{tfruns.runs_dir} R option if specified).}
+\item{latest_n}{Limit listing to the \code{latest_n} most recent runs}
+
+\item{runs_dir}{Directory containing runs. Defaults to "runs" beneath the
+current working directory (or to the value of the \code{tfruns.runs_dir} R
+option if specified).}
 }
 \value{
-A data frame with \code{created} (POSIXct) and \code{run_dir} (path relative to
-\code{runs_dir}).
+Data frame with training runs.
 }
 \description{
 List training runs
