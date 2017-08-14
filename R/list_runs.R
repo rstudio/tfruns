@@ -71,7 +71,9 @@ latest_run <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
 
 #' @export
 print.tfruns_runs_df <- function(x, ...) {
-  if (nrow(x) == 1) {
+  if (nrow(x) == 0) {
+    cat("No training runs found.\n")
+  } else if (nrow(x) == 1) {
     output <- capture.output(tibble::glimpse(x))
     output <- output[-c(1,2)]
     cat(output, sep = "\n")
