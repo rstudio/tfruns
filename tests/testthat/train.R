@@ -5,5 +5,5 @@
 library(tfruns)
 
 FLAGS <- flags(
-  flag_float("learning_rate", 0.01, "Learning rate")
+  flag_numeric("learning_rate", 0.01, "Learning rate")
 )
