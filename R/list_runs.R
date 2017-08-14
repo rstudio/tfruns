@@ -160,6 +160,7 @@ run_record <- function(run_dir) {
   properties$validation_samples <- as_integer(properties, "validation_samples")
   properties$epochs <- as_integer(properties, "epochs")
   properties$batch_size <- as_integer(properties, "batch_size")
+  properties$completed <- as_logical(properties, "completed")
 
   # add properties to columns
   columns <- append(columns, properties)
