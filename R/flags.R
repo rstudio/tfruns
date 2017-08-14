@@ -57,6 +57,16 @@ flags <- function(...,
     file <- NULL # prevent errors/warnings downstream
   }
 
+  # get flags file from training_run() if available and not specified
+  if (missing(file) && !is.null(.globals$run_dir$flags_file)) {
+    if (file.exists(.globals$run_dir$flags_file)) {
+      file <- .globals$run_dir$flags_file
+    } else {
+      warning(sprintf("configuration file '%s' does not exist", file))
+      file <- NULL # prevent errors/warnings downstream
+    }
+  }
+
   # get config from training_run() if available and it's not specified
   if (missing(config) && !is.null(.globals$run_dir$config))
     config <- .globals$run_dir$config

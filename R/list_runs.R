@@ -98,12 +98,16 @@ run_record <- function(run_dir) {
 
   # read all properties into a list
   read_properties <- function() {
-    properties <- list.files(props_dir)
-    values <- lapply(properties, function(file) {
-      readLines(file.path(props_dir, file))
-    })
-    names(values) <- properties
-    values
+    if (file.exists(props_dir)) {
+      properties <- list.files(props_dir)
+      values <- lapply(properties, function(file) {
+        readLines(file.path(props_dir, file))
+      })
+      names(values) <- properties
+      values
+    } else {
+      list()
+    }
   }
 
   # type converters for properties

@@ -7,6 +7,7 @@
 #' @param file Path to training script (defaults to "train.R")
 #' @param type Run type (defaults to "local")
 #' @param flags Named character vector with flag values (see [flags()])
+#'   or path to YAML file containing flag values.
 #' @param run_dir Directory to store run data within
 #' @param echo Print expressions within training script
 #' @param envir The environment in which the script should be evaluated
@@ -70,12 +71,22 @@ initialize_run <- function(type = "local",
     if (!dir.create(run_dir, recursive = TRUE))
       stop("Unable to create run directory at ", run_dir)
 
+  # if flags is a YAML file then read the flags from the file
+  if (is.character(flags) && length(flags) == 1 &&
+      is.null(names(flags)) && file.exists(flags)) {
+    flags_file <- flags
+    flags <- NULL
+  } else {
+    flags_file <- NULL
+  }
+
   # this is new definition for the run_dir, save it
   .globals$run_dir$path <- run_dir
 
   # save config and flags (they'll get processed later in flags())
   .globals$run_dir$config <- config
   .globals$run_dir$flags <- flags
+  .globals$run_dir$flags_file <- flags_file
 
   # write type
   write_run_metadata("properties", list(type = type))
@@ -95,6 +106,7 @@ clear_run <- function() {
   .globals$run_dir$path <- NULL
   .globals$run_dir$config <- NULL
   .globals$run_dir$flags <- NULL
+  .globals$run_dir$flags_file <- NULL
   .globals$run_dir$pending_writes <- new.env(parent = emptyenv())
 }
 

@@ -21,3 +21,8 @@ test_that("clean_runs removes runs", {
   expect_length(latest_run(), 0)
 })
 
+test_that("flags.yml can be passed to training_run", {
+  training_run(flags = "flags-learning-rate.yml")
+  expect_equal(list_runs(latest_n = 1)$flag_learning_rate, 0.05)
+})
+
