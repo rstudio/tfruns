@@ -10,8 +10,8 @@
 #' clean_runs(keep = 10)
 #' }
 #' @export
-clean_runs <- function(keep = NULL, project_dir = ".") {
-  all_runs <- list_run_dirs(project_dir = project_dir)
+clean_runs <- function(keep = NULL, runs_dir = "runs") {
+  all_runs <- list_run_dirs(runs_dir = runs_dir)
   if (!is.null(keep)) {
     if (!is.numeric(keep))
       stop("keep must be a numeric value")

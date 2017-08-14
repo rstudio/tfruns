@@ -34,10 +34,6 @@ is_run_active <- function() {
 }
 
 
-runs_dir <- function() {
-  getOption("tfruns.runs_dir", default = "runs")
-}
-
 
 
 

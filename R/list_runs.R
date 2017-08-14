@@ -2,47 +2,50 @@
 #' List training runs
 #'
 #' @param latest_n Limit to a number of (most recent runs)
-#' @param project_dir Project to list runs for
+#' @param runs_dir Directory containing runs
 #'
 #' @return A data frame with `created` (POSIXct) and `run_dir` (path relative to
 #'   `runs_dir`).
 #'
 #' @export
-list_runs <- function(latest_n = NULL, project_dir = ".") {
-
-  # compute runs_dir
-  runs_dir <- file.path(project_dir, runs_dir())
+list_runs <- function(latest_n = NULL, runs_dir = "runs") {
 
   # default empty run list
-  run_list <- data.frame(stringsAsFactors = FALSE,
-    type = character(),
-    run_dir = character(),
-    start = numeric(),
-    end = numeric()
-  )
+  run_list <- NULL
 
   if (file.exists(runs_dir)) {
 
     # list runs
-    runs <- list_run_dirs(latest_n = latest_n, project_dir = project_dir)
+    runs <- list_run_dirs(latest_n = latest_n, runs_dir = runs_dir)
 
     # popuate data frame from runs
     for (run in runs) {
       run_df <- run_record(run)
-      run_list <- combine_runs(run_list, run_df)
+      if (is.null(run_list))
+        run_list <- run_df
+      else
+        run_list <- combine_runs(run_list, run_df)
     }
+  }
 
+  if (!is.null(run_list)) {
     # most recent runs first
     run_list <- run_list[order(run_list$start , decreasing = TRUE ),]
 
+    # convert date columns
+    run_list$start <- as.POSIXct(run_list$start, tz = "GMT", origin = "1970-01-01")
+    run_list$end <- as.POSIXct(run_list$end, tz = "GMT", origin = "1970-01-01")
+  } else {
+    run_list <- tibble::data_frame(
+      type = character(),
+      run_dir = character(),
+      start = numeric(),
+      end = numeric()
+    )
   }
 
-  # convert date columns
-  run_list$start <- as.POSIXct(run_list$start, tz = "GMT", origin = "1970-01-01")
-  run_list$end <- as.POSIXct(run_list$end, tz = "GMT", origin = "1970-01-01")
-
   # return run_list
-  tibble::as_tibble(run_list)
+  run_list
 }
 
 
@@ -54,22 +57,22 @@ list_runs <- function(latest_n = NULL, project_dir = ".") {
 #' @return Character vector with run directory path(s)
 #'
 #' @export
-latest_run <- function(project_dir = ".") {
-  latest_runs(n = 1, project_dir = project_dir)
+latest_run <- function(runs_dir = "runs") {
+  latest_runs(n = 1, runs_dir = runs_dir)
 }
 
 
 #' @rdname latest_run
 #' @export
-latest_runs <- function(n, project_dir = ".") {
-  list_run_dirs(latest_n = n, project_dir = project_dir)
+latest_runs <- function(n, runs_dir = "runs") {
+  list_run_dirs(latest_n = n, runs_dir = runs_dir)
 }
 
 
-list_run_dirs <- function(latest_n = NULL, project_dir = ".") {
+list_run_dirs <- function(latest_n = NULL, runs_dir = "runs") {
 
   # list directories
-  runs <- list.files(file.path(project_dir, runs_dir()),
+  runs <- list.files(runs_dir,
                      pattern = "\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}-\\d{2}Z",
                      full.names = FALSE)
 
@@ -81,10 +84,7 @@ list_run_dirs <- function(latest_n = NULL, project_dir = ".") {
   }
 
   # return runs
-  if (identical(project_dir, "."))
-    file.path(runs_dir(), runs)
-  else
-    file.path(project_dir, runs_dir(), runs)
+  file.path(runs_dir, runs)
 }
 
 run_record <- function(run_dir) {
@@ -182,20 +182,10 @@ run_record <- function(run_dir) {
   tibble::as_data_frame(columns)
 }
 
-
-
 combine_runs <- function(x, y) {
-  if (nrow(x) == 0)
-    y
-  else if (nrow(y) == 0)
-    x
-  else {
-    x[, c(as.character(setdiff(colnames(y), colnames(x))))] <- NA
-    y[, c(as.character(setdiff(colnames(x), colnames(y))))] <- NA
-    rbind(x, y)
-  }
-
-
+  x[, c(as.character(setdiff(colnames(y), colnames(x))))] <- NA
+  y[, c(as.character(setdiff(colnames(x), colnames(y))))] <- NA
+  rbind(x, y)
 }
 
 
