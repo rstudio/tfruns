@@ -57,8 +57,25 @@ list_runs <- function(subset = NULL,
     run_list <- run_list[rows, ]
   }
 
-  # return run_list
-  run_list
+  # re-order columns
+  select_cols <- function(cols) {
+    intersect(cols, colnames(run_list))
+  }
+  cols_with_prefix <- function(prefix) {
+    cols <- colnames(run_list)
+    cols[grepl(paste0("^", prefix, "_"), cols)]
+  }
+  cols <- select_cols(c("type", "run_dir"))
+  cols <- c(cols, cols_with_prefix("eval"))
+  cols <- c(cols, cols_with_prefix("metric"))
+  cols <- c(cols, cols_with_prefix("flag"))
+  cols <- c(cols, select_cols(c("samples", "validation_samples")))
+  cols <- c(cols, select_cols(c("batch_size", "epochs", "epochs_completed")))
+  cols <- c(cols, select_cols(c("start", "end", "completed")))
+  cols <- c(cols, setdiff(colnames(run_list), cols))
+
+  # return
+  run_list[, cols]
 }
 
 
