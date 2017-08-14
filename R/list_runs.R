@@ -207,8 +207,10 @@ run_record <- function(run_dir) {
         values <- metrics[[metric]]
         available_values <- values[!is.na(values)]
         epochs_completed <- length(available_values)
-        last_value <- available_values[[epochs_completed]]
-        columns[[paste0("metric_", metric)]] <- last_value
+        if (epochs_completed > 0) {
+          last_value <- available_values[[epochs_completed]]
+          columns[[paste0("metric_", metric)]] <- last_value
+        }
       }
     }
   }
