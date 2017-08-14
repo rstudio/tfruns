@@ -4,17 +4,13 @@
 \alias{training_run}
 \title{Training run}
 \usage{
-training_run(path = ".", type = "local",
+training_run(file = "train.R", type = "local",
   config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"), flags = NULL,
   run_dir = NULL, echo = FALSE, envir = parent.frame(),
   encoding = getOption("encoding"))
 }
 \arguments{
-\item{path}{Path to training script. Defaults to "train.R" within the current
-working directory but can be any R script or directory that contains a
-training script. If a directory is specified then it must either have a
-file named "train.R" within it or otherwise have only a single R script
-(failing that you should specify the full path to the R script).}
+\item{file}{Path to training script (defaults to "train.R")}
 
 \item{type}{Run type (defaults to "local")}
 
@@ -22,8 +18,8 @@ file named "train.R" within it or otherwise have only a single R script
 for the current environment (as specified by the \code{R_CONFIG_ACTIVE}
 environment variable), or \code{default} when unset.}
 
-\item{flags}{Named character vector with flag values (see \code{\link[=flags]{flags()}}) or path
-to YAML file containing flag values.}
+\item{flags}{Named character vector with flag values (see \code{\link[=flags]{flags()}})
+or path to YAML file containing flag values.}
 
 \item{run_dir}{Directory to store run data within}
 
@@ -37,6 +33,5 @@ to YAML file containing flag values.}
 The directory used for the training run.
 }
 \description{
-Run a training script with the specified \code{flags} within a unique run
-directory.
+Run a training script with the specified \code{flags} within a unique run directory.
 }

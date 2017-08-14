@@ -1,18 +1,13 @@
 #' Training run
 #'
-#' Run a training script with the specified `flags` within a unique run
-#' directory.
+#' Run a training script with the specified `flags` within a unique run directory.
 #'
 #'
 #' @inheritParams  flags
-#' @param path Path to training script. Defaults to "train.R" within the current
-#'   working directory but can be any R script or directory that contains a
-#'   training script. If a directory is specified then it must either have a
-#'   file named "train.R" within it or otherwise have only a single R script
-#'   (failing that you should specify the full path to the R script).
+#' @param file Path to training script (defaults to "train.R")
 #' @param type Run type (defaults to "local")
-#' @param flags Named character vector with flag values (see [flags()]) or path
-#'   to YAML file containing flag values.
+#' @param flags Named character vector with flag values (see [flags()])
+#'   or path to YAML file containing flag values.
 #' @param run_dir Directory to store run data within
 #' @param echo Print expressions within training script
 #' @param envir The environment in which the script should be evaluated
@@ -21,7 +16,7 @@
 #' @return The directory used for the training run.
 #'
 #' @export
-training_run <- function(path = ".",
+training_run <- function(file = "train.R",
                          type = "local",
                          config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
                          flags = NULL,
@@ -30,19 +25,12 @@ training_run <- function(path = ".",
                          envir = parent.frame(),
                          encoding = getOption("encoding")) {
 
-  # resolve training script
-  script <- resolve_training_script(path)
-
-  # if no run_dir is specified then use "runs" within the directory
-  # of the training script
-  if (is.null(run_dir))
-    run_dir <- unique_dir(file.path(dirname(script), "runs"))
-
-  # normalize run_dir (remove leading './', use '~' for home)
-  run_dir <- normalize_run_dir(run_dir)
+  # verify that the file exists
+  if (!file.exists(file))
+    stop("The specified R script '", file, "' does not exist.")
 
   # setup run context
-  initialize_run(
+  run_dir <- initialize_run(
     type = type,
     config = config,
     flags = flags,
@@ -62,7 +50,7 @@ training_run <- function(path = ".",
   # perform the run
   write_run_property("completed", FALSE)
   withCallingHandlers({
-      source(file = script, local = envir, echo = echo, encoding = encoding)
+      source(file = file, local = envir, echo = echo, encoding = encoding)
       write_run_property("completed", TRUE)
     },
     error = function(e) {
@@ -75,38 +63,6 @@ training_run <- function(path = ".",
   invisible(run_dir)
 }
 
-
-resolve_training_script <- function(path) {
-  if (utils::file_test("-d", path)) {
-    train_r <- file.path(path, "train.R")
-    if (file.exists(train_r)) {
-      train_r
-    } else {
-      r_scripts <- list.files(path = path,
-                              pattern = glob2rx("*.r"),
-                              ignore.case = TRUE)
-      if (length(r_scripts) == 1)
-        file.path(path, r_scripts)
-      else if (length(r_scripts) == 0)
-        stop("There are no R scripts located within '", path, "'", call. = FALSE)
-      else
-        stop("There is more than one R script in '", path, "'. Please either ",
-             "specify an R script or name one of the scripts 'train.R' to ",
-             "indicate it is the main training script.", call. = FALSE)
-
-    }
-  } else if (file.exists(path)) {
-    path
-  } else {
-    stop("The specified path '", path, "' does not exist.", call. = FALSE)
-  }
-}
-
-normalize_run_dir <- function(run_dir) {
-  sub(Sys.getenv("HOME"), "~", run_dir)
-  sub("^\\.[/\\]", "", run_dir)
-}
-
 initialize_run <- function(type = "local",
                            config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
                            flags = NULL,
@@ -114,6 +70,10 @@ initialize_run <- function(type = "local",
 
   # clear any existing run
   clear_run()
+
+  # generate the run_dir
+  if (is.null(run_dir))
+    run_dir <- unique_dir("runs")
 
   # create the directory if necessary
   if (!utils::file_test("-d", run_dir))
@@ -147,7 +107,8 @@ initialize_run <- function(type = "local",
   for (name in ls(.globals$run_dir$pending_writes))
     .globals$run_dir$pending_writes[[name]](meta_dir(run_dir))
 
-  NULL
+  # return invisibly
+  invisible(run_dir)
 }
 
 clear_run <- function() {

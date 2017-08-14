@@ -46,12 +46,3 @@ test_that("training errors are handled", {
   expect_equal(run$error, "Training error occurred")
 })
 
-test_that("training scripts are resolved correctly", {
-  expect_success(training_run("training/train_r"))
-  expect_success(training_run("training/train_r_multiple"))
-  expect_success(training_run("training/train_single"))
-  expect_error(training_run("training/train_empty"))
-  expect_error(training_run("training/train_multiple"))
-})
-
-
