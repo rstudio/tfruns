@@ -2,7 +2,7 @@ context("flags")
 
 source("utils.R")
 
-run_dir <- initialize_run()
+run_dir <- training_run()
 
 test_that("flags can be defined", {
   FLAGS <- define_flags()

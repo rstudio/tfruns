@@ -7,3 +7,8 @@ define_flags <- function(...) {
     ...
   )
 }
+
+
+expect_success <- function(expr) {
+  expect_error(force(expr), NA)
+}
