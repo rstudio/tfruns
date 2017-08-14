@@ -8,7 +8,7 @@
 #'   current working directory (or to the value of the `tfruns.runs_dir` R
 #'   option if specified).
 #'
-#' @return Data frame with training runs.
+#' @return Data frame with training run(s)
 #'
 #' @export
 ls_runs <- function(subset = NULL,
@@ -79,25 +79,11 @@ ls_runs <- function(subset = NULL,
 }
 
 
-#' Enumerate recent training run directories
-#'
-#' @inheritParams ls_runs
-#' @param n Number of recent runs
-#'
-#' @return Character vector with run directory path(s)
-#'
+#' @rdname ls_runs
 #' @export
 latest_run <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
-  latest_runs(n = 1, runs_dir = runs_dir)
+  ls_runs(latest_n = 1, runs_dir = runs_dir)
 }
-
-
-#' @rdname latest_run
-#' @export
-latest_runs <- function(n, runs_dir = getOption("tfruns.runs_dir", "runs")) {
-  ls_runs(latest_n = n, runs_dir = runs_dir)
-}
-
 
 list_run_dirs <- function(latest_n = NULL, runs_dir) {
 
