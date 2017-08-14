@@ -95,7 +95,7 @@ latest_run <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
 #' @rdname latest_run
 #' @export
 latest_runs <- function(n, runs_dir = getOption("tfruns.runs_dir", "runs")) {
-  list_run_dirs(latest_n = n, runs_dir = runs_dir)
+  list_runs(latest_n = n, runs_dir = runs_dir)
 }
 
 
