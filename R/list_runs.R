@@ -2,13 +2,15 @@
 #' List training runs
 #'
 #' @param latest_n Limit to a number of (most recent runs)
-#' @param runs_dir Directory containing runs
+#' @param runs_dir Directory containing runs. Defaults to "runs"
+#'   beneath the current working directory (or to the value of the
+#'   `tfruns.runs_dir` R option if specified).
 #'
 #' @return A data frame with `created` (POSIXct) and `run_dir` (path relative to
 #'   `runs_dir`).
 #'
 #' @export
-list_runs <- function(latest_n = NULL, runs_dir = "runs") {
+list_runs <- function(latest_n = NULL, runs_dir = getOption("tfruns.runs_dir", "runs")) {
 
   # default empty run list
   run_list <- NULL
@@ -57,19 +59,19 @@ list_runs <- function(latest_n = NULL, runs_dir = "runs") {
 #' @return Character vector with run directory path(s)
 #'
 #' @export
-latest_run <- function(runs_dir = "runs") {
+latest_run <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
   latest_runs(n = 1, runs_dir = runs_dir)
 }
 
 
 #' @rdname latest_run
 #' @export
-latest_runs <- function(n, runs_dir = "runs") {
+latest_runs <- function(n, runs_dir = getOption("tfruns.runs_dir", "runs")) {
   list_run_dirs(latest_n = n, runs_dir = runs_dir)
 }
 
 
-list_run_dirs <- function(latest_n = NULL, runs_dir = "runs") {
+list_run_dirs <- function(latest_n = NULL, runs_dir) {
 
   # list directories
   runs <- list.files(runs_dir,

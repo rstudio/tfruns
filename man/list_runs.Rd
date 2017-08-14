@@ -4,12 +4,14 @@
 \alias{list_runs}
 \title{List training runs}
 \usage{
-list_runs(latest_n = NULL, runs_dir = "runs")
+list_runs(latest_n = NULL, runs_dir = getOption("tfruns.runs_dir", "runs"))
 }
 \arguments{
 \item{latest_n}{Limit to a number of (most recent runs)}
 
-\item{runs_dir}{Directory containing runs}
+\item{runs_dir}{Directory containing runs. Defaults to "runs"
+beneath the current working directory (or to the value of the
+\code{tfruns.runs_dir} R option if specified).}
 }
 \value{
 A data frame with \code{created} (POSIXct) and \code{run_dir} (path relative to
