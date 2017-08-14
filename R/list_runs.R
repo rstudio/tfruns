@@ -3,7 +3,7 @@
 #'
 #' @param subset Logical expression indicating rows to keep (missing values are
 #'   taken as false). See [subset()].
-#' @param latest_n Limit listing to the `latest_n` most recent runs
+#' @param latest_n Limit query to the `latest_n` most recent runs
 #' @param runs_dir Directory containing runs. Defaults to "runs" beneath the
 #'   current working directory (or to the value of the `tfruns.runs_dir` R
 #'   option if specified).
@@ -11,9 +11,9 @@
 #' @return Data frame with training runs.
 #'
 #' @export
-list_runs <- function(subset = NULL,
-                      latest_n = NULL,
-                      runs_dir = getOption("tfruns.runs_dir", "runs")) {
+ls_runs <- function(subset = NULL,
+                    latest_n = NULL,
+                    runs_dir = getOption("tfruns.runs_dir", "runs")) {
 
   # default empty run list
   run_list <- NULL
@@ -81,7 +81,7 @@ list_runs <- function(subset = NULL,
 
 #' Enumerate recent training run directories
 #'
-#' @inheritParams list_runs
+#' @inheritParams ls_runs
 #' @param n Number of recent runs
 #'
 #' @return Character vector with run directory path(s)
@@ -95,7 +95,7 @@ latest_run <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
 #' @rdname latest_run
 #' @export
 latest_runs <- function(n, runs_dir = getOption("tfruns.runs_dir", "runs")) {
-  list_runs(latest_n = n, runs_dir = runs_dir)
+  ls_runs(latest_n = n, runs_dir = runs_dir)
 }
 
 
