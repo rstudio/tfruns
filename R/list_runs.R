@@ -73,9 +73,11 @@ ls_runs <- function(subset = NULL,
   cols <- c(cols, select_cols(c("batch_size", "epochs", "epochs_completed")))
   cols <- c(cols, select_cols(c("start", "end", "completed")))
   cols <- c(cols, setdiff(colnames(run_list), cols))
+  run_list <- run_list[, cols]
 
-  # return
-  run_list[, cols]
+  # return with custom S3 class
+  class(run_list) <- c("tfruns_runs_df", class(run_list))
+  run_list
 }
 
 
@@ -84,6 +86,22 @@ ls_runs <- function(subset = NULL,
 latest_run <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
   ls_runs(latest_n = 1, runs_dir = runs_dir)
 }
+
+
+#' @export
+print.tfruns_runs_df <- function(x, ...) {
+  if (nrow(x) == 1) {
+    output <- capture.output(tibble::glimpse(x))
+    output <- output[-c(1,2)]
+    cat(output, sep = "\n")
+  } else {
+    cls <- class(x)
+    cls <- cls[cls != "tfruns_runs_df"]
+    class(x) <- cls
+    print(x)
+  }
+}
+
 
 list_run_dirs <- function(latest_n = NULL, runs_dir) {
 

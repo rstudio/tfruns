@@ -2,6 +2,7 @@
 
 S3method(as.data.frame,tfruns_flags)
 S3method(print,tfruns_flags)
+S3method(print,tfruns_runs_df)
 export("%>%")
 export(clean_runs)
 export(flag_boolean)
