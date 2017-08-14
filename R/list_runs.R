@@ -180,18 +180,24 @@ run_record <- function(run_dir) {
   columns <- append(columns, read_json_columns("evaluation.json", "eval"))
 
   # metrics
-  completed <- TRUE
+  epochs_completed <- 0L
   metrics_json_path <- file.path(meta_dir, "metrics.json")
   if (file.exists(metrics_json_path)) {
     # read metrics
-    metrics <- jsonlite::read_json(metrics_json_path)
+    metrics <- jsonlite::read_json(metrics_json_path, simplifyVector = TRUE)
     if (length(metrics) > 0) {
       for (metric in names(metrics)) {
-        last_value <- metrics[[metric]][[max(which(!is.null(metrics[[metric]])))]]
+        values <- metrics[[metric]]
+        available_values <- values[!is.na(values)]
+        epochs_completed <- length(available_values)
+        last_value <- available_values[[epochs_completed]]
         columns[[paste0("metric_", metric)]] <- last_value
       }
     }
   }
+
+  # epochs completed
+  columns$epochs_completed <- epochs_completed
 
   # flags
   columns <- append(columns, read_json_columns("flags.json", "flag"))
