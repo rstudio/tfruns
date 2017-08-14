@@ -57,27 +57,8 @@ ls_runs <- function(subset = NULL,
     run_list <- run_list[rows, ]
   }
 
-  # re-order columns
-  select_cols <- function(cols) {
-    intersect(cols, colnames(run_list))
-  }
-  cols_with_prefix <- function(prefix) {
-    cols <- colnames(run_list)
-    cols[grepl(paste0("^", prefix, "_"), cols)]
-  }
-  cols <- select_cols(c("type", "run_dir"))
-  cols <- c(cols, cols_with_prefix("eval"))
-  cols <- c(cols, cols_with_prefix("metric"))
-  cols <- c(cols, cols_with_prefix("flag"))
-  cols <- c(cols, select_cols(c("samples", "validation_samples")))
-  cols <- c(cols, select_cols(c("batch_size", "epochs", "epochs_completed")))
-  cols <- c(cols, select_cols(c("start", "end", "completed")))
-  cols <- c(cols, setdiff(colnames(run_list), cols))
-  run_list <- run_list[, cols]
-
-  # return with custom S3 class
-  class(run_list) <- c("tfruns_runs_df", class(run_list))
-  run_list
+  # return runs
+  return_runs(run_list)
 }
 
 
@@ -233,6 +214,33 @@ combine_runs <- function(x, y) {
   x[, c(as.character(setdiff(colnames(y), colnames(x))))] <- NA
   y[, c(as.character(setdiff(colnames(x), colnames(y))))] <- NA
   rbind(x, y)
+}
+
+return_runs <- function(runs) {
+
+  # re-order columns
+  select_cols <- function(cols) {
+    intersect(cols, colnames(runs))
+  }
+  cols_with_prefix <- function(prefix) {
+    cols <- colnames(runs)
+    cols[grepl(paste0("^", prefix, "_"), cols)]
+  }
+  cols <- select_cols(c("type", "run_dir"))
+  cols <- c(cols, cols_with_prefix("eval"))
+  cols <- c(cols, cols_with_prefix("metric"))
+  cols <- c(cols, cols_with_prefix("flag"))
+  cols <- c(cols, select_cols(c("samples", "validation_samples")))
+  cols <- c(cols, select_cols(c("batch_size", "epochs", "epochs_completed")))
+  cols <- c(cols, select_cols(c("start", "end", "completed")))
+  cols <- c(cols, setdiff(colnames(runs), cols))
+  runs <- runs[, cols]
+
+  # apply special class
+  class(runs) <- c("tfruns_runs_df", class(runs))
+
+  # return runs
+  runs
 }
 
 

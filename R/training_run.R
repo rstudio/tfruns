@@ -13,7 +13,7 @@
 #' @param envir The environment in which the script should be evaluated
 #' @param encoding The encoding of the training script; see [file()].
 #'
-#' @return The directory used for the training run.
+#' @return Single row data frame with run flags, metrics, etc.
 #'
 #' @export
 training_run <- function(file = "train.R",
@@ -37,6 +37,16 @@ training_run <- function(file = "train.R",
     run_dir = run_dir
   )
 
+  # execute the training run
+  do_training_run(file, run_dir, echo = echo, envir = envir, encoding = encoding)
+
+  # return the run invisibly
+  invisible(return_runs(run_record(run_dir)))
+}
+
+
+do_training_run <- function(file, run_dir, echo, envir, encoding) {
+
   # write begin and end times
   write_run_property("start", as.double(Sys.time()))
   on.exit(write_run_property("end", as.double(Sys.time())), add = TRUE)
@@ -58,9 +68,6 @@ training_run <- function(file = "train.R",
       stop(e)
     }
   )
-
-  # return the run_dir
-  invisible(run_dir)
 }
 
 initialize_run <- function(type = "local",

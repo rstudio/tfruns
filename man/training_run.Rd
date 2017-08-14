@@ -30,7 +30,7 @@ or path to YAML file containing flag values.}
 \item{encoding}{The encoding of the training script; see \code{\link[=file]{file()}}.}
 }
 \value{
-The directory used for the training run.
+Single row data frame with run flags, metrics, etc.
 }
 \description{
 Run a training script with the specified \code{flags} within a unique run directory.
