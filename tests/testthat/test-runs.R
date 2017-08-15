@@ -1,6 +1,6 @@
 context("runs")
 
-run_dir <- training_run()
+run_dir <- training_run()$run_dir
 
 test_that("run dir is created by initialize_run()", {
   expect_true(dir.exists(run_dir))

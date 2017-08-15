@@ -2,7 +2,7 @@ context("run_data")
 
 source("utils.R")
 
-run_dir <- training_run("write_run_data.R")
+run_dir <- training_run("write_run_data.R")$run_dir
 
 run_data <- function(...) {
   file.path(run_dir, "tfruns.d", ...)
