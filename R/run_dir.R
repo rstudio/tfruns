@@ -81,6 +81,11 @@ as_run_dir.character <- function(x) {
 }
 
 #' @export
+as_run_dir.tfruns_run <- function(x) {
+  x$run_dir
+}
+
+#' @export
 as_run_dir.list <- function(x) {
   if (!is.null(x$run_dir))
     x$run_dir

@@ -11,7 +11,7 @@
 #'   current working directory (or to the value of the `tfruns.runs_dir` R
 #'   option if specified).
 #'
-#' @return Data frame with training run(s)
+#' @return Data frame with training runs
 #'
 #' @export
 ls_runs <- function(subset = NULL,
@@ -76,10 +76,23 @@ ls_runs <- function(subset = NULL,
 }
 
 
-#' @rdname ls_runs
+#' Latest training run
+#'
+#' @inheritParams ls_runs
+#'
+#' @return Named list with run attributes (or `NULL` if no runs found)
+#'
 #' @export
 latest_run <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
-  ls_runs(latest_n = 1, runs_dir = runs_dir)
+  latest_run_df <- ls_runs(latest_n = 1, runs_dir = runs_dir)
+  if (nrow(latest_run_df) > 0) {
+    latest_run <- list()
+    for (col in colnames(latest_run_df))
+      latest_run[[col]] <- latest_run_df[[col]]
+    structure(class = "tfruns.run", latest_run)
+  } else {
+    NULL
+  }
 }
 
 

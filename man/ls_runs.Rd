@@ -2,13 +2,10 @@
 % Please edit documentation in R/ls_runs.R
 \name{ls_runs}
 \alias{ls_runs}
-\alias{latest_run}
 \title{List training runs}
 \usage{
 ls_runs(subset = NULL, order = "start", decreasing = TRUE,
   latest_n = NULL, runs_dir = getOption("tfruns.runs_dir", "runs"))
-
-latest_run(runs_dir = getOption("tfruns.runs_dir", "runs"))
 }
 \arguments{
 \item{subset}{Logical expression indicating rows to keep (missing values are
@@ -26,7 +23,7 @@ current working directory (or to the value of the \code{tfruns.runs_dir} R
 option if specified).}
 }
 \value{
-Data frame with training run(s)
+Data frame with training runs
 }
 \description{
 List training runs
