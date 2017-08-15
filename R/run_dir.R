@@ -37,19 +37,19 @@ is_run_active <- function() {
 #' Create a unique run directory
 #'
 #' Create a new uniquely named run directory within the specified
-#' parent `dir`.
+#' `runs_dir`.
 #'
 #' The directory name will be a timestamp (in GMT time). If a
 #' duplicate name is generated then the function will wait
 #' long enough to return a unique one.
 #'
-#' @param dir Parent directory
+#' @inheritParams ls_runs
 #'
 #' @export
-unique_run_dir <- function(dir) {
+unique_run_dir <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
   while(TRUE) {
     run_dir <- file.path(
-      dir,
+      runs_dir,
       paste0(strftime(Sys.time(), format = "%Y-%m-%dT%H-%M-%SZ", tz = "GMT"))
     )
     if (!file.exists(run_dir)) {

@@ -4,14 +4,16 @@
 \alias{unique_run_dir}
 \title{Create a unique run directory}
 \usage{
-unique_run_dir(dir)
+unique_run_dir(runs_dir = getOption("tfruns.runs_dir", "runs"))
 }
 \arguments{
-\item{dir}{Parent directory}
+\item{runs_dir}{Directory containing runs. Defaults to "runs" beneath the
+current working directory (or to the value of the \code{tfruns.runs_dir} R
+option if specified).}
 }
 \description{
 Create a new uniquely named run directory within the specified
-parent \code{dir}.
+\code{runs_dir}.
 }
 \details{
 The directory name will be a timestamp (in GMT time). If a

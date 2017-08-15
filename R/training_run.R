@@ -80,7 +80,7 @@ initialize_run <- function(type = "local",
 
   # generate the run_dir
   if (is.null(run_dir))
-    run_dir <- unique_run_dir("runs")
+    run_dir <- unique_run_dir()
 
   # create the directory if necessary
   if (!utils::file_test("-d", run_dir))
