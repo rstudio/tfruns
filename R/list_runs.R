@@ -3,7 +3,11 @@
 #'
 #' @param subset Logical expression indicating rows to keep (missing values are
 #'   taken as false). See [subset()].
+#' @param order Columns to order by (defaults to run start time)
+#' @param decreasing `TRUE` to use decreasing order (e.g. list most recent runs
+#'   first)
 #' @param latest_n Limit query to the `latest_n` most recent runs
+#' @param completed_only
 #' @param runs_dir Directory containing runs. Defaults to "runs" beneath the
 #'   current working directory (or to the value of the `tfruns.runs_dir` R
 #'   option if specified).
@@ -12,6 +16,8 @@
 #'
 #' @export
 ls_runs <- function(subset = NULL,
+                    order = "start",
+                    decreasing = TRUE,
                     latest_n = NULL,
                     runs_dir = getOption("tfruns.runs_dir", "runs")) {
 
@@ -34,8 +40,17 @@ ls_runs <- function(subset = NULL,
   }
 
   if (!is.null(run_list)) {
-    # most recent runs first
-    run_list <- run_list[order(run_list$start , decreasing = TRUE ),]
+
+    # validate order
+    invalid_cols <- setdiff(order, colnames(run_list))
+    if (length(invalid_cols) > 0)
+      stop("Order by column(s) not found: ", paste(invalid_cols, collapse = ", "))
+
+    # build order expression
+    order_cols <- paste(paste0("run_list$", order), collapse = ",")
+    order_expr <- sprintf("run_list[order(%s, decreasing = %s),]",
+                          order_cols, deparse(decreasing))
+    run_list <- eval(parse(text = order_expr))
 
     # convert date columns
     run_list$start <- as.POSIXct(run_list$start, tz = "GMT", origin = "1970-01-01")
@@ -58,7 +73,7 @@ ls_runs <- function(subset = NULL,
   }
 
   # return runs
-  return_runs(run_list)
+  return_runs(run_list, order)
 }
 
 
@@ -218,7 +233,7 @@ combine_runs <- function(x, y) {
   rbind(x, y)
 }
 
-return_runs <- function(runs) {
+return_runs <- function(runs, order = NULL) {
 
   # re-order columns
   select_cols <- function(cols) {
@@ -228,7 +243,7 @@ return_runs <- function(runs) {
     cols <- colnames(runs)
     cols[grepl(paste0("^", prefix, "_"), cols)]
   }
-  cols <- select_cols(c("type", "run_dir"))
+  cols <- character()
   cols <- c(cols, cols_with_prefix("eval"))
   cols <- c(cols, cols_with_prefix("metric"))
   cols <- c(cols, cols_with_prefix("flag"))
@@ -236,7 +251,15 @@ return_runs <- function(runs) {
   cols <- c(cols, select_cols(c("batch_size", "epochs", "epochs_completed")))
   cols <- c(cols, select_cols(c("start", "end", "completed")))
   cols <- c(cols, setdiff(colnames(runs), cols))
-  runs <- runs[, cols]
+
+  # promote any ordered columns to the front
+  if (!identical(order, "start")) {
+    cols <- setdiff(cols, order)
+    cols <- c(order, cols)
+  }
+
+  # re-order cols (always have type and run_dir at the beginning)
+  runs <- runs[, c(select_cols(c("type", "run_dir")), cols)]
 
   # apply special class
   class(runs) <- c("tfruns_runs_df", class(runs))

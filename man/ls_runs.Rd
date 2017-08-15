@@ -5,14 +5,19 @@
 \alias{latest_run}
 \title{List training runs}
 \usage{
-ls_runs(subset = NULL, latest_n = NULL,
-  runs_dir = getOption("tfruns.runs_dir", "runs"))
+ls_runs(subset = NULL, order = "start", decreasing = TRUE,
+  latest_n = NULL, runs_dir = getOption("tfruns.runs_dir", "runs"))
 
 latest_run(runs_dir = getOption("tfruns.runs_dir", "runs"))
 }
 \arguments{
 \item{subset}{Logical expression indicating rows to keep (missing values are
 taken as false). See \code{\link[=subset]{subset()}}.}
+
+\item{order}{Columns to order by (defaults to run start time)}
+
+\item{decreasing}{\code{TRUE} to use decreasing order (e.g. list most recent runs
+first)}
 
 \item{latest_n}{Limit query to the \code{latest_n} most recent runs}
 
