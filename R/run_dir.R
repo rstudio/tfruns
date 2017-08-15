@@ -34,6 +34,44 @@ is_run_active <- function() {
 }
 
 
+#' Extract run directory from an object
+#'
+#' @param x Object to extract run directory from
+#'
+#' @return Run directory path(s)
+#'
+#' @keywords internal
+#'
+#' @export
+as_run_dir <- function(x) {
+  UseMethod("as_run_dir")
+}
+
+#' @export
+as_run_dir.character <- function(x) {
+  x
+}
+
+#' @export
+as_run_dir.list <- function(x) {
+  if (!is.null(x$run_dir))
+    x$run_dir
+  else
+    stop("List does not contain a run_dir")
+}
+
+#' @export
+as_run_dir.data.frame <- function(x) {
+  if (!is.null(x$run_dir))
+    x$run_dir
+  else
+    stop("Data frame does not contain a run_dir")
+}
+
+
+
+
+
 
 
 

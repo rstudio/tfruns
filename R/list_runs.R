@@ -74,7 +74,7 @@ print.tfruns_runs_df <- function(x, ...) {
   if (nrow(x) == 0) {
     cat("No training runs found.\n")
   } else if (nrow(x) == 1) {
-    output <- capture.output(tibble::glimpse(x))
+    output <- utils::capture.output(tibble::glimpse(x))
     output <- output[-c(1,2)]
     cat(output, sep = "\n")
   } else {
