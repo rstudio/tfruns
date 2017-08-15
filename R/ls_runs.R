@@ -7,7 +7,6 @@
 #' @param decreasing `TRUE` to use decreasing order (e.g. list most recent runs
 #'   first)
 #' @param latest_n Limit query to the `latest_n` most recent runs
-#' @param completed_only
 #' @param runs_dir Directory containing runs. Defaults to "runs" beneath the
 #'   current working directory (or to the value of the `tfruns.runs_dir` R
 #'   option if specified).
@@ -253,13 +252,14 @@ return_runs <- function(runs, order = NULL) {
   cols <- c(cols, setdiff(colnames(runs), cols))
 
   # promote any ordered columns to the front
-  if (!identical(order, "start")) {
-    cols <- setdiff(cols, order)
-    cols <- c(order, cols)
-  }
+  if (identical(order, "start"))
+    order <- NULL
+  initial_cols <- c(select_cols(c("type", "run_dir")), order)
+  cols <- setdiff(cols, initial_cols)
+  cols <- c(initial_cols, cols)
 
   # re-order cols (always have type and run_dir at the beginning)
-  runs <- runs[, c(select_cols(c("type", "run_dir")), cols)]
+  runs <- runs[, cols]
 
   # apply special class
   class(runs) <- c("tfruns_runs_df", class(runs))
