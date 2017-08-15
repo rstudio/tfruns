@@ -80,7 +80,7 @@ initialize_run <- function(type = "local",
 
   # generate the run_dir
   if (is.null(run_dir))
-    run_dir <- unique_dir("runs")
+    run_dir <- unique_run_dir("runs")
 
   # create the directory if necessary
   if (!utils::file_test("-d", run_dir))
@@ -124,17 +124,6 @@ clear_run <- function() {
   .globals$run_dir$flags <- NULL
   .globals$run_dir$flags_file <- NULL
   .globals$run_dir$pending_writes <- new.env(parent = emptyenv())
-}
-
-unique_dir <- function(parent_dir, prefix = NULL, format = "%Y-%m-%dT%H-%M-%SZ") {
-  while(TRUE) {
-    dir <- file.path(parent_dir,
-                     paste0(prefix, strftime(Sys.time(), format = format, tz = "GMT")))
-    if (!file.exists(dir))
-      return(dir)
-    else
-      Sys.sleep(0.1)
-  }
 }
 
 
