@@ -1,13 +1,13 @@
-#' Training run
-#'
-#' Run a training script with the specified `flags` within a unique run directory.
-#'
+#' Run a training script
 #'
 #' @inheritParams  flags
 #' @param file Path to training script (defaults to "train.R")
 #' @param type Run type (defaults to "local")
-#' @param flags Named character vector with flag values (see [flags()])
-#'   or path to YAML file containing flag values.
+#' @param flags Named character vector with flag values (see [flags()]) or path
+#'   to YAML file containing flag values.
+#' @param properties Named character vector with run properties. Properties are
+#'   additional metadata about the run which will be subsequently available via
+#'   [ls_runs()].
 #' @param run_dir Directory to store run data within
 #' @param echo Print expressions within training script
 #' @param envir The environment in which the script should be evaluated
@@ -20,6 +20,7 @@ training_run <- function(file = "train.R",
                          type = "local",
                          config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
                          flags = NULL,
+                         properties = NULL,
                          run_dir = NULL,
                          echo = FALSE,
                          envir = parent.frame(),
@@ -34,6 +35,7 @@ training_run <- function(file = "train.R",
     type = type,
     config = config,
     flags = flags,
+    properties = properties,
     run_dir = run_dir
   )
 
@@ -73,6 +75,7 @@ do_training_run <- function(file, run_dir, echo, envir, encoding) {
 initialize_run <- function(type = "local",
                            config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
                            flags = NULL,
+                           properties = NULL,
                            run_dir = NULL) {
 
   # clear any existing run
@@ -106,6 +109,9 @@ initialize_run <- function(type = "local",
 
   # write type
   write_run_metadata("properties", list(type = type))
+
+  # write properties
+  write_run_metadata("properties", properties)
 
   # write source files
   write_run_metadata("source", getwd())

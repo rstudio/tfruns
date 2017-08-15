@@ -2,12 +2,12 @@
 % Please edit documentation in R/training_run.R
 \name{training_run}
 \alias{training_run}
-\title{Training run}
+\title{Run a training script}
 \usage{
 training_run(file = "train.R", type = "local",
   config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"), flags = NULL,
-  run_dir = NULL, echo = FALSE, envir = parent.frame(),
-  encoding = getOption("encoding"))
+  properties = NULL, run_dir = NULL, echo = FALSE,
+  envir = parent.frame(), encoding = getOption("encoding"))
 }
 \arguments{
 \item{file}{Path to training script (defaults to "train.R")}
@@ -18,8 +18,12 @@ training_run(file = "train.R", type = "local",
 for the current environment (as specified by the \code{R_CONFIG_ACTIVE}
 environment variable), or \code{default} when unset.}
 
-\item{flags}{Named character vector with flag values (see \code{\link[=flags]{flags()}})
-or path to YAML file containing flag values.}
+\item{flags}{Named character vector with flag values (see \code{\link[=flags]{flags()}}) or path
+to YAML file containing flag values.}
+
+\item{properties}{Named character vector with run properties. Properties are
+additional metadata about the run which will be subsequently available via
+\code{\link[=ls_runs]{ls_runs()}}.}
 
 \item{run_dir}{Directory to store run data within}
 
@@ -33,5 +37,5 @@ or path to YAML file containing flag values.}
 Single row data frame with run flags, metrics, etc.
 }
 \description{
-Run a training script with the specified \code{flags} within a unique run directory.
+Run a training script
 }
