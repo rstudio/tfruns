@@ -145,7 +145,7 @@ run_record <- function(run_dir) {
     if (file.exists(props_dir)) {
       properties <- list.files(props_dir)
       values <- lapply(properties, function(file) {
-        readLines(file.path(props_dir, file))
+        paste(readLines(file.path(props_dir, file)), collapse = "\n")
       })
       names(values) <- properties
       values
