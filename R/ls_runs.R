@@ -89,7 +89,7 @@ latest_run <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
     latest_run <- list()
     for (col in colnames(latest_run_df))
       latest_run[[col]] <- latest_run_df[[col]]
-    structure(class = "tfruns.run", latest_run)
+    structure(class = "tfruns_run", latest_run)
   } else {
     NULL
   }
