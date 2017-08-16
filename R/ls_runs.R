@@ -93,6 +93,8 @@ latest_run <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
 }
 
 
+#' @importFrom utils str
+#'
 #' @export
 print.tfruns_run <- function(x, ...) {
   # redact model b/c it's too long for a summary display
