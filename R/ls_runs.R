@@ -86,10 +86,33 @@ ls_runs <- function(subset = NULL,
 latest_run <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
   latest_run_df <- ls_runs(latest_n = 1, runs_dir = runs_dir)
   if (nrow(latest_run_df) > 0) {
-    record_as_run(latest_run_df)
+    as_run_info(latest_run_df)
   } else {
     NULL
   }
+}
+
+
+#' Summary information for training runs
+#'
+#' @param run_dir Training run directory or data frame returned from
+#'   [ls_runs()].
+#'
+#' @return Training run summary object with timing, flags, model info, training
+#'   and evaluation metrics, etc. If more than one `run_dir` is passed then
+#'   a list of training run summary objects is returned.
+#'
+#' @export
+run_info <- function(run_dir) {
+  run_dir <- as_run_dir(run_dir)
+  if (length(run_dir) == 0)
+    list()
+  else if (length(run_dir) == 1)
+    as_run_info(run_record(run_dir))
+  else
+    lapply(run_dir, function(dir) {
+      as_run_info(run_record(dir))
+    })
 }
 
 
@@ -97,9 +120,25 @@ latest_run <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
 #'
 #' @export
 print.tfruns_run <- function(x, ...) {
-  # redact model b/c it's too long for a summary display
-  x$model <- "(model summary)"
+
+  # summarize longer fields
+  summarize <- function(field, summary) {
+    if (!is.null(x[[field]]))
+      summary
+    else
+      NULL
+  }
+  x$metrics <- summarize("metrics", "(metrics data)")
+  x$model <- summarize("model", "(model summary)")
+  x$source <- summarize("source", "(source archive)")
+
+  # print
   str(x, no.list = TRUE)
+}
+
+#' @export
+print.tfruns_model_summary <- function(x, ...) {
+  cat(x)
 }
 
 #' @export
@@ -107,7 +146,7 @@ print.tfruns_runs_df <- function(x, ...) {
   if (nrow(x) == 0) {
     cat("No training runs found.\n")
   } else if (nrow(x) == 1) {
-    print(record_as_run(x))
+    print(as_run_info(x))
   } else {
     cls <- class(x)
     cls <- cls[cls != "tfruns_runs_df"]
@@ -239,6 +278,15 @@ run_record <- function(run_dir) {
   # flags
   columns <- append(columns, read_json_columns("flags.json", "flag"))
 
+  # add metrics and source fields
+  meta_dir <- meta_dir(run_dir, create = FALSE)
+  metrics_json <- file.path(meta_dir, "metrics.json")
+  if (file.exists(metrics_json))
+    columns$metrics <- metrics_json
+  source_code <- file.path(meta_dir, "source.tar.gz")
+  if (file.exists(source_code))
+    columns$source <- source_code
+
   # convert to data frame for calls to rbind
   tibble::as_data_frame(columns)
 }
@@ -265,7 +313,9 @@ return_runs <- function(runs, order = NULL) {
   cols <- c(cols, cols_with_prefix("flag"))
   cols <- c(cols, select_cols(c("samples", "validation_samples")))
   cols <- c(cols, select_cols(c("batch_size", "epochs", "epochs_completed")))
+  cols <- c(cols, select_cols(c("metrics")))
   cols <- c(cols, select_cols(c("model", "loss", "optimizer", "learning_rate")))
+  cols <- c(cols, select_cols(c("source")))
   cols <- c(cols, select_cols(c("start", "end", "completed")))
   cols <- c(cols, setdiff(colnames(runs), cols))
 
@@ -286,10 +336,27 @@ return_runs <- function(runs, order = NULL) {
   runs
 }
 
-record_as_run <- function(record) {
-  run <- list()
-  for (col in colnames(record))
-    run[[col]] <- record[[col]]
-  structure(class = "tfruns_run", run)
+as_run_info <- function(run_record) {
+
+  # re-order columns
+  runs <- return_runs(run_record)
+
+  # convert to list
+  run_info <- list()
+  for (col in colnames(runs))
+    run_info[[col]] <- runs[[col]]
+
+  # give the model a class that will make it print nicely
+  if (!is.null(run_info$model))
+    class(run_info$model) <- c("tfruns_model_summary", "character")
+
+  # convert metrics to data frame
+  if (!is.null(run_info$metrics) && file.exists(run_info$metrics)) {
+    run_info$metrics <- as.data.frame(
+      jsonlite::read_json(run_info$metrics, simplifyVector = TRUE))
+  }
+
+  # return with class
+  structure(class = "tfruns_run", run_info)
 }
 

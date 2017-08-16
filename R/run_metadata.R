@@ -152,9 +152,9 @@ write_source_archive <- function(sources_dir, data_dir, archive) {
 
 
 # get the meta dir for a run dir
-meta_dir <- function(run_dir) {
+meta_dir <- function(run_dir, create = TRUE) {
   meta_dir <- file.path(run_dir, "tfruns.d")
-  if (!utils::file_test("-d", meta_dir))
+  if (create && !utils::file_test("-d", meta_dir))
     dir.create(meta_dir, recursive = TRUE)
   meta_dir
 }
