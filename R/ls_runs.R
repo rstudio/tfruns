@@ -86,10 +86,7 @@ ls_runs <- function(subset = NULL,
 latest_run <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
   latest_run_df <- ls_runs(latest_n = 1, runs_dir = runs_dir)
   if (nrow(latest_run_df) > 0) {
-    latest_run <- list()
-    for (col in colnames(latest_run_df))
-      latest_run[[col]] <- latest_run_df[[col]]
-    structure(class = "tfruns_run", latest_run)
+    record_as_run(latest_run_df)
   } else {
     NULL
   }
@@ -97,13 +94,18 @@ latest_run <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
 
 
 #' @export
+print.tfruns_run <- function(x, ...) {
+  # redact model b/c it's too long for a summary display
+  x$model <- "(model summary)"
+  str(x, no.list = TRUE)
+}
+
+#' @export
 print.tfruns_runs_df <- function(x, ...) {
   if (nrow(x) == 0) {
     cat("No training runs found.\n")
   } else if (nrow(x) == 1) {
-    output <- utils::capture.output(tibble::glimpse(x))
-    output <- output[-c(1,2)]
-    cat(output, sep = "\n")
+    print(record_as_run(x))
   } else {
     cls <- class(x)
     cls <- cls[cls != "tfruns_runs_df"]
@@ -282,4 +284,10 @@ return_runs <- function(runs, order = NULL) {
   runs
 }
 
+record_as_run <- function(record) {
+  run <- list()
+  for (col in colnames(record))
+    run[[col]] <- record[[col]]
+  structure(class = "tfruns_run", run)
+}
 
