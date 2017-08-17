@@ -246,6 +246,7 @@ run_record <- function(run_dir) {
   properties$epochs <- as_integer(properties, "epochs")
   properties$batch_size <- as_integer(properties, "batch_size")
   properties$completed <- as_logical(properties, "completed")
+  properties$learning_rate <- as_numeric(properties, "learning_rate")
 
   # add properties to columns
   columns <- append(columns, properties)
