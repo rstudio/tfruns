@@ -1,7 +1,7 @@
 Package: tfruns
 Type: Package
 Title: Training Run Directories for 'TensorFlow'
-Version: 0.9.0.9011
+Version: 0.9.0.9012
 Authors@R: c(
   person("JJ", "Allaire", role = c("aut", "cre"), email = "jj@rstudio.com"),
   person(family = "RStudio", role = c("cph", "fnd")),
