@@ -315,7 +315,7 @@ return_runs <- function(runs, order = NULL) {
   cols <- c(cols, select_cols(c("samples", "validation_samples")))
   cols <- c(cols, select_cols(c("batch_size", "epochs", "epochs_completed")))
   cols <- c(cols, select_cols(c("metrics")))
-  cols <- c(cols, select_cols(c("model", "loss", "optimizer", "learning_rate")))
+  cols <- c(cols, select_cols(c("model", "loss_function", "optimizer", "learning_rate")))
   cols <- c(cols, select_cols(c("script", "source")))
   cols <- c(cols, select_cols(c("start", "end", "completed")))
   cols <- c(cols, setdiff(colnames(runs), cols))
