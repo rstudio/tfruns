@@ -158,6 +158,10 @@ print.tfruns_runs_df <- function(x, ...) {
 
 list_run_dirs <- function(latest_n = NULL, runs_dir) {
 
+  # return empty character vector for dir not found
+  if (!utils::file_test("-d", runs_dir))
+    return(character())
+
   # list directories
   runs <- list.files(runs_dir,
                      pattern = "\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}-\\d{2}Z",

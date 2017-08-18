@@ -2,30 +2,38 @@
 % Please edit documentation in R/clean_runs.R
 \name{clean_runs}
 \alias{clean_runs}
+\alias{purge_runs}
 \title{Clean run directories}
 \usage{
-clean_runs(runs = ls_runs(), keep = NULL, confirm = FALSE,
-  runs_dir = getOption("tfruns.runs_dir", "runs"))
+clean_runs(runs = ls_runs(runs_dir = runs_dir),
+  runs_dir = getOption("tfruns.runs_dir", "runs"), confirm = interactive())
+
+purge_runs(runs_dir = getOption("tfruns.runs_dir", "runs"),
+  confirm = interactive())
 }
 \arguments{
-\item{runs}{Runs to clean}
-
-\item{keep}{Number of most recent runs to keep when cleaning runs.
-This will preserve the number of runs specified even if they
-are provided in the list of \code{runs} to clean.}
-
-\item{confirm}{\code{TRUE} to confirm before cleaning the runs.}
+\item{runs}{Runs to clean. Can be specified as a data frame
+(as returned by \code{\link[=ls_runs]{ls_runs()}}) or as a character vector of
+run directories.}
 
 \item{runs_dir}{Directory containing runs. Defaults to "runs" beneath the
 current working directory (or to the value of the \code{tfruns.runs_dir} R
 option if specified).}
+
+\item{confirm}{\code{TRUE} to confirm before performing operation}
 }
 \description{
 Remove run directories from the filesystem.
 }
+\details{
+The \code{clean_runs()} function moves the specified runs (by default,
+all runs) into an "archive" subdirectory of the "runs" directory.
+
+The \code{purge_runs()} function permanently deletes the "archive"
+subdirectory.
+}
 \examples{
 \dontrun{
 clean_runs(ls_runs(completed == FALSE))
-clean_runs(keep = 10)
 }
 }

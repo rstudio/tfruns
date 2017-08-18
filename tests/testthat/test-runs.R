@@ -21,9 +21,15 @@ test_that("completed flag is set by training_run", {
 })
 
 
-test_that("clean_runs removes runs", {
-  clean_runs()
+test_that("clean_runs and purge_runs remove runs", {
+  # then clean
+  clean_runs(confirm = FALSE)
   expect_equal(nrow(ls_runs()), 0)
+  expect_true(nrow(ls_runs(runs_dir = "runs/archive")) > 0)
+
+  # then purge
+  purge_runs(confirm = FALSE)
+  expect_equal(nrow(ls_runs(runs_dir = "runs/archive")), 0)
 })
 
 test_that("flags.yml can be passed to training_run", {
