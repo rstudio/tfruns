@@ -4,11 +4,17 @@
 \alias{clean_runs}
 \title{Clean run directories}
 \usage{
-clean_runs(keep = NULL, runs_dir = "runs")
+clean_runs(runs = ls_runs(), keep = NULL, confirm = FALSE,
+  runs_dir = getOption("tfruns.runs_dir", "runs"))
 }
 \arguments{
+\item{runs}{Runs to clean}
+
 \item{keep}{Number of most recent runs to keep when cleaning runs.
-\code{NULL} (the default) to remove all previous runs.}
+This will preserve the number of runs specified even if they
+are provided in the list of \code{runs} to clean.}
+
+\item{confirm}{\code{TRUE} to confirm before cleaning the runs.}
 
 \item{runs_dir}{Directory containing runs. Defaults to "runs" beneath the
 current working directory (or to the value of the \code{tfruns.runs_dir} R
@@ -19,6 +25,7 @@ Remove run directories from the filesystem.
 }
 \examples{
 \dontrun{
+clean_runs(ls_runs(completed == FALSE))
 clean_runs(keep = 10)
 }
 }
