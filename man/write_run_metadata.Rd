@@ -2,9 +2,12 @@
 % Please edit documentation in R/run_metadata.R
 \name{write_run_metadata}
 \alias{write_run_metadata}
+\alias{write_run_data}
 \title{Write run metadata into the current run directory}
 \usage{
 write_run_metadata(type, data)
+
+write_run_data(type, data)
 }
 \arguments{
 \item{type}{Type of metadata to write. Standard types include "flags",
@@ -28,6 +31,10 @@ that properties will be stored as strings.
 Record various types of training run metadata This function can be called
 even when a run directory isn't active (metadata will only be written if
 and when a run directory is initialized).
+}
+\note{
+\code{write_run_data()} is deprecated and is provided as an alias
+for backward compatibility.
 }
 \section{Metrics Data Frame}{
 

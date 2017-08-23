@@ -36,6 +36,10 @@
 #' })
 #' ````
 #'
+#' @note
+#' `write_run_data()` is deprecated and is provided as an alias
+#' for backward compatibility.
+#'
 #' @keywords internal
 #'
 #' @export
@@ -113,6 +117,14 @@ write_run_property <- function(name, value) {
   properties[[name]] <- value
   write_run_metadata("properties", properties)
 }
+
+
+#' @rdname write_run_metadata
+#' @export
+write_run_data <- function(type, data) {
+  write_run_metadata(paste0("custom", type), data)
+}
+
 
 write_source_archive <- function(sources_dir, data_dir, archive) {
 
