@@ -11,7 +11,7 @@ Authors@R: c(
          comment = "C3 library - http://c3js.org/")
   )
 Description: Create and manage unique directories for each 'TensorFlow' 
-  training run. Provides a unique, timestamped directory for each run
+  training run. Provides a unique, time stamped directory for each run
   along with functions to retrieve the directory of the latest run or 
   latest several runs. 
 License: Apache License 2.0
