@@ -156,10 +156,16 @@ write_source_archive <- function(sources_dir, data_dir, archive) {
   wd <- getwd()
   on.exit(setwd(wd), add = TRUE)
   setwd(file.path(sources_dir, ".."))
-  utils::tar(file.path(data_dir, archive),
-             files = "source",
-             compression = "gzip",
-             tar = "internal")
+  # tar and prevent "storing paths of more than 100 bytes is not
+  # portable" warning issued by R
+  suppressWarnings(
+    utils::tar(
+      file.path(data_dir, archive),
+      files = "source",
+      compression = "gzip",
+      tar = "internal"
+    )
+  )
 }
 
 
