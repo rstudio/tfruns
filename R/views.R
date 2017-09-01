@@ -5,11 +5,17 @@
 render_view <- function(view, variables = list()) {
 
   # read a component
-  read_component <- function(component) {
-    lines <- readLines(system.file("views", "components", paste0(component, ".html"),
-                                   package = "tfruns"),
-             encoding = "UTF-8")
-    paste(lines, collapse = "\n")
+  read_component <- function(name) {
+
+    if (!exists(name, envir = .globals$view_components)) {
+      lines <- readLines(system.file("views", "components", paste0(name, ".html"),
+                                     package = "tfruns"),
+                         encoding = "UTF-8")
+      component <- paste(lines, collapse = "\n")
+      assign(name, component, envir = .globals$view_components)
+    }
+
+    get(name, envir = .globals$view_components)
   }
 
   # add components to variables
