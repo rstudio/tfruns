@@ -15,7 +15,10 @@ render_view <- function(view, variables = list()) {
   # add components to variables
   variables <- append(variables, list(
     c3 = read_component("c3"),
-    metrics_charts = read_component("metrics_charts")
+    metrics_charts = read_component("metrics_charts"),
+    jquery = read_component("jquery"),
+    material_bootstrap_js = read_component("material_bootstrap_js"),
+    material_bootstrap_css = read_component("material_bootstrap_css")
   ))
 
   # read the template
