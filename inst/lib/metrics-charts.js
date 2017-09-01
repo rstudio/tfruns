@@ -88,17 +88,8 @@ var MetricsCharts = (function () {
     var updateInterval = setInterval(function() {
       load_metrics(function(data) {
 
-        // refresh each metric
-        for (var i = 0; i<_metric_names.length; i++) {
-          var metric = _metric_names[i];
-          var chart = _c3_charts[i];
-          chart.load({
-            columns: chart_columns(metric, data)
-          });
-          adjust_y_axis(chart, metric, data);
-          // ensure repaint
-          chart.flush();
-        }
+        // perform update
+        update(data);
 
         // stop refreshing metrics when the run is completed
         if (run_completed(data))
@@ -205,6 +196,20 @@ var MetricsCharts = (function () {
     return _c3_charts;
   }
 
+  // update with new data
+  function update(data) {
+    for (var i = 0; i<_metric_names.length; i++) {
+      var metric = _metric_names[i];
+      var chart = _c3_charts[i];
+      chart.load({
+        columns: chart_columns(metric, data)
+      });
+      adjust_y_axis(chart, metric, data);
+      // ensure repaint
+      chart.flush();
+    }
+  }
+
   // resize charts to fit within their container
   function resize() {
     var chart_height = _container.offsetHeight / _c3_charts.length;
@@ -229,6 +234,7 @@ var MetricsCharts = (function () {
   MetricsCharts.prototype = {
     constructor: MetricsCharts,
     charts: charts,
+    update: update,
     resize: resize
   };
 
