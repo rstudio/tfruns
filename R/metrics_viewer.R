@@ -41,16 +41,6 @@ view_run_metrics <- function(metrics) {
     viewer_dir = viewer_dir
   ))
 
-  # copy dependencies to the viewer dir
-  lib_dir <- system.file("lib", package = "tfruns")
-  file.copy(from = file.path(lib_dir, c("d3.min.js",
-                                        "c3.min.js", "c3.min.css",
-                                        "metrics-charts.js")),
-            to = viewer_dir)
-  metrics_viewer_html <- system.file("views", "metrics", package = "tfruns")
-  file.copy(from = file.path(metrics_viewer_html, c("metrics.css")),
-            to = viewer_dir)
-
   # write the history
   update_run_metrics(metrics_viewer, metrics)
 
@@ -70,10 +60,8 @@ update_run_metrics <- function(viewer, metrics) {
 
   # re-write index.html with embedded metrics
   metrics_json <- jsonlite::toJSON(metrics, dataframe = "columns", na = "null")
-  metrics_html <- system.file("views", "metrics", "index.html", package = "tfruns")
-  metrics_html_lines <- readLines(metrics_html, encoding = "UTF-8")
-  metrics_html_lines <- sprintf(metrics_html_lines, metrics_json)
-  writeLines(metrics_html_lines, file.path(viewer$viewer_dir, "index.html"))
+  metrics_html <- render_view("metrics", variables = list(metrics_json = metrics_json))
+  writeLines(metrics_html, file.path(viewer$viewer_dir, "index.html"), useBytes = TRUE)
 
   # write metrics.json for polling
   metrics_json_path <- file.path(viewer$viewer_dir, "metrics.json")

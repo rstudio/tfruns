@@ -1,19 +1,32 @@
 <!DOCTYPE html>
+<html>
 <head>
 
 <meta charset="utf-8">
 
 <meta content='width=device-width' name='viewport'>
 
-<link href="c3.min.css" rel="stylesheet" type="text/css" />
-<link href="metrics.css" rel="stylesheet" type="text/css" />
+{{{c3}}}
 
-<script type="text/javascript" src="d3.min.js"></script>
-<script type="text/javascript" src="c3.min.js"></script>
+{{{metrics_charts}}}
 
-<script type="application/json" id="metrics">%s</script>
+<script type="application/json" id="metrics">{{{metrics_json}}}</script>
 
-<script type="text/javascript" src="metrics-charts.js"></script>
+<style type="text/css">
+body {
+  background-color: white;
+}
+
+#c3-container {
+  height: 98vh;
+}
+
+.c3 {
+  width: 99%;
+  font-family: "Lucida Sans", "DejaVu Sans", "Lucida Grande", "Segoe UI", Verdana, Helvetica, sans-serif;
+}
+</style>
+
 
 </head>
 
@@ -36,3 +49,4 @@ new MetricsCharts(container, metrics, "metrics.json", true);
 </script>
 
 </body>
+</html>
