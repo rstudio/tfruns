@@ -24,9 +24,7 @@ render_view <- function(view, variables = list()) {
     metrics_charts = read_component("metrics_charts"),
     jquery = read_component("jquery"),
     materialize_js = read_component("materialize_js"),
-    materialize_css = read_component("materialize_css"),
-    material_bootstrap_js = read_component("material_bootstrap_js"),
-    material_bootstrap_css = read_component("material_bootstrap_css")
+    materialize_css = read_component("materialize_css")
   ))
 
   # read the template
