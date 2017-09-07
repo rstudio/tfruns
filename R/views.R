@@ -2,7 +2,7 @@
 
 
 #' @import whisker
-render_view <- function(view, variables = list()) {
+render_view <- function(view, output_file, variables = list()) {
 
   # read a component
   read_component <- function(name) {
@@ -32,5 +32,8 @@ render_view <- function(view, variables = list()) {
                         encoding = "UTF-8")
 
   # render the template
-  whisker.render(template = template, data = variables)
+  html <- whisker.render(template = template, data = variables)
+
+  # write it
+  writeLines(html, output_file, useBytes = TRUE)
 }

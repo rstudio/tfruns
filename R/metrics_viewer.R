@@ -60,8 +60,8 @@ update_run_metrics <- function(viewer, metrics) {
 
   # re-write index.html with embedded metrics
   metrics_json <- jsonlite::toJSON(metrics, dataframe = "columns", na = "null")
-  metrics_html <- render_view("metrics", variables = list(metrics_json = metrics_json))
-  writeLines(metrics_html, file.path(viewer$viewer_dir, "index.html"), useBytes = TRUE)
+  metrics_html_path <- file.path(viewer$viewer_dir, "index.html")
+  render_view("metrics",metrics_html_path, variables = list(metrics_json = metrics_json))
 
   # write metrics.json for polling
   metrics_json_path <- file.path(viewer$viewer_dir, "metrics.json")
