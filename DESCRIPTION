@@ -14,7 +14,9 @@ Authors@R: c(
   person(family = "jQuery contributors", role = c("cph"),
          comment = "jQuery library; authors: inst/views/components/jquery-AUTHORS.txt"),
   person(family = "Materialize", role = c("cph"),
-         comment = "Materizlize library - http://materializecss.com/")
+         comment = "Materizlize library - https://materializecss.com/"),
+  person("Yuxi", "You", role = c("cph"),
+         comment = "Vue.js library - https://vuejs.org/")
   )
 Description: Create and manage unique directories for each 'TensorFlow' 
   training run. Provides a unique, time stamped directory for each run

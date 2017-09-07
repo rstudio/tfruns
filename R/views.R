@@ -24,7 +24,8 @@ render_view <- function(view, output_file, variables = list()) {
     metrics_charts = read_component("metrics_charts"),
     jquery = read_component("jquery"),
     materialize_js = read_component("materialize_js"),
-    materialize_css = read_component("materialize_css")
+    materialize_css = read_component("materialize_css"),
+    vue_js = read_component("vue_min_js")
   ))
 
   # read the template
