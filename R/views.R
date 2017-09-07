@@ -15,7 +15,7 @@ render_view <- function(view, variables = list()) {
       assign(name, component, envir = .globals$view_components)
     }
 
-    get(name, envir = .globals$view_components)
+    htmltools::HTML(get(name, envir = .globals$view_components))
   }
 
   # add components to variables
@@ -27,10 +27,9 @@ render_view <- function(view, variables = list()) {
     material_bootstrap_css = read_component("material_bootstrap_css")
   ))
 
-  # read the template
-  template <- readLines(system.file("views", paste0(view, ".html"), package = "tfruns"),
-                        encoding = "UTF-8")
-
   # render the template
-  whisker.render(template = template, data = variables)
+  args <-list(filename = system.file("views", paste0(view, ".html"), package = "tfruns"))
+  args <- append(args, variables)
+  html_document <- do.call(htmltools::htmlTemplate, args)
+  htmltools::renderDocument(html_document)
 }
