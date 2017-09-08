@@ -157,6 +157,7 @@ nav .running .running-caption {
   padding: 10px;
 }
 
+
 table.attributes td {
   font-family: monospace;
   padding: 5px;
@@ -167,6 +168,13 @@ table.attributes td .material-icons {
   font-style: normal;
 }
 
+table.attributes td .badge {
+  font-family: Roboto;
+  color: #fff;
+  min-width: 2rem;
+  border-radius: 2px;
+}
+
 table.attributes td + td {
   text-align: right;
 }
@@ -175,20 +183,7 @@ table.attributes tbody tr:last-child {
   border-bottom: none;
 }
 
-.btn-small {
-  height: 24px;
-  width: 24px;
-  line-height: 24px;
-  padding: 0 0.5rem;
-}
 
-.btn-small i {
-  line-height: 24px;
-  font-size: 1.2em;
-  text-align: left;
-  padding-top: 1px;
-  margin-left: -3px;
-}
 
 </style>
 
@@ -299,7 +294,7 @@ Flags Content
 </tr>
 <tr>
 <td>model</td>
-<td><a class="btn-floating btn-small green lighten-2 waves-effect waves-light"><i class="material-icons">layers</i></a></td>
+<td><a href="#!"><span class="badge green lighten-1"><i class="material-icons">layers</i></span></a></td>
 </tr>
 <tr>
 <td>optimizer</td>
