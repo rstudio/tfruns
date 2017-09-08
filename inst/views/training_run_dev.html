@@ -420,8 +420,10 @@ nav .running .running-caption {
   margin-bottom: 15px;
 }
 
+@media only screen and (min-width: 993px) {
 .row .col:last-child {
-  padding-left: 0.2rem;
+  padding-right: 0.2rem;
+}
 }
 
 .card .card-title {
@@ -506,41 +508,7 @@ table.attributes tbody tr:last-child {
 
 <div class="row">
 
-<div class="col s12 m12 l8 xl8">
-
-<div class="card">
-
-<div class="card-title grey lighten-4 grey-text text-darken-2">History</div>
-
-<div class="card-content">
-
-<script type="application/json" id="metrics">{"loss":[0.4232,0.2001,0.1523,0.1313,0.1146,0.1041,0.0962,0.0874,0.0862,0.0806,0.0764,0.0774,0.0717,0.0675,0.0633,0.062,0.0632,0.0613,0.0625,0.0614,0.0557,0.0601,0.059,0.0553,0.0557,0.0551,0.0526,0.0543,0.0525,0.0524],"acc":[0.8709,0.9408,0.9539,0.9621,0.9658,0.9694,0.9726,0.9743,0.9749,0.9767,0.9778,0.9774,0.9801,0.9799,0.9815,0.982,0.983,0.9827,0.9825,0.9834,0.9846,0.9836,0.9838,0.9847,0.9848,0.9853,0.9861,0.986,0.9858,0.9855],"val_loss":[0.1606,0.1228,0.1069,0.0979,0.0967,0.0927,0.0915,0.0882,0.0885,0.0888,0.0928,0.094,0.0928,0.0907,0.0955,0.0953,0.0941,0.101,0.0957,0.097,0.1006,0.0981,0.0992,0.1046,0.1064,0.1051,0.1093,0.1104,0.1137,0.1108],"val_acc":[0.9508,0.9653,0.9705,0.9717,0.9743,0.9747,0.9757,0.9775,0.9772,0.979,0.9786,0.9778,0.9793,0.9801,0.979,0.9785,0.9806,0.9796,0.9799,0.9802,0.9796,0.9813,0.9813,0.9798,0.9814,0.9805,0.9808,0.9802,0.9793,0.9813]}</script>
-
-<div id="c3-container"></div>
-
-<script type="text/javascript">
-
-// get the container
-var container = document.getElementById("c3-container");
-
-// get the metrics json and parse it
-var metricsJson = document.getElementById('metrics').innerHTML;
-var metrics = JSON.parse(metricsJson);
-
-// initialize
-new MetricsCharts(container, metrics, null, true);
-
-</script>
-
-
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col s12 m12 l4 xl4">
+<div class="col s12 m12 l4 xl4 push-l8 push-xl8">
 
 
 <div class="card">
@@ -649,6 +617,42 @@ new MetricsCharts(container, metrics, null, true);
 
 
 </div>
+
+<div class="col s12 m12 l8 xl8 pull-l4 pull-xl4">
+
+<div class="card">
+
+<div class="card-title grey lighten-4 grey-text text-darken-2">History</div>
+
+<div class="card-content">
+
+<script type="application/json" id="metrics">{"loss":[0.4232,0.2001,0.1523,0.1313,0.1146,0.1041,0.0962,0.0874,0.0862,0.0806,0.0764,0.0774,0.0717,0.0675,0.0633,0.062,0.0632,0.0613,0.0625,0.0614,0.0557,0.0601,0.059,0.0553,0.0557,0.0551,0.0526,0.0543,0.0525,0.0524],"acc":[0.8709,0.9408,0.9539,0.9621,0.9658,0.9694,0.9726,0.9743,0.9749,0.9767,0.9778,0.9774,0.9801,0.9799,0.9815,0.982,0.983,0.9827,0.9825,0.9834,0.9846,0.9836,0.9838,0.9847,0.9848,0.9853,0.9861,0.986,0.9858,0.9855],"val_loss":[0.1606,0.1228,0.1069,0.0979,0.0967,0.0927,0.0915,0.0882,0.0885,0.0888,0.0928,0.094,0.0928,0.0907,0.0955,0.0953,0.0941,0.101,0.0957,0.097,0.1006,0.0981,0.0992,0.1046,0.1064,0.1051,0.1093,0.1104,0.1137,0.1108],"val_acc":[0.9508,0.9653,0.9705,0.9717,0.9743,0.9747,0.9757,0.9775,0.9772,0.979,0.9786,0.9778,0.9793,0.9801,0.979,0.9785,0.9806,0.9796,0.9799,0.9802,0.9796,0.9813,0.9813,0.9798,0.9814,0.9805,0.9808,0.9802,0.9793,0.9813]}</script>
+
+<div id="c3-container"></div>
+
+<script type="text/javascript">
+
+// get the container
+var container = document.getElementById("c3-container");
+
+// get the metrics json and parse it
+var metricsJson = document.getElementById('metrics').innerHTML;
+var metrics = JSON.parse(metricsJson);
+
+// initialize
+new MetricsCharts(container, metrics, null, true);
+
+</script>
+
+
+
+</div>
+
+</div>
+
+</div>
+
+
 
 
 </div>
