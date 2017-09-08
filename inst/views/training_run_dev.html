@@ -112,7 +112,7 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 
 <style type="text/css">
 
-.navbar-fixed {  
+.navbar-fixed {
   height: 70px;
 }
 
@@ -162,6 +162,11 @@ table.attributes td {
   padding: 5px;
 }
 
+table.attributes td .material-icons {
+  font-family: 'Material Icons';
+  font-style: normal;
+}
+
 table.attributes td + td {
   text-align: right;
 }
@@ -170,10 +175,25 @@ table.attributes tbody tr:last-child {
   border-bottom: none;
 }
 
+.btn-small {
+  height: 24px;
+  width: 24px;
+  line-height: 24px;
+  padding: 0 0.5rem;
+}
+
+.btn-small i {
+  line-height: 24px;
+  font-size: 1.2em;
+  text-align: left;
+  padding-top: 1px;
+  margin-left: -3px;
+}
+
 </style>
 
 
-</head>    
+</head>
 
 
 <body>
@@ -190,26 +210,84 @@ table.attributes tbody tr:last-child {
     Running:
     </span>
     00:15:42
-    </small> 
+    </small>
     </div>
   </div>
 </nav>
 </div>
 
-
 <div class="container">
 
 <div class="row">
 
+<div class="col s12 m12 l8 xl8">
+
+<div class="card">
+
+<div class="card-title grey lighten-4 grey-text text-darken-2">History</div>
+
+<div class="card-content">
+<div class="">Chart1</div>
+<div class="">Chart2</div>
+</div>
+
+</div>
+
+</div>
 
 <div class="col s12 m12 l4 xl4">
+
+
+<div class="card">
+<div class="card-title grey lighten-4 grey-text text-darken-2">Metrics</div>
+<div class="card-content">
+
+<table class="bordered attributes">
+<tbody>
+<tr>
+<td>acc</td>
+<td>0.9869</td>
+</tr>
+<tr>
+<td>val_acc</td>
+<td>0.9814</td>
+</tr>
+<tr>
+<td>eval_acc</td>
+<td>&mdash;</td>
+</tr>
+<tr>
+<td>loss</td>
+<td>0.0497</td>
+</tr>
+<tr>
+<td>val_loss</td>
+<td>0.1085</td>
+</tr>
+<tr>
+<td>eval_loss</td>
+<td>&mdash;</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+
+<div class="card">
+<div class="card-title grey lighten-4 grey-text text-darken-2">Flags</div>
+<div class="card-content">
+Flags Content
+</div>
+</div>
+
+
+
 <div class="card">
 <div class="card-title grey lighten-4 grey-text text-darken-2">Attributes</div>
 <div class="card-content">
 
-
 <table class="bordered attributes">
-
 <tbody>
 <tr>
 <td>type</td>
@@ -218,6 +296,10 @@ table.attributes tbody tr:last-child {
 <tr>
 <td>script</td>
 <td>mnist_mlp.R</td>
+</tr>
+<tr>
+<td>model</td>
+<td><a class="btn-floating btn-small green lighten-2 waves-effect waves-light"><i class="material-icons">layers</i></a></td>
 </tr>
 <tr>
 <td>optimizer</td>
@@ -246,48 +328,17 @@ table.attributes tbody tr:last-child {
 </tbody>
 </table>
 
-
-</div>
-</div>
-</div>
-
-
-<div class="col s12 m12 l4 xl4">
-
-<div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">Flags</div>
-<div class="card-content">
-Flags Content
-</div>
 </div>
 </div>
 
-<div class="col s12 m12 l4 xl4">
-<div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">Metrics</div>
-<div class="card-content">
-Metrics Content
-</div>
-</div>
-</div>
 
 </div>
 
 
-<div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">History</div>
-<div class="card-content">
-
-<div class="row">
-<div class="col s12 m12 l6 xl6"><div class="">Chart1</div></div>
-<div class="col s12 m12 l6 xl6"><div class="">Chart2</div></div>
 </div>
 
 </div>
-</div>
-  
 
-</div>
 
 
 <!-- Materialize JS v0.100.12 (https://github.com/Dogfalo/materialize/releases/tag/v0.100.2) -->
