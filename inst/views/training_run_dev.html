@@ -124,10 +124,20 @@ nav {
 nav .brand-logo {
   font-size: 1.7rem;
   margin-left: 15px;
+  position: relative !important;
 }
 
 nav .nav-wrapper .run-dir {
   margin-left: 5px;
+}
+
+nav .running {
+  font-size: 1.7rem;
+  margin-right: 15px;
+}
+
+nav .running .running-caption {
+  margin-right: 3px;
 }
 
 .container {
@@ -147,6 +157,18 @@ nav .nav-wrapper .run-dir {
   padding: 10px;
 }
 
+table.attributes td {
+  font-family: monospace;
+  padding: 5px;
+}
+
+table.attributes td + td {
+  text-align: right;
+}
+
+table.attributes tbody tr:last-child {
+  border-bottom: none;
+}
 
 </style>
 
@@ -162,9 +184,14 @@ nav .nav-wrapper .run-dir {
     <span class="brand-logo">Training Run
     <small class="run-dir">runs/2017-09-01T10-59-06Z</small>
     </span>
-    <span class="right">
-    Foo
+    <div class="running right">
+    <small>
+    <span class="running-caption hide-on-med-and-down">
+    Running:
     </span>
+    00:15:42
+    </small> 
+    </div>
   </div>
 </nav>
 </div>
@@ -177,9 +204,49 @@ nav .nav-wrapper .run-dir {
 
 <div class="col s12 m12 l4 xl4">
 <div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">Model</div>
+<div class="card-title grey lighten-4 grey-text text-darken-2">Attributes</div>
 <div class="card-content">
-Model Content
+
+
+<table class="bordered attributes">
+
+<tbody>
+<tr>
+<td>type</td>
+<td>local</td>
+</tr>
+<tr>
+<td>script</td>
+<td>mnist_mlp.R</td>
+</tr>
+<tr>
+<td>optimizer</td>
+<td>RMSProp</td>
+</tr>
+<tr>
+<td>learning_rate</td>
+<td>0.01</td>
+</tr>
+<tr>
+<td>samples</td>
+<td>48,000</td>
+</tr>
+<tr>
+<td>validation_samples</td>
+<td>12,000</td>
+</tr>
+<tr>
+<td>epochs</td>
+<td>30</td>
+</tr>
+<tr>
+<td>batch_size</td>
+<td>128</td>
+</tr>
+</tbody>
+</table>
+
+
 </div>
 </div>
 </div>
