@@ -189,6 +189,9 @@ var MetricsCharts = (function () {
         data: {
           columns: chart_columns(metric, metrics)
         },
+        color: {
+          pattern: ['#42a5f5', '#66BB6A']
+        },
         transition: {
           duration: 20
         }
@@ -208,7 +211,7 @@ var MetricsCharts = (function () {
 
     // auto resize if requested
     if (auto_resize) {
-      resize();
+      window.setTimeout(resize, 200);
       window.addEventListener("resize", resize);
     }
   };
@@ -460,6 +463,11 @@ table.attributes tbody tr:last-child {
 #c3-container {
   height: 725px;
 }
+
+.c3 svg {
+  font-family: "Roboto";
+}
+
 
 
 </style>
