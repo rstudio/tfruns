@@ -39,7 +39,7 @@ clean_runs <- function(runs = ls_runs(runs_dir = runs_dir),
 
   # confirm if requested
   if (confirm) {
-    prompt <- readline(sprintf("Move %d run directories to %s? [Y]/n: ",
+    prompt <- readline(sprintf("Move %d run directories to %s? [Y/n]: ",
                                length(run_dirs), archive_dir))
     if (nzchar(prompt) && tolower(prompt) != 'y')
       return(invisible(NULL))
@@ -65,7 +65,7 @@ purge_runs <- function(runs_dir = getOption("tfruns.runs_dir", "runs"),
 
   # prompt
   if (confirm) {
-    prompt <- readline(sprintf("Permanently remove %d run directories from %s? [Y]/n: ",
+    prompt <- readline(sprintf("Permanently remove %d run directories from %s? [Y/n]: ",
                                length(run_dirs), archive_dir))
     if (nzchar(prompt) && tolower(prompt) != 'y')
       return(invisible(NULL))
