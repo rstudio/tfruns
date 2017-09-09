@@ -464,7 +464,7 @@ table.attributes tbody tr:last-child {
 }
 
 #c3-container {
-  height: 600px;
+
 }
 
 .c3 {
@@ -474,6 +474,7 @@ table.attributes tbody tr:last-child {
 .c3 svg {
   font-family: "Roboto";
   font-weight: 400;
+  height: 225px;
 }
 
 
@@ -512,7 +513,7 @@ table.attributes tbody tr:last-child {
 
 
 <div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">Metrics</div>
+<div class="card-title grey lighten-4 grey-text text-darken-2">Training</div>
 <div class="card-content">
 
 <table class="bordered attributes">
@@ -526,10 +527,6 @@ table.attributes tbody tr:last-child {
 <td>0.9814</td>
 </tr>
 <tr>
-<td>evaluation_acc</td>
-<td>&mdash;</td>
-</tr>
-<tr>
 <td>loss</td>
 <td>0.0497</td>
 </tr>
@@ -537,15 +534,32 @@ table.attributes tbody tr:last-child {
 <td>val_loss</td>
 <td>0.1085</td>
 </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+
+<div class="card">
+<div class="card-title grey lighten-4 grey-text text-darken-2">Evaluation</div>
+<div class="card-content">
+
+<table class="bordered attributes">
+<tbody>
 <tr>
-<td>evaluation_loss</td>
-<td>&mdash;</td>
+<td>eval_acc</td>
+<td>0.9835</td>
+</tr>
+<tr>
+<td>eval_loss</td>
+<td>0.0951</td>
 </tr>
 </tbody>
 </table>
 
 </div>
 </div>
+
 
 <div class="card">
 <div class="card-title grey lighten-4 grey-text text-darken-2">Flags</div>
@@ -572,18 +586,6 @@ table.attributes tbody tr:last-child {
 </table>
 </div>
 </div>
-
-
-
-<div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">Artifacts</div>
-<div class="card-content">
-
-<div style="min-height: 100px"></div>
-
-</div>
-</div>
-
 
 </div>
 
