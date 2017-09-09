@@ -591,7 +591,7 @@ table.attributes tbody tr:last-child {
 </tr>
 <tr>
 <td>model</td>
-<td><a href="#!"><span class="badge green lighten-1"><i class="material-icons">layers</i></span></a></td>
+<td><a class="modal-trigger" href="#model-dialog"><span class="badge green lighten-1"><i class="material-icons">layers</i></span></a></td>
 </tr>
 <tr>
 <td>samples</td>
@@ -614,6 +614,49 @@ table.attributes tbody tr:last-child {
 
 </div>
 </div>
+
+
+<div id="model-dialog" class="modal modal-fixed-footer">
+  <div class="modal-content">
+    <pre>Layer (type)                                    Output Shape                               Param #
+============================================================================================================
+dense_1 (Dense)                                 (None, 256)                                200960
+____________________________________________________________________________________________________________
+dropout_1 (Dropout)                             (None, 256)                                0
+____________________________________________________________________________________________________________
+dense_2 (Dense)                                 (None, 128)                                32896
+____________________________________________________________________________________________________________
+dropout_2 (Dropout)                             (None, 128)                                0
+____________________________________________________________________________________________________________
+dense_3 (Dense)                                 (None, 10)                                 1290
+============================================================================================================
+
+Total params: 235,146
+Trainable params: 235,146
+Non-trainable params: 0
+
+Loss: categorical_crossentropy
+Optimizer: RMSProp
+Learning Rate: 0.01
+    </pre>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+  </div>
+</div>
+
+<style type="text/css">
+#model-dialog {
+  max-height: 90%;
+  width: 70%;
+}
+</style>
+
+<script type="application/javascript">
+$(document).ready(function(){
+  $('.modal').modal();
+});
+</script>
 
 
 </div>
