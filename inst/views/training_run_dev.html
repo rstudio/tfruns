@@ -477,6 +477,11 @@ table.attributes tbody tr:last-child {
   height: 225px;
 }
 
+.model-table {
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
 
 
 </style>
@@ -560,6 +565,16 @@ table.attributes tbody tr:last-child {
 </div>
 </div>
 
+<div class="card">
+<div class="card-title grey lighten-4 grey-text text-darken-2">Artifacts</div>
+<div class="card-content">
+
+<div style="min-height: 100px;"></div>
+
+</div>
+</div>
+
+
 
 <div class="card">
 <div class="card-title grey lighten-4 grey-text text-darken-2">Flags</div>
@@ -587,12 +602,50 @@ table.attributes tbody tr:last-child {
 </div>
 </div>
 
+
+<div class="card">
+<div class="card-title grey lighten-4 grey-text text-darken-2">Attributes</div>
+<div class="card-content">
+
+<table class="bordered attributes">
+<tbody>
+<tr>
+<td>type</td>
+<td>local</td>
+</tr>
+<tr>
+<td>script</td>
+<td>mnist_mlp.R</td>
+</tr>
+<tr>
+<td>samples</td>
+<td>48,000</td>
+</tr>
+<tr>
+<td>val_samples</td>
+<td>12,000</td>
+</tr>
+<tr>
+<td>epochs</td>
+<td>30</td>
+</tr>
+<tr>
+<td>batch_size</td>
+<td>128</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+
+
+
 </div>
 
 <div class="col s12 m7 l8 xl8 pull-m5 pull-l4 pull-xl4">
 
 <div class="card">
-
 <div class="card-title grey lighten-4 grey-text text-darken-2">History</div>
 
 <div class="card-content">
@@ -619,6 +672,39 @@ new MetricsCharts(container, metrics, null, true);
 
 </div>
 
+</div>
+
+<div class="card">
+<div class="card-title grey lighten-4 grey-text text-darken-2">Model</div>
+<div class="card-content">
+<pre class="model-table">Layer (type)                                    Output Shape                               Param #
+============================================================================================================
+dense_1 (Dense)                                 (None, 256)                                200960
+____________________________________________________________________________________________________________
+dropout_1 (Dropout)                             (None, 256)                                0
+____________________________________________________________________________________________________________
+dense_2 (Dense)                                 (None, 128)                                32896
+____________________________________________________________________________________________________________
+dropout_2 (Dropout)                             (None, 128)                                0
+____________________________________________________________________________________________________________
+dense_3 (Dense)                                 (None, 10)                                 1290
+============================================================================================================
+
+Total params: 235,146
+Trainable params: 235,146
+Non-trainable params: 0
+
+</pre>
+</div>
+</div>
+
+<div class="card">
+<div class="card-title grey lighten-4 grey-text text-darken-2">Code</div>
+<div class="card-content">
+
+<div style="min-height: 600px;"></div>
+
+</div>
 </div>
 
 </div>
