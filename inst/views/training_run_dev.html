@@ -443,6 +443,21 @@ table.attributes td {
   padding: 3px;
 }
 
+.model-summary {
+  font-family: monospace;
+  font-size: 0.9rem;
+  margin-left: 5px;
+}
+
+@media only screen and (max-width: 992px) {
+table.attributes td {
+  font-size: 0.7rem;
+}
+.model-summary {
+  font-size: 0.7rem;
+}
+}
+
 table.attributes td .material-icons {
   font-family: 'Material Icons';
   font-style: normal;
@@ -477,12 +492,6 @@ table.attributes tbody tr:last-child {
   height: 225px;
 }
 
-.model-table {
-  font-family: monospace;
-  font-size: 0.9rem;
-}
-
-
 
 </style>
 
@@ -514,7 +523,7 @@ table.attributes tbody tr:last-child {
 
 <div class="row">
 
-<div class="col s12 m5 l4 xl4 push-m7 push-l8 push-xl8">
+<div class="col s12 m4 l4 xl4 push-m8 push-l8 push-xl8">
 
 
 <div class="card">
@@ -566,17 +575,6 @@ table.attributes tbody tr:last-child {
 </div>
 
 <div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">Artifacts</div>
-<div class="card-content">
-
-<div style="min-height: 100px;"></div>
-
-</div>
-</div>
-
-
-
-<div class="card">
 <div class="card-title grey lighten-4 grey-text text-darken-2">Flags</div>
 <div class="card-content">
 <table class="bordered attributes">
@@ -601,7 +599,6 @@ table.attributes tbody tr:last-child {
 </table>
 </div>
 </div>
-
 
 <div class="card">
 <div class="card-title grey lighten-4 grey-text text-darken-2">Attributes</div>
@@ -639,11 +636,9 @@ table.attributes tbody tr:last-child {
 </div>
 </div>
 
-
-
 </div>
 
-<div class="col s12 m7 l8 xl8 pull-m5 pull-l4 pull-xl4">
+<div class="col s12 m8 l8 xl8 pull-m4 pull-l4 pull-xl4">
 
 <div class="card">
 <div class="card-title grey lighten-4 grey-text text-darken-2">History</div>
@@ -677,36 +672,28 @@ new MetricsCharts(container, metrics, null, true);
 <div class="card">
 <div class="card-title grey lighten-4 grey-text text-darken-2">Model</div>
 <div class="card-content">
-<pre class="model-table">Layer (type)                                    Output Shape                               Param #
-============================================================================================================
-dense_1 (Dense)                                 (None, 256)                                200960
-____________________________________________________________________________________________________________
-dropout_1 (Dropout)                             (None, 256)                                0
-____________________________________________________________________________________________________________
-dense_2 (Dense)                                 (None, 128)                                32896
-____________________________________________________________________________________________________________
-dropout_2 (Dropout)                             (None, 128)                                0
-____________________________________________________________________________________________________________
-dense_3 (Dense)                                 (None, 10)                                 1290
-============================================================================================================
+<pre class="model-summary">Layer (type)                        Output Shape                    Param #
+================================================================================
+dense_1 (Dense)                     (None, 256)                     200960
+________________________________________________________________________________
+dropout_1 (Dropout)                 (None, 256)                     0
+________________________________________________________________________________
+dense_2 (Dense)                     (None, 128)                     32896
+________________________________________________________________________________
+dropout_2 (Dropout)                 (None, 128)                     0
+________________________________________________________________________________
+dense_3 (Dense)                     (None, 10)                      1290
+================================================================================
 
 Total params: 235,146
 Trainable params: 235,146
 Non-trainable params: 0
 
+Loss: categorical_crossentropy
+Optimizer: RMSProp
+Learning Rate: 0.01
 </pre>
 </div>
-</div>
-
-<div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">Code</div>
-<div class="card-content">
-
-<div style="min-height: 600px;"></div>
-
-</div>
-</div>
-
 </div>
 
 
