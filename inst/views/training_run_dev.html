@@ -404,7 +404,7 @@ nav .nav-wrapper .run-info {
   margin-left: 5px;
 }
 
-nav .running {
+nav .right {
   margin-right: 15px;
 }
 
@@ -508,7 +508,7 @@ table.attributes tbody tr:last-child {
     <span class="main-title">Training Run
     <small class="run-info">### run_dir ###</small>
     </span>
-    <div class="running right">
+    <div class="right">
     </div>
   </div>
 </nav>
@@ -521,86 +521,39 @@ table.attributes tbody tr:last-child {
 <div class="col s12 m4 l4 xl4 push-m8 push-l8 push-xl8">
 
 <template v-if="attributes">
-<div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">Attributes</div>
-<div class="card-content">
-<table class="bordered attributes">
-<tbody>
-<tr v-for="(value, key) in attributes">
-<td>### key ###</td>
-<td>### value ###</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<info-card
+  v-bind:caption="'Attributes'"
+  v-bind:data="attributes">
+</info-card>
 </template>
 
 <template v-if="metrics">
-<div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">Metrics</div>
-<div class="card-content">
-<table class="bordered attributes">
-<tbody>
-<tr v-for="(value, key) in metrics">
-<td>### key ###</td>
-<td>### value ###</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<info-card
+  v-bind:caption="'Metrics'"
+  v-bind:data="metrics">
+</info-card>
 </template>
 
 <template v-if="evaluation">
-<div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">Evaluation</div>
-<div class="card-content">
-<table class="bordered attributes">
-<tbody>
-<tr v-for="(value, key) in evaluation">
-<td>### key ###</td>
-<td>### value ###</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<info-card
+  v-bind:caption="'Evaluation'"
+  v-bind:data="evaluation">
+</info-card>
 </template>
 
 
 <template v-if="flags">
-<div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">Flags</div>
-<div class="card-content">
-<table class="bordered attributes">
-<tbody>
-<tr v-for="(value, key) in flags">
-<td>### key ###</td>
-<td>### value ###</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<info-card
+  v-bind:caption="'Flags'"
+  v-bind:data="flags">
+</info-card>
 </template>
 
-
-
 <template v-if="training">
-<div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">Training</div>
-<div class="card-content">
-<table class="bordered attributes">
-<tbody>
-<tr v-for="(value, key) in training">
-<td>### key ###</td>
-<td>### value ###</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<info-card
+  v-bind:caption="'Training'"
+  v-bind:data="training">
+</info-card>
 </template>
 
 
@@ -700,6 +653,31 @@ function _classCallCheck(t,e){if(!(t instanceof e))throw new TypeError("Cannot c
 }
 </script>
 
+<!-- Info Card Component -->
+
+<script type="text/x-template" id="info-card-template">
+<div class="card">
+<div class="card-title grey lighten-4 grey-text text-darken-2">### caption ###</div>
+<div class="card-content">
+<table class="bordered attributes">
+<tbody>
+<tr v-for="(value, key) in data">
+<td>### key ###</td>
+<td>### value ###</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</script>
+<script type="application/javascript">
+Vue.component('info-card', {
+  props: ['caption', 'data'],
+  template: '#info-card-template',
+  delimiters: ["###","###"]
+})
+</script>
+
 <script type="application/javascript">
 
 // load app json
@@ -716,9 +694,6 @@ var app = new Vue({
 // initialize metrics charts
 var c3_container = document.getElementById("c3-container");
 new MetricsCharts(c3_container, app_data.history, null, true);
-
-// show the dom
-
 
 </script>
 
