@@ -521,39 +521,39 @@ table.attributes tbody tr:last-child {
 <div class="col s12 m4 l4 xl4 push-m8 push-l8 push-xl8">
 
 <template v-if="attributes">
-<info-card
-  v-bind:caption="'Attributes'"
+<property-card
+  caption="Attributes"
   v-bind:data="attributes">
-</info-card>
+</property-card>
 </template>
 
 <template v-if="metrics">
-<info-card
-  v-bind:caption="'Metrics'"
+<property-card
+  caption="Metrics"
   v-bind:data="metrics">
-</info-card>
+</property-card>
 </template>
 
 <template v-if="evaluation">
-<info-card
-  v-bind:caption="'Evaluation'"
+<property-card
+  caption="Evaluation"
   v-bind:data="evaluation">
-</info-card>
+</property-card>
 </template>
 
 
 <template v-if="flags">
-<info-card
-  v-bind:caption="'Flags'"
+<property-card
+  caption="Flags"
   v-bind:data="flags">
-</info-card>
+</property-card>
 </template>
 
 <template v-if="training">
-<info-card
-  v-bind:caption="'Training'"
+<property-card
+  caption="Training"
   v-bind:data="training">
-</info-card>
+</property-card>
 </template>
 
 
@@ -561,34 +561,22 @@ table.attributes tbody tr:last-child {
 
 <div class="col s12 m8 l8 xl8 pull-m4 pull-l4 pull-xl4">
 
-<div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">History</div>
-
-<div class="card-content">
-
+<card caption="History">
 <div id="c3-container"></div>
+</card>
 
-</div>
-</div>
-
-<div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">Model</div>
-<div class="card-content">
+<card caption="Model">
 <pre class="model-summary">### model ###
 
 Loss: ### loss ###
 Optimizer: ### optimizer ###
 Learning Rate: ### learning_rate ###
 </pre>
-</div>
-</div>
-
+</card>
 
 </div>
 
 </div>
-
-
 
 <!-- Materialize JS v0.100.12 (https://github.com/Dogfalo/materialize/releases/tag/v0.100.2) -->
 
@@ -653,12 +641,26 @@ function _classCallCheck(t,e){if(!(t instanceof e))throw new TypeError("Cannot c
 }
 </script>
 
-<!-- Info Card Component -->
+<!-- VueJS Components -->
 
-<script type="text/x-template" id="info-card-template">
+<script type="text/x-template" id="card-template">
 <div class="card">
 <div class="card-title grey lighten-4 grey-text text-darken-2">### caption ###</div>
 <div class="card-content">
+<slot></slot>
+</div>
+</div>
+</script>
+<script type="application/javascript">
+Vue.component('card', {
+  props: ['caption'],
+  template: '#card-template',
+  delimiters: ["###","###"]
+})
+</script>
+
+<script type="text/x-template" id="property-card-template">
+<card v-bind:caption="caption">
 <table class="bordered attributes">
 <tbody>
 <tr v-for="(value, key) in data">
@@ -667,13 +669,12 @@ function _classCallCheck(t,e){if(!(t instanceof e))throw new TypeError("Cannot c
 </tr>
 </tbody>
 </table>
-</div>
-</div>
+</card>
 </script>
 <script type="application/javascript">
-Vue.component('info-card', {
+Vue.component('property-card', {
   props: ['caption', 'data'],
-  template: '#info-card-template',
+  template: '#property-card-template',
   delimiters: ["###","###"]
 })
 </script>
