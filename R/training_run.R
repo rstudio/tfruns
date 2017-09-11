@@ -146,19 +146,29 @@ view_run <- function(run_dir = latest_run()) {
   run <- run_info(run_dir)
 
   # helper to extract prefaced properties
-  with_preface <- function(preface) {
-    prefaced <- run[grepl(paste0("^", preface, "_"), names(run))]
-    if (length(prefaced) > 0)
+  with_preface <- function(preface, strip_preface = TRUE) {
+    preface_pattern <- paste0("^", preface, "_")
+    prefaced <- run[grepl(preface_pattern, names(run))]
+    if (length(prefaced) > 0) {
+      if (strip_preface)
+        names(prefaced) <- sub(preface_pattern, "", names(prefaced))
       prefaced
-    else
+    } else {
       NULL
+    }
   }
 
+  # default some potentially empty sections to null
   data <- list(
+    metrics = NULL,
     evaluation = NULL,
     flags = NULL
   )
+
+  # run_dir
   data$run_dir <- run$run_dir
+
+  # attributes
   data$attributes <- list(
     type = run$type,
     script = basename(run$script),
@@ -167,28 +177,29 @@ view_run <- function(run_dir = latest_run()) {
                   run$end - run$start,
                   "%H:%M:%S")
   )
-  if (!is.null(run$metrics)) {
-    rows <- nrow(run$metrics)
-    na_to_null <- function(x) ifelse(is.na(x), NULL, x)
-    metrics <- names(run$metrics)
-    names(metrics) <- metrics
-    data$metrics = lapply(metrics, function(metric) {
-      run$metrics[[metric]][[rows]]
-    })
-  } else {
-    data$metrics <- NULL
-  }
-  evaluation <- with_preface("eval")
+
+  # metrics
+  metrics <- with_preface("metric")
+  if (!is.null(metrics))
+    data$metrics <- metrics
+
+  # evaluation
+  evaluation <- with_preface("eval", strip_preface = FALSE)
   if (!is.null(evaluation))
     data$evaluation <- evaluation
+
+  # flags
   flags <- with_preface("flags")
   if (!is.null(flags))
     data$flags <- flags
+
+  # training
   data$training <- list(
-    samples = run$samples,
+    samples = prettyNum(run$samples, big.mark = ","),
     epochs = run$epochs,
     batch_size = run$batch_size
   )
+
   data$history <- run$metrics
   data$model <- sub("^Model\n", "", run$model)
   data$model <- sub("^_+\n", "", data$model)
@@ -201,7 +212,6 @@ view_run <- function(run_dir = latest_run()) {
                                 na = "null",
                                 null = "null",
                                 auto_unbox = TRUE)
-
 
   viewer_dir <- tempfile("view-training-run")
   dir.create(viewer_dir)
