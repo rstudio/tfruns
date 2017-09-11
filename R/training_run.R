@@ -202,9 +202,15 @@ view_run <- function(run_dir = latest_run()) {
     data$flags <- flags
 
   # training
+  if (run$epochs > run$epochs_completed)
+    epochs <- paste(format_integer(run$epochs_completed),
+                    format_integer(run$epochs),
+                    sep = "/")
+  else
+    epochs <- format_integer(run$epochs)
   data$training <- list(
     samples = format_integer(run$samples),
-    epochs = format_integer(run$epochs),
+    epochs = epochs,
     batch_size = format_integer(run$batch_size)
   )
 
