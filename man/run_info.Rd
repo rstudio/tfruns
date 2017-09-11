@@ -18,3 +18,6 @@ a list of training run summary objects is returned.
 \description{
 Summary information for training runs
 }
+\seealso{
+\code{\link[=view_run]{view_run()}}
+}

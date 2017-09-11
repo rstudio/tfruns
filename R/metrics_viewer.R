@@ -77,7 +77,7 @@ write_metrics_json <- function(metrics, path) {
 }
 
 # non-rstudio viewer function
-browser_viewer <- function(viewer_dir) {
+browser_viewer <- function(viewer_dir, browser = utils::browseURL) {
 
   function(url) {
     # determine help server port
@@ -95,7 +95,7 @@ browser_viewer <- function(viewer_dir) {
 
     # build URL and browse it
     url <- paste0("http://127.0.0.1:", port, path)
-    utils::browseURL(url)
+    browser(url)
   }
 }
 

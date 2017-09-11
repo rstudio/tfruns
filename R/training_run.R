@@ -136,7 +136,20 @@ clear_run <- function() {
 }
 
 
-view_run <- function(run_dir = latest_run()) {
+#' View a training run
+#'
+#' View metrics and other attributes of a training run.
+#'
+#' @inheritParams run_info
+#' @param viewer Viewer to display training run information within
+#'   (default to an internal page viewer if available, otherwise
+#'   to the R session default web browser).
+#'
+#' @seealso [ls_runs()], [run_info()]
+#'
+#' @export
+view_run <- function(run_dir = latest_run(),
+                     viewer = getOption("page_viewer", default = utils::browseURL)) {
 
   # verify run_dir
   if (is.null(run_dir))
@@ -231,8 +244,10 @@ view_run <- function(run_dir = latest_run()) {
   dir.create(viewer_dir)
   viewer_html <- file.path(viewer_dir, "index.html")
   render_view("training_run", viewer_html, list(data = data_json))
-  #getOption("page_viewer")(viewer_html)
-  browser_viewer(viewer_dir)(viewer_html)
+  if (identical(viewer, getOption("page_viewer")))
+    viewer(viewer_html)
+  else
+    browser_viewer(viewer_dir, viewer)(viewer_html)
 }
 
 

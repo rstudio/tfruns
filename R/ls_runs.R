@@ -102,6 +102,8 @@ latest_run <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
 #'   and evaluation metrics, etc. If more than one `run_dir` is passed then
 #'   a list of training run summary objects is returned.
 #'
+#' @seealso [view_run()]
+#'
 #' @export
 run_info <- function(run_dir) {
   run_dir <- as_run_dir(run_dir)
