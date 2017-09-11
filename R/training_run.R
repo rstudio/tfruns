@@ -233,13 +233,7 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   data$optimizer <- run$optimizer
   data$learning_rate <- run$learning_rate
 
-  data_json <- jsonlite::toJSON(data,
-                                dataframe = "columns",
-                                na = "null",
-                                null = "null",
-                                auto_unbox = TRUE)
-
-  view_page("view_run", list(data = data_json), viewer)
+  view_page("view_run", data, viewer)
 }
 
 

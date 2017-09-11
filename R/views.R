@@ -39,13 +39,20 @@ render_view <- function(view, output_file, variables = list()) {
   writeLines(html, output_file, useBytes = TRUE)
 }
 
-view_page <- function(page, variables, viewer) {
+view_page <- function(page, data, viewer) {
+
+  # convert data to json
+  data_json <- jsonlite::toJSON(data,
+                                dataframe = "columns",
+                                na = "null",
+                                null = "null",
+                                auto_unbox = TRUE)
 
   # render html
   viewer_dir <- tempfile(page)
   dir.create(viewer_dir)
   viewer_html <- file.path(viewer_dir, "index.html")
-  render_view(page, viewer_html, variables)
+  render_view(page, viewer_html, list(data = data_json))
 
   # display html
   if (is.null(viewer))
