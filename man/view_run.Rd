@@ -4,8 +4,7 @@
 \alias{view_run}
 \title{View a training run}
 \usage{
-view_run(run_dir = latest_run(), viewer = getOption("page_viewer", default =
-  utils::browseURL))
+view_run(run_dir = latest_run(), viewer = getOption("tfruns.viewer"))
 }
 \arguments{
 \item{run_dir}{Training run directory or data frame returned from

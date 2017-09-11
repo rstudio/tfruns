@@ -148,8 +148,7 @@ clear_run <- function() {
 #' @seealso [ls_runs()], [run_info()]
 #'
 #' @export
-view_run <- function(run_dir = latest_run(),
-                     viewer = getOption("page_viewer", default = utils::browseURL)) {
+view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")) {
 
   # verify run_dir
   if (is.null(run_dir))
@@ -244,6 +243,10 @@ view_run <- function(run_dir = latest_run(),
   dir.create(viewer_dir)
   viewer_html <- file.path(viewer_dir, "index.html")
   render_view("training_run", viewer_html, list(data = data_json))
+
+  # display
+  if (is.null(viewer))
+    viewer <- getOption("page_viewer", default = utils::browseURL)
   if (identical(viewer, getOption("page_viewer")))
     viewer(viewer_html)
   else
