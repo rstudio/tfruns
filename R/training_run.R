@@ -50,7 +50,7 @@ training_run <- function(file = "train.R",
 do_training_run <- function(file, run_dir, echo, envir, encoding) {
 
   # write script
-  write_run_property("script", file)
+  write_run_property("script", basename(file))
 
   # write begin and end times
   write_run_property("start", as.double(Sys.time()))
