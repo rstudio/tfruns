@@ -400,7 +400,7 @@ nav .nav-wrapper .main-title {
   margin-left: 15px;
 }
 
-nav .nav-wrapper .run-info {
+nav .nav-wrapper .nav-left {
   margin-left: 5px;
 }
 
@@ -502,17 +502,9 @@ table.attributes tbody tr:last-child {
 
 <div v-cloak id="vue-app">
 
-<div class="navbar-fixed">
-<nav class="orange darken-2">
-  <div class="nav-wrapper">
-    <span class="main-title">Training Run
-    <small class="run-info">### run_dir ###</small>
-    </span>
-    <div class="right">
-    </div>
-  </div>
-</nav>
-</div>
+<navbar title="Training Run">
+  <span slot="left">### run_dir ###</span>
+</navbar>
 
 <div class="container">
 
@@ -642,6 +634,27 @@ function _classCallCheck(t,e){if(!(t instanceof e))throw new TypeError("Cannot c
 </script>
 
 <!-- VueJS Components -->
+
+<script type="text/x-template" id="navbar-template">
+<div class="navbar-fixed">
+<nav class="orange darken-2">
+  <div class="nav-wrapper">
+    <span class="main-title">### title ###</span>
+    <span class="nav-left"><slot name="left"></slot></span>
+    <div class="right">
+    <span class="nav-right"><slot name="right"></slot></span>
+    </div>
+  </div>
+</nav>
+</div>
+</script>
+<script type="application/javascript">
+Vue.component('navbar', {
+  props: ['title'],
+  template: '#navbar-template',
+  delimiters: ["###","###"]
+})
+</script>
 
 <script type="text/x-template" id="card-template">
 <div class="card">
