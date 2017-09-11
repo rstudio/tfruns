@@ -161,7 +161,7 @@ view_run <- function(run_dir = latest_run()) {
   data$run_dir <- run$run_dir
   data$attributes <- list(
     type = run$type,
-    script = run$script,
+    script = basename(run$script),
     started = format(as.POSIXct(run$start, origin="1970-01-01")),
     time = format(as.POSIXct(as.character(Sys.Date()), tz = "GMT") +
                   run$end - run$start,
