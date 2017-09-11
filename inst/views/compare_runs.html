@@ -18,10 +18,6 @@
 
 {{{ metrics_charts }}}
 
-{{{ highlight_js }}}
-
-{{{ diff2html }}}
-
 {{{ dashboard }}}
 
 </head>
@@ -57,21 +53,6 @@
 </card>
 
 </div> <!-- /col -->
-
-<div id="diff">
-</div>
-
-<script type="application/javascript">
-
-$(document).ready(function() {
-  var patch = JsDiff.createPatch('foo.txt', 'function() 4L + 0.2', 'function() 5L + 0.4', null, null);
-  var diff2htmlUi = new Diff2HtmlUI({diff: patch});
-  diff2htmlUi.draw('#diff', {inputFormat: 'diff', showFiles: true, matching: 'lines'});
-  diff2htmlUi.highlightCode('#diff');
-});
-
-</script>
-
 
 </div> <!-- /container -->
 
