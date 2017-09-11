@@ -239,18 +239,7 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
                                 null = "null",
                                 auto_unbox = TRUE)
 
-  viewer_dir <- tempfile("view-training-run")
-  dir.create(viewer_dir)
-  viewer_html <- file.path(viewer_dir, "index.html")
-  render_view("training_run", viewer_html, list(data = data_json))
-
-  # display
-  if (is.null(viewer))
-    viewer <- getOption("page_viewer", default = utils::browseURL)
-  if (identical(viewer, getOption("page_viewer")))
-    viewer(viewer_html)
-  else
-    browser_viewer(viewer_dir, viewer)(viewer_html)
+  view_page("training_run", list(data = data_json), viewer)
 }
 
 

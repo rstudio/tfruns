@@ -38,3 +38,20 @@ render_view <- function(view, output_file, variables = list()) {
   # write it
   writeLines(html, output_file, useBytes = TRUE)
 }
+
+view_page <- function(page, variables, viewer) {
+
+  # render html
+  viewer_dir <- tempfile(page)
+  dir.create(viewer_dir)
+  viewer_html <- file.path(viewer_dir, "index.html")
+  render_view(page, viewer_html, variables)
+
+  # display html
+  if (is.null(viewer))
+    viewer <- getOption("page_viewer", default = utils::browseURL)
+  if (identical(viewer, getOption("page_viewer")))
+    viewer(viewer_html)
+  else
+    browser_viewer(viewer_dir, viewer)(viewer_html)
+}
