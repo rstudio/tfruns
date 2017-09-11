@@ -186,7 +186,6 @@ view_run <- function(run_dir = latest_run()) {
     data$flags <- flags
   data$training <- list(
     samples = run$samples,
-    val_samples = run$validation_samples,
     epochs = run$epochs,
     batch_size = run$batch_size
   )
