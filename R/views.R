@@ -20,14 +20,12 @@ render_view <- function(view, output_file, variables = list()) {
 
   # add components to variables
   variables <- append(variables, list(
+    jquery = read_component("jquery"),
+    materialize = read_component("materialize"),
+    vue_js = read_component("vue_min_js"),
     c3 = read_component("c3"),
     metrics_charts = read_component("metrics_charts"),
-    jquery = read_component("jquery"),
-    materialize_js = read_component("materialize_js"),
-    materialize_css = read_component("materialize_css"),
-    vue_js = read_component("vue_min_js"),
-    dashboard_css = read_component("dashboard_css"),
-    dashboard_js = read_component("dashboard_js")
+    dashboard = read_component("dashboard")
   ))
 
   # read the template

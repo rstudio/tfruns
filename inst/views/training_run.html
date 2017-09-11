@@ -8,15 +8,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
 
-{{{ materialize_css }}}
-
 {{{ jquery }}}
+
+{{{ materialize }}}
+
+{{{ vue_js }}}
 
 {{{ c3 }}}
 
 {{{ metrics_charts }}}
 
-{{{ dashboard_css }}}
+{{{ dashboard }}}
 
 </head>
 
@@ -92,15 +94,11 @@ Learning Rate: ### learning_rate ###
 
 </div>
 
-{{{ materialize_js }}}
-
-{{{ vue_js }}}
-
 </div>
 
 </div>
 
-<script type="application/json" id="app-data">
+<script type="application/json" id="app-data">{{{ data }}}
 {
   "run_dir": "runs/2017-09-01T10-59-06Z",
   "attributes": {
@@ -138,7 +136,6 @@ Learning Rate: ### learning_rate ###
 }
 </script>
 
-{{{dashboard_js}}}
 
 
 <script type="application/javascript">
