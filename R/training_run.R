@@ -158,6 +158,14 @@ view_run <- function(run_dir = latest_run()) {
     }
   }
 
+  # helpers for formatting numbers
+  format_integer <- function(x) {
+    prettyNum(x, mode = "integer", big.mark = ",")
+  }
+  format_numeric <- function(x, digits = 4) {
+    formatC(x, format='f', digits= digits)
+  }
+
   # default some potentially empty sections to null
   data <- list(
     metrics = NULL,
@@ -181,7 +189,7 @@ view_run <- function(run_dir = latest_run()) {
   # metrics
   metrics <- with_preface("metric")
   if (!is.null(metrics))
-    data$metrics <- metrics
+    data$metrics <- lapply(metrics, format_numeric)
 
   # evaluation
   evaluation <- with_preface("eval", strip_preface = FALSE)
@@ -195,9 +203,9 @@ view_run <- function(run_dir = latest_run()) {
 
   # training
   data$training <- list(
-    samples = prettyNum(run$samples, big.mark = ","),
-    epochs = run$epochs,
-    batch_size = run$batch_size
+    samples = format_integer(run$samples),
+    epochs = format_integer(run$epochs),
+    batch_size = format_integer(run$batch_size)
   )
 
   data$history <- run$metrics
