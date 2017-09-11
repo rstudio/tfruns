@@ -257,8 +257,14 @@ compare_runs <- function(runs = ls_runs(latest_n = 2),
   if (length(runs) < 2)
     stop("You must pass at least 2 run directories to compare_runs")
 
-  c(runs[[1]]$run_dir, runs[[2]]$run_dir)
+  # data for view
+  data <- list(
+    run_a = unclass(runs[[1]]),
+    run_b = unclass(runs[[2]])
+  )
 
+  # show view
+  view_page("compare_runs", data, viewer)
 }
 
 
