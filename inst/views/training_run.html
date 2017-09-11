@@ -31,7 +31,6 @@
 </navbar>
 
 <div class="container">
-
 <div class="row">
 
 <div class="col s12 m4 l4 xl4 push-m8 push-l8 push-xl8">
@@ -57,7 +56,6 @@
 </property-card>
 </template>
 
-
 <template v-if="flags">
 <property-card
   caption="Flags"
@@ -72,8 +70,7 @@
 </property-card>
 </template>
 
-
-</div>
+</div> <!-- /col -->
 
 <div class="col s12 m8 l8 xl8 pull-m4 pull-l4 pull-xl4">
 
@@ -90,15 +87,17 @@ Learning Rate: ### learning_rate ###
 </pre>
 </card>
 
-</div>
+</div> <!-- /col -->
 
-</div>
+</div> <!-- /row -->
 
-</div>
+</div> <!-- /container -->
 
-</div>
+</div> <!-- /app -->
 
-<script type="application/json" id="app-data">{{{ data }}}
+
+
+<script type="application/json" id="app-data">
 {
   "run_dir": "runs/2017-09-01T10-59-06Z",
   "attributes": {
@@ -135,7 +134,6 @@ Learning Rate: ### learning_rate ###
   "learning_rate": "0.01"
 }
 </script>
-
 
 
 <script type="application/javascript">
