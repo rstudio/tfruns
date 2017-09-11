@@ -18,6 +18,8 @@
 
 {{{ metrics_charts }}}
 
+{{{ diff2html }}}
+
 {{{ dashboard }}}
 
 </head>
@@ -53,6 +55,18 @@
 </card>
 
 </div> <!-- /col -->
+
+<div id="diff">
+</div>
+
+<script type="application/javascript">
+
+var patch = JsDiff.createPatch('foo.txt', 'the quick brown', 'the slow brown', null, null);
+var diff2htmlUi = new Diff2HtmlUI({diff: patch});
+diff2htmlUi.draw('#diff', {inputFormat: 'diff', showFiles: true, matching: 'lines'});
+
+</script>
+
 
 </div> <!-- /container -->
 
