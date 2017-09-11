@@ -24,6 +24,14 @@
 
 {{{ dashboard }}}
 
+<style type="text/css">
+@media only screen and (min-width: 601px) {
+.row .col:last-child {
+  padding-left: 0.2rem;
+}
+}
+</style>
+
 </head>
 
 <body>
@@ -38,7 +46,7 @@
 
 <div class="row">
 
-<div class="col s6">
+<div class="col s12 m6">
 
 <card caption="Run A">
 
@@ -48,7 +56,7 @@
 
 </div> <!-- /col -->
 
-<div class="col s6">
+<div class="col s12 m6">
 
 <card caption="Run B">
 
@@ -57,6 +65,10 @@
 </card>
 
 </div> <!-- /col -->
+
+</div> <!-- /row -->
+
+<div>
 
 <div id="diff">
 </div>
@@ -72,6 +84,7 @@ $(document).ready(function() {
 
 </script>
 
+</div> <!-- /row -->
 
 </div> <!-- /container -->
 
