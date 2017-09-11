@@ -239,7 +239,7 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
                                 null = "null",
                                 auto_unbox = TRUE)
 
-  view_page("training_run", list(data = data_json), viewer)
+  view_page("view_run", list(data = data_json), viewer)
 }
 
 
