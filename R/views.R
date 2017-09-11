@@ -25,6 +25,7 @@ render_view <- function(view, output_file, variables = list()) {
     vue_js = read_component("vue_min_js"),
     c3 = read_component("c3"),
     metrics_charts = read_component("metrics_charts"),
+    highlight_js = read_component("highlight_js"),
     diff2html = read_component("diff2html"),
     dashboard = read_component("dashboard")
   ))

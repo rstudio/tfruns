@@ -20,7 +20,9 @@ Authors@R: c(
   person("Kevin", "Decker", role = c("cph"),
          comment = "jsdiff library - https://github.com/kpdecker/jsdiff/"),
   person("Rodrigo", "Fernandes", role = c("cph"),
-         comment = "diff2html library - https://diff2html.xyz/")
+         comment = "diff2html library - https://diff2html.xyz/"),
+  person("Ivan", "Sagalaev", role = c("cph"),
+         comment = "highlight.js library - https://highlightjs.org/")
   )
 Description: Create and manage unique directories for each 'TensorFlow' 
   training run. Provides a unique, time stamped directory for each run

@@ -18,6 +18,8 @@
 
 {{{ metrics_charts }}}
 
+{{{ highlight_js }}}
+
 {{{ diff2html }}}
 
 {{{ dashboard }}}
@@ -61,9 +63,12 @@
 
 <script type="application/javascript">
 
-var patch = JsDiff.createPatch('foo.txt', 'the quick brown', 'the slow brown', null, null);
-var diff2htmlUi = new Diff2HtmlUI({diff: patch});
-diff2htmlUi.draw('#diff', {inputFormat: 'diff', showFiles: true, matching: 'lines'});
+$(document).ready(function() {
+  var patch = JsDiff.createPatch('foo.txt', 'function() 4L + 0.2', 'function() 5L + 0.4', null, null);
+  var diff2htmlUi = new Diff2HtmlUI({diff: patch});
+  diff2htmlUi.draw('#diff', {inputFormat: 'diff', showFiles: true, matching: 'lines'});
+  diff2htmlUi.highlightCode('#diff');
+});
 
 </script>
 
