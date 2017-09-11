@@ -243,4 +243,28 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
 }
 
 
+#' Compare training runs
+#'
+#' Render a visual comparison of two training runs.
+#'
+#' @inheritParams view_run
+#'
+#' @param runs @param run_dir Character vector of 2 training run directories or
+#'   data frame returned from [ls_runs()] with at least 2 elements.
+#'
+#' @export
+compare_runs <- function(runs = ls_runs(latest_n = 2),
+                         viewer = getOption("tfruns.viewer")) {
+
+  # cast to run_info
+  runs <- run_info(runs)
+
+  # verify at least 2 runs provided
+  if (length(runs) < 2)
+    stop("You must pass at least 2 run directories to compare_runs")
+
+  c(runs[[1]]$run_dir, runs[[2]]$run_dir)
+
+}
+
 
