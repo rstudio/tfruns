@@ -59,8 +59,12 @@ view_page <- function(page, data, viewer) {
   # display html
   if (is.null(viewer))
     viewer <- getOption("page_viewer", default = utils::browseURL)
-  if (identical(viewer, getOption("page_viewer")))
-    viewer(viewer_html)
-  else
+  if (identical(viewer, getOption("page_viewer"))) {
+    args <- list(url = viewer_html)
+    if (!is.null(formals(viewer)$self_contained))
+      args$self_contained <- TRUE
+    do.call(viewer, args)
+  } else {
     browser_viewer(viewer_dir, viewer)(viewer_html)
+  }
 }
