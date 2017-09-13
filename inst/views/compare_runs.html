@@ -76,10 +76,15 @@
 <script type="application/javascript">
 
 $(document).ready(function() {
-  var patch = JsDiff.createPatch('foo.txt', 'function() 4L + 0.2', 'function() 5L + 0.4', null, null);
-  var diff2htmlUi = new Diff2HtmlUI({diff: patch});
+  var patch1 = JsDiff.createPatch('foo.txt', 'function() 4L + 0.2', 'function() 5L + 0.4', '', '');
+  var patch2 = JsDiff.createPatch('bar.txt', 'function() 4L + 0.2', 'function() 5L + 0.4', '', '');
+  var patch3 = JsDiff.createPatch('added.txt', '', 'function() 5L + 0.4', '', '');
+  //var patch4 = JsDiff.createPatch('removed.txt', function() 5L + 0.4', '', '', '');
+  var patch4 = '';
+  var diff2htmlUi = new Diff2HtmlUI({diff: patch1 + '\n' + patch2 + '\n' + patch3 + '\n' + patch4});
   diff2htmlUi.draw('#diff', {inputFormat: 'diff', showFiles: true, matching: 'lines'});
   diff2htmlUi.highlightCode('#diff');
+  diff2htmlUi.fileListCloseable('#diff', false);
 });
 
 </script>
