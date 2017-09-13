@@ -192,7 +192,9 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   data$attributes <- list(
     type = run$type,
     script = basename(run$script),
-    started = format(as.POSIXct(run$start, origin="1970-01-01")),
+    run_dir = run$run_dir,
+    started = paste(as.POSIXct(run$start, origin="1970-01-01", tz = "GMT"),
+                    "GMT"),
     time = format(as.POSIXct(as.character(Sys.Date()), tz = "GMT") +
                   run$end - run$start,
                   "%H:%M:%S")
