@@ -132,7 +132,7 @@ print.tfruns_run <- function(x, ...) {
   }
   x$metrics <- summarize("metrics", "(metrics data)")
   x$model <- summarize("model", "(model summary)")
-  x$source_code <- summarize("source_code", "source.tar.gz")
+  x$source_code <- summarize("source_code", "(source archive)")
 
   # print
   str(x, no.list = TRUE)
