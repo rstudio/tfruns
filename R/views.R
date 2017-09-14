@@ -51,9 +51,9 @@ view_page <- function(page, data, viewer) {
                                 auto_unbox = TRUE)
 
   # render html
-  viewer_dir <- tempfile(page)
+  viewer_dir <- tempfile("tfruns-")
   dir.create(viewer_dir)
-  viewer_html <- file.path(viewer_dir, "index.html")
+  viewer_html <- file.path(viewer_dir, paste0(page, ".html"))
   render_view(page, viewer_html, list(data = data_json))
 
   # display html
