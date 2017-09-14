@@ -132,7 +132,7 @@ print.tfruns_run <- function(x, ...) {
   }
   x$metrics <- summarize("metrics", "(metrics data)")
   x$model <- summarize("model", "(model summary)")
-  x$source <- summarize("source", "(source archive)")
+  x$source_code <- summarize("source_code", "source.tar.gz")
 
   # print
   str(x, no.list = TRUE)
@@ -292,7 +292,7 @@ run_record <- function(run_dir) {
     columns$metrics <- metrics_json
   source_code <- file.path(meta_dir, "source.tar.gz")
   if (file.exists(source_code))
-    columns$source <- source_code
+    columns$source_code <- source_code
 
   # convert to data frame for calls to rbind
   tibble::as_data_frame(columns)
