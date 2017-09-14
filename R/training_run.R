@@ -194,8 +194,7 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   # tabs
   data$tabs <- list(
     list(href = "#summary", title = "Summary"),
-    list(href = "#code", title = "Code"),
-    list(href = "#tensorboard", title = "TensorBoard")
+    list(href = "#code", title = "Code")
   )
 
   # run_dir
