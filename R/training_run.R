@@ -172,10 +172,16 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
 
   # helpers for formatting numbers
   format_integer <- function(x) {
-    prettyNum(x, mode = "integer", big.mark = ",")
+    if (!is.null(x))
+      prettyNum(x, mode = "integer", big.mark = ",")
+    else
+      NULL
   }
   format_numeric <- function(x, digits = 4) {
-    formatC(x, format='f', digits= digits)
+    if (!is.null(x))
+      formatC(x, format='f', digits= digits)
+    else
+      NULL
   }
 
   # default some potentially empty sections to null
@@ -237,11 +243,14 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
                     sep = "/")
   else
     epochs <- format_integer(run$epochs)
-  data$training <- list(
-    samples = format_integer(run$samples),
-    epochs = epochs,
-    batch_size = format_integer(run$batch_size)
-  )
+  training <- list()
+  training$samples <- format_integer(run$samples)
+  training$validation_samples <- format_integer(run$validation_samples)
+  training$epochs <- run$epochs
+  training$batch_size <- format_integer(run$batch_size)
+
+
+  data$training <- training
 
   # metrics history
   data$history <- run$metrics
