@@ -196,9 +196,10 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   data$run_dir <- run$run_dir
 
   # attributes
+  script <- basename(run$script)
   data$attributes <- list(
     type = run$type,
-    script = basename(run$script),
+    script = script,
     run_dir = run$run_dir,
     started = paste(as.POSIXct(run$start, origin="1970-01-01", tz = "GMT"),
                     "GMT"),
@@ -242,10 +243,17 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
     batch_size = format_integer(run$batch_size)
   )
 
+  # metrics history
   data$history <- run$metrics
+
+  # model summary
   data$model <- sub("^Model\n", "", run$model)
   data$model <- sub("^_+\n", "", data$model)
 
+  # source code
+  data$source_code <- run_source_code(script, run$run_dir)
+
+  # view the page
   view_page("view_run", data, viewer)
 }
 

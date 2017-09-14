@@ -367,3 +367,21 @@ as_run_info <- function(run_record) {
   structure(class = "tfruns_run", run_info)
 }
 
+run_source_code <- function(script, run_dir) {
+  source_tarball <- file.path(meta_dir(run_dir), "source.tar.gz")
+  if (file.exists(source_tarball)) {
+    source_tmp_dir <- tempfile()
+    on.exit(unlink(source_tmp_dir, recursive = TRUE))
+    untar(source_tarball, exdir = source_tmp_dir, compressed = TRUE)
+    source_dir <- file.path(source_tmp_dir, "source")
+    source_files <- list.files(source_dir, recursive = TRUE)
+    source_files <- c(script, source_files[!grepl(paste0("^", script, "$"), source_files)])
+    names(source_files) <- source_files
+    lapply(source_files, function(file) {
+      paste(readLines(file.path(source_dir, file)), collapse = "\n")
+    })
+  } else {
+    list()
+  }
+}
+
