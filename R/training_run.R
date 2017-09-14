@@ -262,7 +262,10 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   data$source_code <- run_source_code(script, run$run_dir)
 
   # view the page
-  view_page("view_run", data, viewer)
+  view_page("view_run",
+            stem = paste0("view-run-", basename(run$run_dir)),
+            data = data,
+            viewer = viewer)
 }
 
 
@@ -293,7 +296,9 @@ compare_runs <- function(runs = ls_runs(latest_n = 2),
   )
 
   # show view
-  view_page("compare_runs", data, viewer)
+  view_page("compare_runs",
+            data = data,
+            viewer = viewer)
 }
 
 
