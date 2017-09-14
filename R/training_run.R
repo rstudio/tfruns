@@ -222,6 +222,13 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   if (!is.null(flags))
     data$flags <- flags
 
+  # optimization
+  data$optimization <- list(
+    loss = run$loss_function,
+    optimizer = run$optimizer,
+    learning_rate = run$learning_rate
+  )
+
   # training
   if (run$epochs > run$epochs_completed)
     epochs <- paste(format_integer(run$epochs_completed),
@@ -238,9 +245,6 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   data$history <- run$metrics
   data$model <- sub("^Model\n", "", run$model)
   data$model <- sub("^_+\n", "", data$model)
-  data$loss_function <- run$loss_function
-  data$optimizer <- run$optimizer
-  data$learning_rate <- run$learning_rate
 
   view_page("view_run", data, viewer)
 }

@@ -74,6 +74,14 @@
 </property-card>
 </template>
 
+<template v-if="optimization">
+<property-card
+  caption="Optimization"
+  v-bind:data="optimization">
+</property-card>
+</template>
+
+
 <template v-if="training">
 <property-card
   caption="Training"
@@ -90,9 +98,7 @@
 </card>
 
 <card caption="Model">
-<pre class="model-summary">### model ###Loss: ### loss_function ###
-Optimizer: ### optimizer ###
-Learning Rate: ### learning_rate ###
+<pre class="model-summary">### model ###
 </pre>
 </card>
 
