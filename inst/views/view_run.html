@@ -18,6 +18,8 @@
 
 {{{ metrics_charts }}}
 
+{{{ highlight_js }}}
+
 {{{ dashboard }}}
 
 <style type="text/css">
@@ -110,7 +112,9 @@
 
 <div id="code">
 
-Code
+<card v-for="(item, index) in source_code" v-bind:caption="index">
+<pre class="source-code"><code class="r">### item ###</code></pre>
+</card>
 
 </div> <!-- /code -->
 
@@ -143,6 +147,12 @@ var app = new Vue({
 // initialize metrics charts
 var c3_container = document.getElementById("c3-container");
 new MetricsCharts(c3_container, app_data.history, null, true);
+
+// init highlighting
+hljs.initHighlighting();
+$('code.hljs').each(function(i, block) {
+  hljs.lineNumbersBlock(block);
+});
 
 </script>
 

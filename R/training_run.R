@@ -227,7 +227,7 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   data$optimization <- list(
     loss = run$loss_function,
     optimizer = run$optimizer,
-    learning_rate = run$learning_rate
+    lr = run$learning_rate
   )
 
   # training
