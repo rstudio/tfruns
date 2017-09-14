@@ -372,7 +372,7 @@ run_source_code <- function(script, run_dir) {
   if (file.exists(source_tarball)) {
     source_tmp_dir <- tempfile()
     on.exit(unlink(source_tmp_dir, recursive = TRUE))
-    untar(source_tarball, exdir = source_tmp_dir, compressed = TRUE)
+    utils::untar(source_tarball, exdir = source_tmp_dir, compressed = TRUE)
     source_dir <- file.path(source_tmp_dir, "source")
     source_files <- list.files(source_dir, recursive = TRUE)
     source_files <- c(script, source_files[!grepl(paste0("^", script, "$"), source_files)])
