@@ -114,13 +114,15 @@ table.attributes tbody tr:last-child {
 <nav class="orange darken-3">
   <div class="nav-wrapper">
     <span class="left main-title hide-on-small-only">### title ###</span>
+    <template v-if="tabs">
     <div class="left nav-content">
       <ul class="tabs tabs-transparent">
-        <li class="tab"><a class="active" href="#summary">Summary</a></li>
-        <li class="tab"><a href="#code">Code</a></li>
-        <li class="tab"><a href="#tensorboard">TensorBoard</a></li>
+        <li v-for="tab in tabs" class="tab">
+          <a v-bind:href="tab.href">### tab.title ###</a>
+        </li>
       </ul>
     </div>
+    </template>
     <span class="nav-left"><slot name="left"></slot></span>
     <div class="right">
     <span class="nav-right"><slot name="right"></slot></span>
@@ -131,7 +133,15 @@ table.attributes tbody tr:last-child {
 </script>
 <script type="application/javascript">
 Vue.component('navbar', {
-  props: ['title'],
+  props: {
+    title: {
+      type: String
+    },
+    tabs: {
+      type: Object,
+      default: null
+    }
+  },
   template: '#navbar-template',
   delimiters: ["###","###"]
 })
