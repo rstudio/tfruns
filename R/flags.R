@@ -231,12 +231,18 @@ parse_flags <- function(FLAGS, config, file, arguments) {
   for (i in 1:length(FLAGS)) {
     name <- names[[i]]
     type <- types[[i]]
-    value <- switch(type,
+    value <- suppressWarnings(switch(type,
       numeric = as.double(flags[[name]]),
       integer = as.integer(flags[[name]]),
       boolean = as.logical(flags[[name]]),
       string = as.character(flags[[name]])
-    )
+    ))
+    # error if type coersion fails
+    if (is.na(value)) {
+      value <- paste0("'", flags[[name]], "'")
+      stop("Unable to convert flag '", name, "' with value ", value,
+           " to type ", type, call. = FALSE)
+    }
     FLAGS[[name]] <- value
   }
 
