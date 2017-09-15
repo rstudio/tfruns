@@ -178,9 +178,7 @@ parse_flags <- function(FLAGS, config, file, arguments) {
                                                 config_yaml[["default"]])
     } else {
       # synthesize default section from the values at the top level
-      default <- config_yaml
-      config_yaml <- list()
-      config_yaml[["default"]] <- default
+      config_yaml[["default"]] <- config::merge(as.vector(FLAGS), config_yaml)
     }
 
     # now write this to a temp file which we will read with config::get
