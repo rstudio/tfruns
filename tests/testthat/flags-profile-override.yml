@@ -1,2 +1,2 @@
-default:
+myconfig:
   learning_rate: 0.03

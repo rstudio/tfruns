@@ -34,7 +34,7 @@ test_that("flags_parse throws an error for unknown command line args", {
 test_that("flags_parse overrides based on config file values", {
   FLAGS <- define_flags(file = "flags-override.yml")
   expect_equal(FLAGS$learning_rate, 0.02)
-  FLAGS <- define_flags(file = "flags-profile-override.yml")
+  FLAGS <- define_flags(file = "flags-profile-override.yml", config = "myconfig")
   expect_equal(FLAGS$learning_rate, 0.03)
 })
 
