@@ -171,7 +171,7 @@ parse_flags <- function(FLAGS, config, file, arguments) {
 
     # see what the structure of the config file is. if it's all lists at the
     # top level then treat it as a traditional profile-oriented config file
-    if (is.list(config_yaml[["default"]])) {
+    if (all(vapply(config_yaml, is.list, TRUE))) {
       # synthesize default section based on what's already in the config file
       # and the defaults provided inline
       config_yaml[["default"]] <- config::merge(as.vector(FLAGS),
