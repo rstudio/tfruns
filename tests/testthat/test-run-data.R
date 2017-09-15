@@ -33,3 +33,9 @@ test_that("properites are written to run_dir", {
 test_that("custom run data can be written", {
   expect_run_data("foo")
 })
+
+
+test_that("created and modified files are copied to the run_dir", {
+  expect_true(file.exists(file.path(run_dir, 'extra.dat')))
+  expect_true(file.exists(file.path(run_dir, 'subdir', 'extra.dat')))
+})

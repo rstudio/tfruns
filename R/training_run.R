@@ -49,31 +49,34 @@ training_run <- function(file = "train.R",
 
 do_training_run <- function(file, run_dir, echo, envir, encoding) {
 
-  # write script
-  write_run_property("script", basename(file))
+  with_changed_file_copy(dirname(file), run_dir, {
 
-  # write begin and end times
-  write_run_property("start", as.double(Sys.time()))
-  on.exit(write_run_property("end", as.double(Sys.time())), add = TRUE)
+    # write script
+    write_run_property("script", basename(file))
 
-  # clear run on exit
-  on.exit(clear_run(), add = TRUE)
+    # write begin and end times
+    write_run_property("start", as.double(Sys.time()))
+    on.exit(write_run_property("end", as.double(Sys.time())), add = TRUE)
 
-  # notify user of run dir
-  message("Using run directory ", run_dir)
+    # clear run on exit
+    on.exit(clear_run(), add = TRUE)
 
-  # perform the run
-  write_run_property("completed", FALSE)
-  withCallingHandlers({
+    # notify user of run dir
+    message("Using run directory ", run_dir)
+
+    # perform the run
+    write_run_property("completed", FALSE)
+    withCallingHandlers({
       source(file = file, local = envir, echo = echo, encoding = encoding)
       write_run_property("completed", TRUE)
     },
     error = function(e) {
       write_run_property("error", e$message)
       stop(e)
-    }
-  )
+    })
+  })
 }
+
 
 initialize_run <- function(type = "local",
                            config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
@@ -133,6 +136,35 @@ clear_run <- function() {
   .globals$run_dir$flags <- NULL
   .globals$run_dir$flags_file <- NULL
   .globals$run_dir$pending_writes <- new.env(parent = emptyenv())
+}
+
+with_changed_file_copy <- function(training_dir, run_dir, expr) {
+
+  # snapshot the files in the training script directory before training
+  files_before <- utils::fileSnapshot(path = training_dir, recursive = TRUE)
+
+  # copy changed files on exit
+  on.exit({
+    # snapshot the files in the run_dir after training then compute changed files
+    files_after <- utils::fileSnapshot(path = training_dir, recursive = TRUE)
+    changed_files <- utils::changedFiles(files_before, files_after)
+
+    # filter out files within the run_dir
+    changed_files <- c(changed_files$changed, changed_files$added)
+    changed_files <- changed_files[!grepl(basename(run_dir), changed_files)]
+
+    # copy the changed files to the run_dir
+    for (file in changed_files) {
+      dir <- dirname(file)
+      target_dir <- file.path(run_dir, dir)
+      if (!utils::file_test("-d", target_dir))
+        dir.create(target_dir, recursive = TRUE)
+      file.copy(from = file.path(training_dir, file), to = target_dir)
+    }
+  }, add = TRUE)
+
+  # execute the expression
+  force(expr)
 }
 
 

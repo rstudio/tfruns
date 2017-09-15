@@ -14,3 +14,6 @@ write_run_metadata("properties", list(foo = "bar", index = 42))
 write_run_metadata("foo", function(data_dir) {
   file.create(file.path(data_dir, "foo"))
 })
+
+writeLines(c("1", "2", "3"), 'extra.dat')
+writeLines(c("1", "2", "3"), file.path('subdir', 'extra.dat'))
