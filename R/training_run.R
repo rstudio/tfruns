@@ -61,6 +61,12 @@ do_training_run <- function(file, run_dir, echo, envir, encoding) {
     # clear run on exit
     on.exit(clear_run(), add = TRUE)
 
+    # sink output
+    properties_dir <- file.path(meta_dir(run_dir), "properties")
+    output_file <- file(file.path(properties_dir, "output"), open = "wt", encoding = "UTF-8")
+    sink(file = output_file, type = "output", split = TRUE)
+    on.exit({ sink(type = "output"); close(output_file); }, add = TRUE)
+
     # notify user of run dir
     message("Using run directory ", run_dir)
 
