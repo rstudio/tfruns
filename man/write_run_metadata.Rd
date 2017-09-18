@@ -23,6 +23,7 @@ that properties will be stored as strings.
 \item "metrics" --- Data frame with training run metrics
 (see \emph{Metrics Data Frame} below).
 \item "evaluation" --- Named list of evaluation metrics.
+\item "error" --- Named list with 'message' and 'traceback'
 \item "<custom>" -- Function used to write the data
 (see \emph{Custom Types} section below).
 }}

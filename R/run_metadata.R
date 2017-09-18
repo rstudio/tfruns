@@ -19,6 +19,7 @@
 #'   - "metrics" --- Data frame with training run metrics
 #'     (see *Metrics Data Frame* below).
 #'   - "evaluation" --- Named list of evaluation metrics.
+#'   - "error" --- Named list with 'message' and 'traceback'
 #'   - "<custom>" -- Function used to write the data
 #'     (see *Custom Types* section below).
 #'
@@ -63,7 +64,7 @@ write_run_metadata <- function(type, data) {
   }
 
   # simple named list
-  if (type %in% c("flags", "evaluation")) {
+  if (type %in% c("flags", "evaluation", "error")) {
 
     write_fn <- named_list_write_fn(type)
 

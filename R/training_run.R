@@ -77,7 +77,14 @@ do_training_run <- function(file, run_dir, echo, envir, encoding) {
       write_run_property("completed", TRUE)
     },
     error = function(e) {
-      write_run_property("error", e$message)
+
+      # write error
+      write_run_metadata("error", list(
+        message = e$message,
+        traceback = capture_stacktrace(sys.calls())
+      ))
+
+      # forward error
       stop(e)
     })
   })
@@ -142,6 +149,17 @@ clear_run <- function() {
   .globals$run_dir$flags <- NULL
   .globals$run_dir$flags_file <- NULL
   .globals$run_dir$pending_writes <- new.env(parent = emptyenv())
+}
+
+capture_stacktrace <- function(stack) {
+  stack <- stack[-(2:7)]
+  stack <- utils::head(stack, -2)
+  stack <- vapply(stack, function(frame) {
+    frame <- deparse(frame)
+    frame <- paste(frame, collapse = "\n")
+    frame
+  }, FUN.VALUE = "frame")
+  rev(stack)
 }
 
 with_changed_file_copy <- function(training_dir, run_dir, expr) {
@@ -318,8 +336,12 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
     data$output <- run$output
 
   # error
-  if (!is.null(run$error))
-    data$error <- run$error
+  if (!is.null(run$error_message)) {
+    data$error <- list(
+      message = run$error_message,
+      traceback = run$error_traceback
+    )
+  }
 
   # view the page
   view_page("view_run",

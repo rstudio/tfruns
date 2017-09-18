@@ -286,6 +286,15 @@ run_record <- function(run_dir) {
   # flags
   columns <- append(columns, read_json_columns("flags.json", "flag"))
 
+  # error
+  error_json_path <- file.path(meta_dir, "error.json")
+  if (file.exists(error_json_path)) {
+    error <- jsonlite::read_json(error_json_path, simplifyVector = TRUE)
+    columns[["error_message"]] <- error$message
+    columns[["error_traceback"]] <- paste(error$traceback, collapse = "\n")
+  }
+
+
   # add metrics and source fields
   meta_dir <- meta_dir(run_dir, create = FALSE)
   metrics_json <- file.path(meta_dir, "metrics.json")

@@ -49,6 +49,6 @@ test_that("training errors are handled", {
   run <- ls_runs(latest_n = 1)
 
   expect_true(!run$completed)
-  expect_equal(run$error, "Training error occurred")
+  expect_equal(run$error_message, "Training error occurred")
 })
 

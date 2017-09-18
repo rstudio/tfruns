@@ -55,6 +55,21 @@ nav .right {
   margin-bottom: 0;
 }
 
+.error-panel {
+  font-family: monospace;
+  font-size: 0.9rem;
+  padding: 12px;
+}
+
+.error-panel i {
+  margin-right: 10px;
+}
+
+.error-message {
+  font-size: 1.1rem;
+  color: #e53935;
+}
+
 
 table.attributes td {
   font-family: monospace;
@@ -121,7 +136,7 @@ table.attributes tbody tr:last-child {
 <div class="navbar-fixed">
 <nav class="orange darken-3">
   <div class="nav-wrapper">
-    <span class="left main-title">### title ###</span>
+    <span class="left main-title hide-on-small-only">### title ###</span>
     <template v-if="tabs">
     <div class="left nav-content">
       <ul class="tabs tabs-transparent">
@@ -190,5 +205,25 @@ Vue.component('property-card', {
   delimiters: ["###","###"]
 })
 </script>
+
+<script type="text/x-template" id="error-panel-template">
+<div class="card-panel error-panel">
+  <div class="error-message valign-wrapper">
+    <i class="material-icons small">error_outline</i>
+    <span class="text">Error: ### error.message ###</span>
+  </div>
+  <template v-if="error.traceback">
+  <pre class="error-traceback">### error.traceback ###</pre>
+  </template>
+</div>
+</script>
+<script type="application/javascript">
+Vue.component('error-panel', {
+  props: ['error'],
+  template: '#error-panel-template',
+  delimiters: ["###","###"]
+})
+</script>
+
 
 

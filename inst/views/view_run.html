@@ -95,6 +95,12 @@
 
 <div class="col s12 m8 l8 xl8 pull-m4 pull-l4 pull-xl4">
 
+<template v-if="error">
+<error-panel
+  v-bind:error="error">
+</error-panel>
+</template>
+
 <template v-if="history">
 <card caption="History">
 <div id="c3-container"></div>
@@ -150,7 +156,7 @@ if (app_data.history) {
 
 // init highlighting
 hljs.initHighlighting();
-$('code.hljs').each(function(i, block) {
+$('code.hljs, pre.error-traceback').each(function(i, block) {
   hljs.lineNumbersBlock(block);
 });
 
