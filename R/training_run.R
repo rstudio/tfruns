@@ -234,6 +234,8 @@ with_changed_file_copy <- function(training_dir, run_dir, expr) {
 #'
 #' @seealso [ls_runs()], [run_info()]
 #'
+#' @import base64enc
+#'
 #' @export
 view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")) {
 
@@ -280,6 +282,7 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
     optimization = NULL,
     training = NULL,
     flags = NULL,
+    plots = NULL,
     output = NULL,
     error = NULL
   )
@@ -361,6 +364,18 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
 
   # source code
   data$source_code <- run_source_code(script, run$run_dir)
+
+  # plots
+  plots <- list.files(run$run_dir,
+                      pattern = glob2rx("training-run-*.png"),
+                      full.names = TRUE)
+  if (length(plots) > 0) {
+    data$plots <- lapply(plots, function(plot) {
+      base64enc::dataURI(file = plot,
+                         mime = "image/png",
+                         encoding = "base64")
+    })
+  }
 
   # output
   if (!is.null(run$output))

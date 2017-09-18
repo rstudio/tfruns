@@ -38,6 +38,7 @@ Depends:
 Imports:
   utils,
   jsonlite,
+  base64enc,
   yaml,
   config,
   magrittr,
