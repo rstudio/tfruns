@@ -130,9 +130,10 @@ print.tfruns_run <- function(x, ...) {
     else
       NULL
   }
-  x$metrics <- summarize("metrics", "(metrics data)")
+  x$metrics <- summarize("metrics", "(metrics data frame)")
   x$model <- summarize("model", "(model summary)")
   x$source_code <- summarize("source_code", "(source archive)")
+  x$output <- summarize("output", "(script ouptut)")
 
   # print
   str(x, no.list = TRUE)
@@ -324,6 +325,7 @@ return_runs <- function(runs, order = NULL) {
   cols <- c(cols, select_cols(c("model", "loss_function", "optimizer", "learning_rate")))
   cols <- c(cols, select_cols(c("script", "source")))
   cols <- c(cols, select_cols(c("start", "end", "completed")))
+  cols <- c(cols, select_cols(c("output", "source_code")))
   cols <- c(cols, setdiff(colnames(runs), cols))
 
   # promote any ordered columns to the front
