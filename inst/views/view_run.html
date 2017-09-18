@@ -95,14 +95,18 @@
 
 <div class="col s12 m8 l8 xl8 pull-m4 pull-l4 pull-xl4">
 
+<template v-if="history">
 <card caption="History">
 <div id="c3-container"></div>
 </card>
+</template>
 
+<template v-if="model">
 <card caption="Model">
 <pre class="model-summary">### model ###
 </pre>
 </card>
+</template>
 
 </div> <!-- /col -->
 
@@ -139,8 +143,10 @@ var app = new Vue({
 });
 
 // initialize metrics charts
-var c3_container = document.getElementById("c3-container");
-new MetricsCharts(c3_container, app_data.history, null, true);
+if (app_data.history) {
+  var c3_container = document.getElementById("c3-container");
+  new MetricsCharts(c3_container, app_data.history, null, true);
+}
 
 // init highlighting
 hljs.initHighlighting();

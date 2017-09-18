@@ -224,8 +224,12 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
 
   # default some potentially empty sections to null
   data <- list(
+    history = NULL,
+    model = NULL,
     metrics = NULL,
     evaluation = NULL,
+    optimization = NULL,
+    training = NULL,
     flags = NULL
   )
 
@@ -267,34 +271,41 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
     data$flags <- flags
 
   # optimization
-  data$optimization <- list(
-    loss = run$loss_function,
-    optimizer = run$optimizer,
-    lr = run$learning_rate
-  )
+  optimization <- list()
+  optimization$loss <- run$loss_function
+  optimization$optimizer <- run$optimizer
+  optimization$lr <- run$learning_rate
+  if (length(optimization) > 0)
+    data$optimization <- optimization
 
   # training
-  if (run$epochs > run$epochs_completed)
-    epochs <- paste(format_integer(run$epochs_completed),
-                    format_integer(run$epochs),
-                    sep = "/")
-  else
-    epochs <- format_integer(run$epochs)
+  if (!is.null(run[["epochs"]]) && !is.null(run$epochs_completed)) {
+    if (run$epochs > run$epochs_completed)
+      epochs <- paste(format_integer(run$epochs_completed),
+                      format_integer(run$epochs),
+                      sep = "/")
+    else
+      epochs <- format_integer(run$epochs)
+  } else {
+    epochs <- NULL
+  }
   training <- list()
   training$samples <- format_integer(run$samples)
   training$validation_samples <- format_integer(run$validation_samples)
-  training$epochs <- run$epochs
+  training$epochs <- epochs
   training$batch_size <- format_integer(run$batch_size)
-
-
-  data$training <- training
+  if (length(training) > 0)
+    data$training <- training
 
   # metrics history
-  data$history <- run$metrics
+  if (!is.null(run$metrics))
+    data$history <- run$metrics
 
   # model summary
-  data$model <- sub("^Model\n", "", run$model)
-  data$model <- sub("^_+\n", "", data$model)
+  if (!is.null(run$model)) {
+    data$model <- sub("^Model\n", "", run$model)
+    data$model <- sub("^_+\n", "", data$model)
+  }
 
   # source code
   data$source_code <- run_source_code(script, run$run_dir)
