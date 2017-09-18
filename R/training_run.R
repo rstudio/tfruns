@@ -230,12 +230,15 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
     evaluation = NULL,
     optimization = NULL,
     training = NULL,
-    flags = NULL
+    flags = NULL,
+    output = NULL,
+    error = NULL
   )
 
   # tabs
   data$tabs <- list(
     list(href = "#summary", title = "Summary"),
+    list(href = "#output", title = "Output"),
     list(href = "#code", title = "Code")
   )
 
@@ -309,6 +312,14 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
 
   # source code
   data$source_code <- run_source_code(script, run$run_dir)
+
+  # output
+  if (!is.null(run$output))
+    data$output <- run$output
+
+  # error
+  if (!is.null(run$error))
+    data$error <- run$error
 
   # view the page
   view_page("view_run",
