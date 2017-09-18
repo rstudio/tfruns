@@ -6,7 +6,7 @@
 \usage{
 training_run(file = "train.R", type = "local",
   config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"), flags = NULL,
-  properties = NULL, run_dir = NULL, echo = TRUE,
+  properties = NULL, run_dir = NULL, echo = TRUE, view = "auto",
   envir = parent.frame(), encoding = getOption("encoding"))
 }
 \arguments{
@@ -28,6 +28,12 @@ additional metadata about the run which will be subsequently available via
 \item{run_dir}{Directory to store run data within}
 
 \item{echo}{Print expressions within training script}
+
+\item{view}{View the results of the run after training. The default "auto"
+will view the run when in an interactive session. Pass \code{TRUE} or \code{FALSE}
+to control whether the view is shown explictly. Pass an R function that
+accepts a single "url" argument to provide a custom viewer. The default
+viewer function can be specified using the \code{tfruns.viewer} R global option.}
 
 \item{envir}{The environment in which the script should be evaluated}
 

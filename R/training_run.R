@@ -10,6 +10,11 @@
 #'   [ls_runs()].
 #' @param run_dir Directory to store run data within
 #' @param echo Print expressions within training script
+#' @param view View the results of the run after training. The default "auto"
+#'   will view the run when in an interactive session. Pass `TRUE` or `FALSE`
+#'   to control whether the view is shown explictly. Pass an R function that
+#'   accepts a single "url" argument to provide a custom viewer. The default
+#'   viewer function can be specified using the `tfruns.viewer` R global option.
 #' @param envir The environment in which the script should be evaluated
 #' @param encoding The encoding of the training script; see [file()].
 #'
@@ -23,6 +28,7 @@ training_run <- function(file = "train.R",
                          properties = NULL,
                          run_dir = NULL,
                          echo = TRUE,
+                         view = "auto",
                          envir = parent.frame(),
                          encoding = getOption("encoding")) {
 
@@ -41,6 +47,21 @@ training_run <- function(file = "train.R",
 
   # execute the training run
   do_training_run(file, run_dir, echo = echo, envir = envir, encoding = encoding)
+
+  # run viewing helper
+  view_this_run <- function(...) {
+    message('\nview_run("', run_dir, '")\n')
+    view_run(run_dir, ...)
+  }
+
+  # resolve 'auto' view
+  if (identical(view, "auto"))
+    view <- interactive()
+  # view if requested
+  if (is.function(view))
+    view_this_run(viewer = view)
+  else if (isTRUE(view))
+    view_this_run()
 
   # return the run invisibly
   invisible(return_runs(run_record(run_dir)))
@@ -71,6 +92,11 @@ do_training_run <- function(file, run_dir, echo, envir, encoding) {
     output_file <- file(file.path(properties_dir, "output"), open = "wt", encoding = "UTF-8")
     sink(file = output_file, type = "output", split = TRUE)
     on.exit({ sink(type = "output"); close(output_file); }, add = TRUE)
+
+    # sink plots
+    grDevices::png(file.path(run_dir, "Rplot%03d.png"))
+    dev_number <- dev.cur()
+    on.exit(dev.off(dev_number), add = TRUE)
 
     # notify user of run dir
     message("Using run directory ", run_dir)
