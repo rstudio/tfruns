@@ -6,7 +6,7 @@
 \usage{
 training_run(file = "train.R", type = "local",
   config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"), flags = NULL,
-  properties = NULL, run_dir = NULL, echo = FALSE,
+  properties = NULL, run_dir = NULL, echo = TRUE,
   envir = parent.frame(), encoding = getOption("encoding"))
 }
 \arguments{

@@ -22,7 +22,7 @@ training_run <- function(file = "train.R",
                          flags = NULL,
                          properties = NULL,
                          run_dir = NULL,
-                         echo = FALSE,
+                         echo = TRUE,
                          envir = parent.frame(),
                          encoding = getOption("encoding")) {
 
