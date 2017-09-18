@@ -120,6 +120,15 @@
 
 </div> <!-- /summary -->
 
+<template v-if="output">
+<div id="output">
+<card caption="Console">
+<pre class="source-code"><code class="r">### output ###</code></pre>
+</card>
+</div> <!-- /output -->
+</template>
+
+
 <div id="code">
 
 <card v-for="(item, index) in source_code" v-bind:caption="index">

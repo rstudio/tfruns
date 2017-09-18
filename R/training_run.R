@@ -61,6 +61,11 @@ do_training_run <- function(file, run_dir, echo, envir, encoding) {
     # clear run on exit
     on.exit(clear_run(), add = TRUE)
 
+    # set width for run
+    old_width <- getOption("width")
+    options(width = min(100, old_width))
+    on.exit(options(width = old_width), add = TRUE)
+
     # sink output
     properties_dir <- file.path(meta_dir(run_dir), "properties")
     output_file <- file(file.path(properties_dir, "output"), open = "wt", encoding = "UTF-8")
