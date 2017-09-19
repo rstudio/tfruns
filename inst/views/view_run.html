@@ -171,11 +171,11 @@ var app = new Vue({
 });
 
 // initialize metrics charts
+var charts = null;
 if (app_data.history) {
   var c3_container = document.getElementById("c3-container");
-  new MetricsCharts(c3_container, app_data.history, null, false);
+  charts = new MetricsCharts(c3_container, app_data.history, null, false);
 }
-
 
 
 // init highlighting
