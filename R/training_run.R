@@ -94,7 +94,11 @@ do_training_run <- function(file, run_dir, echo, envir, encoding) {
     on.exit({ sink(type = "output"); close(output_file); }, add = TRUE)
 
     # sink plots
-    grDevices::png(file.path(run_dir, "training-run-%03d.png"))
+    plots_dir <- file.path(run_dir, "plots")
+    if (!utils::file_test("-d", plots_dir))
+      dir.create(plots_dir, recursive = TRUE)
+    grDevices::png(file.path(plots_dir, "Rplot%03d.png"),
+                   width=1200, height=715, res = 192) # ~ golden ratio @ highdpi
     dev_number <- dev.cur()
     on.exit(dev.off(dev_number), add = TRUE)
 
@@ -366,8 +370,8 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   data$source_code <- run_source_code(script, run$run_dir)
 
   # plots
-  plots <- list.files(run$run_dir,
-                      pattern = glob2rx("training-run-*.png"),
+  plots <- list.files(file.path(run$run_dir, "plots"),
+                      pattern = glob2rx("*.png"),
                       full.names = TRUE)
   if (length(plots) > 0) {
     data$plots <- lapply(plots, function(plot) {

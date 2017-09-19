@@ -122,9 +122,19 @@
 
 <template v-if="output">
 <div id="output">
+
+<template v-if="plots">
 <card caption="Plots">
-Plots
+<div class="row">
+<div v-for="plot in plots" class="col s12 m12 l6">
+<div class="center-align">
+<img class="materialboxed responsive-img plot-img" v-bind:src="plot"/>
+</div>
+</div> <!-- /col -->
+</div> <!-- /row -->
 </card>
+</template>
+
 <card caption="Console">
 <pre class="source-code"><code class="r">### output ###</code></pre>
 </card>
@@ -163,8 +173,10 @@ var app = new Vue({
 // initialize metrics charts
 if (app_data.history) {
   var c3_container = document.getElementById("c3-container");
-  new MetricsCharts(c3_container, app_data.history, null, true);
+  new MetricsCharts(c3_container, app_data.history, null, false);
 }
+
+
 
 // init highlighting
 hljs.initHighlighting();
