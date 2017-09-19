@@ -21,6 +21,8 @@ render_view <- function(view, output_file, variables = list()) {
   # add components to variables
   variables <- append(variables, list(
     jquery = read_component("jquery"),
+    roboto = read_component("roboto"),
+    material_icons = read_component("material_icons"),
     materialize = read_component("materialize"),
     vue_js = read_component("vue_min_js"),
     c3 = read_component("c3"),
