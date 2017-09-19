@@ -95,6 +95,8 @@
 
 <div class="col s12 m8 l8 xl8 pull-m4 pull-l4 pull-xl4">
 
+<template v-if="output_tab">
+
 <template v-if="error">
 <error-panel
   v-bind:error="error">
@@ -114,11 +116,29 @@
 </card>
 </template>
 
+</template>
+
+<template v-else>
+
+<template v-if="plots">
+<plots-card v-bind:plots="plots">
+</plots-card>
+</template>
+
+<template v-if="output">
+<code-card caption="Console" v-bind:code="output">
+</code-card>
+</template>
+</template>
+
+
 </div> <!-- /col -->
 
 </div> <!-- /row -->
 
 </div> <!-- /summary -->
+
+<template v-if="output_tab">
 
 <div id="output">
 
@@ -134,6 +154,7 @@
 
 </div> <!-- /output -->
 
+</template>
 
 <div id="code">
 

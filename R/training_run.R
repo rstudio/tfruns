@@ -291,13 +291,6 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
     error = NULL
   )
 
-  # tabs
-  data$tabs <- list(
-    list(href = "#summary", title = "Summary"),
-    list(href = "#output", title = "Output"),
-    list(href = "#code", title = "Code")
-  )
-
   # run_dir
   data$run_dir <- run$run_dir
 
@@ -356,6 +349,14 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   if (length(training) > 0)
     data$training <- training
 
+  # error
+  if (!is.null(run$error_message)) {
+    data$error <- list(
+      message = run$error_message,
+      traceback = run$error_traceback
+    )
+  }
+
   # metrics history
   if (!is.null(run$metrics))
     data$history <- run$metrics
@@ -365,6 +366,20 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
     data$model <- sub("^Model\n", "", run$model)
     data$model <- sub("^_+\n", "", data$model)
   }
+
+  # initialize tabs
+  data$tabs <- list(
+    list(href = "#summary", title = "Summary"),
+    list(href = "#output", title = "Output"),
+    list(href = "#code", title = "Code")
+  )
+
+  # determine if we have an output tab (remove it if we don't)
+  data$output_tab <- !is.null(data$error) ||
+                     !is.null(data$history) ||
+                     !is.null(data$model)
+  if (!data$output_tab)
+    data$tabs[[2]] <- NULL
 
   # source code
   data$source_code <- run_source_code(script, run$run_dir)
@@ -384,14 +399,6 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   # output
   if (!is.null(run$output))
     data$output <- run$output
-
-  # error
-  if (!is.null(run$error_message)) {
-    data$error <- list(
-      message = run$error_message,
-      traceback = run$error_traceback
-    )
-  }
 
   # view the page
   view_page("view_run",
