@@ -120,33 +120,25 @@
 
 </div> <!-- /summary -->
 
-<template v-if="output">
 <div id="output">
 
 <template v-if="plots">
-<card caption="Plots">
-<div class="row">
-<div v-for="plot in plots" class="col s12 m12 l6">
-<div class="center-align">
-<img class="materialboxed responsive-img plot-img" v-bind:src="plot"/>
-</div>
-</div> <!-- /col -->
-</div> <!-- /row -->
-</card>
+<plots-card v-bind:plots="plots">
+</plots-card>
 </template>
 
-<card caption="Console">
-<pre class="source-code"><code class="r">### output ###</code></pre>
-</card>
-</div> <!-- /output -->
+<template v-if="output">
+<code-card caption="Console" v-bind:code="output">
+</code-card>
 </template>
+
+</div> <!-- /output -->
 
 
 <div id="code">
 
-<card v-for="(item, index) in source_code" v-bind:caption="index">
-<pre class="source-code"><code class="r">### item ###</code></pre>
-</card>
+<code-card v-for="(item, index) in source_code" v-bind:caption="index" v-bind:code="item">
+</code-card>
 
 </div> <!-- /code -->
 

@@ -214,6 +214,40 @@ Vue.component('property-card', {
 })
 </script>
 
+
+<script type="text/x-template" id="plots-card-template">
+<card caption="Plots">
+<div class="row">
+<div v-for="plot in plots" class="col s12 m12 l6">
+<div class="center-align">
+<img class="materialboxed responsive-img plot-img" v-bind:src="plot"/>
+</div>
+</div> <!-- /col -->
+</div> <!-- /row -->
+</card>
+</script>
+<script type="application/javascript">
+Vue.component('plots-card', {
+  props: ['plots'],
+  template: '#plots-card-template',
+  delimiters: ["###","###"]
+})
+</script>
+
+<script type="text/x-template" id="code-card-template">
+<card v-bind:caption="caption">
+<pre class="source-code"><code class="r">### code ###</code></pre>
+</card>
+</script>
+<script type="application/javascript">
+Vue.component('code-card', {
+  props: ['caption', 'code'],
+  template: '#code-card-template',
+  delimiters: ["###","###"]
+})
+</script>
+
+
 <script type="text/x-template" id="error-panel-template">
 <div class="card-panel error-panel">
   <div class="error-message valign-wrapper">
