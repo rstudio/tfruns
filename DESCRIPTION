@@ -13,6 +13,8 @@ Authors@R: c(
          comment = "jQuery library"),
   person(family = "jQuery contributors", role = c("cph"),
          comment = "jQuery library; authors: inst/views/components/jquery-AUTHORS.txt"),
+  person("Shaun", "Bowe", role = c("cph"),
+         comment= "jQuery visibilityChanged plugin"),
   person(family = "Materialize", role = c("cph"),
          comment = "Materizlize library - https://materializecss.com/"),
   person("Yuxi", "You", role = c("cph"),

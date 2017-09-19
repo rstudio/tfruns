@@ -171,10 +171,21 @@ var app = new Vue({
 });
 
 // initialize metrics charts
-var charts = null;
 if (app_data.history) {
   var c3_container = document.getElementById("c3-container");
-  charts = new MetricsCharts(c3_container, app_data.history, null, false);
+  var charts = new MetricsCharts(c3_container, app_data.history, null, false);
+  $(window).on('resize', function(e) {
+    if ($(c3_container).is(':visible'))
+      charts.resize();
+  });
+  $(c3_container).visibilityChanged({
+    callback: function(element, visible) {
+      if (visible)
+        charts.resize();
+    },
+    runOnLoad: false,
+    frequency: 100
+});
 }
 
 
