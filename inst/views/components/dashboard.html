@@ -169,7 +169,12 @@ Vue.component('navbar', {
     }
   },
   template: '#navbar-template',
-  delimiters: ["###","###"]
+  delimiters: ["###","###"],
+  mounted: function() {
+    $('ul.tabs').on('click', 'a', function(e) {
+      window.scrollTo(0, 0);
+    });
+  }
 })
 </script>
 
