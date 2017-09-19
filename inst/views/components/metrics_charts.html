@@ -81,9 +81,21 @@ var MetricsCharts = (function () {
       auto_update();
 
     // auto resize if requested
+    var thiz = this;
     if (auto_resize) {
       window.setTimeout(resize, 200);
-      window.addEventListener("resize", resize);
+      $(window).on('resize', function(e) {
+        if ($(_container).is(':visible'))
+          thiz.resize();
+      });
+      $(_container).visibilityChanged({
+        callback: function(element, visible) {
+          if (visible)
+            thiz.resize();
+        },
+        runOnLoad: false,
+        frequency: 100
+      });
     }
   };
 
