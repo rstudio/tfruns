@@ -11,10 +11,9 @@
 #' @param run_dir Directory to store run data within
 #' @param echo Print expressions within training script
 #' @param view View the results of the run after training. The default "auto"
-#'   will view the run when in an interactive session. Pass `TRUE` or `FALSE`
-#'   to control whether the view is shown explictly. Pass an R function that
-#'   accepts a single "url" argument to provide a custom viewer. The default
-#'   viewer function can be specified using the `tfruns.viewer` R global option.
+#'   will view the run when executing a top-level (printed) statement in an
+#'   interactive session. Pass `TRUE` or `FALSE` to control whether the view is
+#'   shown explictly.
 #' @param envir The environment in which the script should be evaluated
 #' @param encoding The encoding of the training script; see [file()].
 #'
@@ -48,23 +47,43 @@ training_run <- function(file = "train.R",
   # execute the training run
   do_training_run(file, run_dir, echo = echo, envir = envir, encoding = encoding)
 
-  # run viewing helper
-  view_this_run <- function(...) {
-    message('\nview_run("', run_dir, '")\n')
-    view_run(run_dir, ...)
-  }
+  # check for forced view
+  force_view <- isTRUE(view)
 
-  # resolve 'auto' view
+  # result "auto" if necessary
   if (identical(view, "auto"))
     view <- interactive()
-  # view if requested
-  if (is.function(view))
-    view_this_run(viewer = view)
-  else if (isTRUE(view))
-    view_this_run()
 
-  # return the run invisibly
-  invisible(return_runs(run_record(run_dir)))
+  # print completed message
+  message('\nRun completed: ', run_dir, '\n')
+
+  # prepare to return the run
+  run_return <- return_runs(run_record(run_dir))
+
+  # force_view means we do the view (i.e. we don't rely on printing)
+  if (force_view) {
+
+    view_run(run_dir)
+    invisible(run_return)
+
+  # regular view means give it a class that will result in a view
+  # when executed as a top-level statement
+  } else if (view) {
+
+    class(run_return) <- c("tfruns_viewed_run", class(run_return))
+    run_return
+
+  # otherwise just return invisibly
+  } else {
+
+    invisible(run_return)
+
+  }
+}
+
+#' @export
+print.tfruns_viewed_run <- function(x, ...) {
+  view_run(x)
 }
 
 

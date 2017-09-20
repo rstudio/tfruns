@@ -30,10 +30,9 @@ additional metadata about the run which will be subsequently available via
 \item{echo}{Print expressions within training script}
 
 \item{view}{View the results of the run after training. The default "auto"
-will view the run when in an interactive session. Pass \code{TRUE} or \code{FALSE}
-to control whether the view is shown explictly. Pass an R function that
-accepts a single "url" argument to provide a custom viewer. The default
-viewer function can be specified using the \code{tfruns.viewer} R global option.}
+will view the run when executing a top-level (printed) statement in an
+interactive session. Pass \code{TRUE} or \code{FALSE} to control whether the view is
+shown explictly.}
 
 \item{envir}{The environment in which the script should be evaluated}
 
