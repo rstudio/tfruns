@@ -2,7 +2,7 @@
 #'
 #' @inheritParams  flags
 #' @param file Path to training script (defaults to "train.R")
-#' @param type Run type (defaults to "local")
+#' @param context Run context (defaults to "local")
 #' @param flags Named character vector with flag values (see [flags()]) or path
 #'   to YAML file containing flag values.
 #' @param properties Named character vector with run properties. Properties are
@@ -21,7 +21,7 @@
 #'
 #' @export
 training_run <- function(file = "train.R",
-                         type = "local",
+                         context = "local",
                          config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
                          flags = NULL,
                          properties = NULL,
@@ -37,7 +37,8 @@ training_run <- function(file = "train.R",
 
   # setup run context
   run_dir <- initialize_run(
-    type = type,
+    type = "training",
+    context = context,
     config = config,
     flags = flags,
     properties = properties,
@@ -145,7 +146,8 @@ do_training_run <- function(file, run_dir, echo, envir, encoding) {
 }
 
 
-initialize_run <- function(type = "local",
+initialize_run <- function(type = "training",
+                           context = "local",
                            config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
                            flags = NULL,
                            properties = NULL,
@@ -180,8 +182,11 @@ initialize_run <- function(type = "local",
   .globals$run_dir$flags <- flags
   .globals$run_dir$flags_file <- flags_file
 
-  # write type
-  write_run_metadata("properties", list(type = type))
+  # write type and context
+  write_run_metadata("properties", list(
+    type = type,
+    context = context
+  ))
 
   # write properties
   write_run_metadata("properties", properties)
@@ -316,7 +321,7 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   # attributes
   script <- basename(run$script)
   data$attributes <- list(
-    type = run$type,
+    context = run$context,
     script = script,
     run_dir = run$run_dir,
     started = paste(as.POSIXct(run$start, origin="1970-01-01", tz = "GMT"),

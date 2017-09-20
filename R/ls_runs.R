@@ -196,6 +196,14 @@ run_record <- function(run_dir) {
         paste(readLines(file.path(props_dir, file)), collapse = "\n")
       })
       names(values) <- properties
+
+      # default 'type' and 'context' (data migration)
+      if (is.null(values$type) || identical(values$type, 'local'))
+        values$type <- 'training'
+      if (is.null(values$context))
+        values$context <- 'local'
+
+      # return values
       values
     } else {
       list()
@@ -332,13 +340,15 @@ return_runs <- function(runs, order = NULL) {
   cols <- c(cols, select_cols(c("model", "loss_function", "optimizer", "learning_rate")))
   cols <- c(cols, select_cols(c("script", "source")))
   cols <- c(cols, select_cols(c("start", "end", "completed")))
-  cols <- c(cols, select_cols(c("output", "source_code")))
+  cols <- c(cols, select_cols(c("output", "error_message", "error_traceback")))
+  cols <- c(cols, select_cols(c("source_code")))
+  cols <- c(cols, select_cols(c("context", "type")))
   cols <- c(cols, setdiff(colnames(runs), cols))
 
   # promote any ordered columns to the front
-  if (identical(order, "start"))
+  if (identical(unname(order), "start"))
     order <- NULL
-  initial_cols <- c(select_cols(c("type", "run_dir")), order)
+  initial_cols <- c(select_cols(c("run_dir")), order)
   cols <- setdiff(cols, initial_cols)
   cols <- c(initial_cols, cols)
 

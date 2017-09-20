@@ -4,7 +4,7 @@
 \alias{training_run}
 \title{Run a training script}
 \usage{
-training_run(file = "train.R", type = "local",
+training_run(file = "train.R", context = "local",
   config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"), flags = NULL,
   properties = NULL, run_dir = NULL, echo = TRUE, view = "auto",
   envir = parent.frame(), encoding = getOption("encoding"))
@@ -12,7 +12,7 @@ training_run(file = "train.R", type = "local",
 \arguments{
 \item{file}{Path to training script (defaults to "train.R")}
 
-\item{type}{Run type (defaults to "local")}
+\item{context}{Run context (defaults to "local")}
 
 \item{config}{The configuration to use. Defaults to the active configuration
 for the current environment (as specified by the \code{R_CONFIG_ACTIVE}
