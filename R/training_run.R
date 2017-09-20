@@ -342,7 +342,7 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
     data$evaluation <- evaluation
 
   # flags
-  flags <- with_preface("flags")
+  flags <- with_preface("flag")
   if (!is.null(flags))
     data$flags <- flags
 
