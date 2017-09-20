@@ -1,0 +1,9 @@
+Name: Training Run
+Description: Execute a training run with the current source document
+Binding: add_in_training_run
+Interactive: false
+
+Name: View All Runs
+Description: View all training runs
+Binding: add_in_view_all_runs
+Interactive: false

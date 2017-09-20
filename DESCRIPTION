@@ -47,7 +47,8 @@ Imports:
   tibble,
   whisker,
   tidyselect,
-  rlang
+  rlang,
+  rstudioapi (>= 0.6)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
