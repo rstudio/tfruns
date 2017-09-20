@@ -45,7 +45,9 @@ Imports:
   config,
   magrittr,
   tibble,
-  whisker
+  whisker,
+  tidyselect,
+  rlang
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

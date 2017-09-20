@@ -40,10 +40,8 @@ ls_runs <- function(subset = NULL,
 
   if (!is.null(run_list)) {
 
-    # validate order
-    invalid_cols <- setdiff(order, colnames(run_list))
-    if (length(invalid_cols) > 0)
-      stop("Order by column(s) not found: ", paste(invalid_cols, collapse = ", "))
+    # resolve order
+    order <- tidyselect::vars_select(colnames(run_list), !! rlang::enquo(order))
 
     # build order expression
     order_cols <- paste(paste0("run_list$", order), collapse = ",")
