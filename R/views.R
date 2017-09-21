@@ -43,7 +43,7 @@ render_view <- function(view, output_file, variables = list()) {
   writeLines(html, output_file, useBytes = TRUE)
 }
 
-view_page <- function(page, stem = page, data, viewer) {
+view_page <- function(page, stem = page, data, viewer, save_rendered_html_path = NULL) {
 
   # convert data to json
   data_json <- jsonlite::toJSON(data,
@@ -57,6 +57,8 @@ view_page <- function(page, stem = page, data, viewer) {
   dir.create(viewer_dir)
   viewer_html <- file.path(viewer_dir, paste0(stem, ".html"))
   render_view(page, viewer_html, list(data = data_json))
+
+  if (!is.null(save_rendered_html_path)) file.copy(viewer_html, file.path(save_rendered_html_path, basename(viewer_html)))
 
   # display html
   if (is.null(viewer))
