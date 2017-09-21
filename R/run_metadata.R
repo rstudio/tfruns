@@ -129,11 +129,17 @@ write_run_data <- function(type, data) {
 
 write_source_archive <- function(sources_dir, data_dir, archive) {
 
-  # normalize data_dir since we'll be changing the working dir
+  # normalize paths since we'll be changing the working dir
+  sources_dir <- normalizePath(sources_dir)
   data_dir <- normalizePath(data_dir)
 
+  # change to sources_dir
+  wd <- getwd()
+  on.exit(setwd(wd), add = TRUE)
+  setwd(sources_dir)
+
   # enumerate source files
-  files <- list.files(path = sources_dir,
+  files <- list.files(path = ".",
                       pattern = utils::glob2rx("*.r"),
                       recursive = TRUE,
                       ignore.case = TRUE,
@@ -143,25 +149,23 @@ write_source_archive <- function(sources_dir, data_dir, archive) {
   files <- files[!grepl("^packrat/", files)]
 
   # create temp dir for sources
-  sources_dir <- file.path(tempfile("tfruns-sources"), "source")
-  on.exit(unlink(sources_dir), add = TRUE)
-  dir.create(sources_dir, recursive = TRUE)
+  sources_tmp_dir <- file.path(tempfile("tfruns-sources"), "source")
+  on.exit(unlink(sources_tmp_dir), add = TRUE)
+  dir.create(sources_tmp_dir, recursive = TRUE)
 
   # copy the sources to the temp dir
   for (file in files) {
     dir <- dirname(file)
-    target_dir <- file.path(sources_dir, dir)
+    target_dir <- file.path(sources_tmp_dir, dir)
     if (!utils::file_test("-d", target_dir))
       dir.create(target_dir, recursive = TRUE)
     file.copy(from = file, to = target_dir)
   }
 
   # create the tarball
-  wd <- getwd()
-  on.exit(setwd(wd), add = TRUE)
-  setwd(file.path(sources_dir, ".."))
   # tar and prevent "storing paths of more than 100 bytes is not
   # portable" warning issued by R
+  setwd(file.path(sources_tmp_dir, ".."))
   suppressWarnings(
     utils::tar(
       file.path(data_dir, archive),

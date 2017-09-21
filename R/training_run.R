@@ -37,6 +37,7 @@ training_run <- function(file = "train.R",
 
   # setup run context
   run_dir <- initialize_run(
+    file = file,
     type = "training",
     context = context,
     config = config,
@@ -146,7 +147,8 @@ do_training_run <- function(file, run_dir, echo, envir, encoding) {
 }
 
 
-initialize_run <- function(type = "training",
+initialize_run <- function(file,
+                           type = "training",
                            context = "local",
                            config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
                            flags = NULL,
@@ -192,7 +194,7 @@ initialize_run <- function(type = "training",
   write_run_metadata("properties", properties)
 
   # write source files
-  write_run_metadata("source", getwd())
+  write_run_metadata("source", dirname(file))
 
   # execute any pending writes
   for (name in ls(.globals$run_dir$pending_writes))
