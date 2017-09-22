@@ -91,7 +91,7 @@ browser_viewer <- function(viewer_dir, browser = utils::browseURL) {
     }
 
     # determine path to history html
-    path <- paste("/session", basename(viewer_dir), "index.html", sep = "/")
+    path <- paste("/session", basename(viewer_dir), basename(url), sep = "/")
 
     # build URL and browse it
     url <- paste0("http://127.0.0.1:", port, path)
