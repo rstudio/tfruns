@@ -357,20 +357,33 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
     data$optimization <- optimization
 
   # training
-  if (!is.null(run[["epochs"]]) && !is.null(run$epochs_completed)) {
-    if (run$epochs > run$epochs_completed)
-      epochs <- paste(format_integer(run$epochs_completed),
-                      format_integer(run$epochs),
-                      sep = "/")
+
+  # determine the step units
+  steps_unit <- NULL
+  for (unit in valid_steps_units) {
+    if (!is.null(run[[unit]])) {
+      steps_unit <- unit
+      break
+    }
+  }
+  if (!is.null(steps_unit))
+    steps_completed_unit <- paste0(steps_unit, "_completed")
+
+  # format the steps
+  if (!is.null(run[[steps_unit]]) && !is.null(run[[steps_completed_unit]])) {
+    if (run[[steps_unit]] > run[[steps_completed_unit]])
+      steps <- paste(format_integer(run[[steps_completed_unit]]),
+                     format_integer(run[[steps_unit]]),
+                     sep = "/")
     else
-      epochs <- format_integer(run$epochs)
+      steps <- format_integer(run[[steps_unit]])
   } else {
-    epochs <- NULL
+    steps <- NULL
   }
   training <- list()
   training$samples <- format_integer(run$samples)
   training$validation_samples <- format_integer(run$validation_samples)
-  training$epochs <- epochs
+  training[[steps_unit]] <- steps
   training$batch_size <- format_integer(run$batch_size)
   if (length(training) > 0)
     data$training <- training

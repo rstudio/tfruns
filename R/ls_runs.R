@@ -256,7 +256,8 @@ run_record <- function(run_dir) {
   properties$end <- as_numeric(properties, "end")
   properties$samples <- as_integer(properties, "samples")
   properties$validation_samples <- as_integer(properties, "validation_samples")
-  properties$epochs <- as_integer(properties, "epochs")
+  for (unit in valid_steps_units)
+    properties[[unit]] <- as_integer(properties, unit)
   properties$batch_size <- as_integer(properties, "batch_size")
   properties$completed <- as_logical(properties, "completed")
   properties$learning_rate <- as_numeric(properties, "learning_rate")
@@ -335,7 +336,9 @@ return_runs <- function(runs, order = NULL) {
   cols <- c(cols, cols_with_prefix("metric"))
   cols <- c(cols, cols_with_prefix("flag"))
   cols <- c(cols, select_cols(c("samples", "validation_samples")))
-  cols <- c(cols, select_cols(c("batch_size", "epochs", "epochs_completed")))
+  cols <- c(cols, select_cols(c("batch_size")))
+  for (unit in valid_steps_units)
+    cols <- c(cols, select_cols(c(unit, paste0(unit, "_completed"))))
   cols <- c(cols, select_cols(c("metrics")))
   cols <- c(cols, select_cols(c("model", "loss_function", "optimizer", "learning_rate")))
   cols <- c(cols, select_cols(c("script", "source")))
@@ -403,4 +406,6 @@ run_source_code <- function(script, run_dir) {
     list()
   }
 }
+
+valid_steps_units <- c("steps", "epochs")
 
