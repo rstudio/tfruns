@@ -131,6 +131,12 @@ table.attributes tbody tr:last-child {
   height: 225px;
 }
 
+.btn-small {
+  height: 24px;
+  line-height: 24px;
+  padding: 0 0.5rem;
+}
+
 </style>
 
 
@@ -182,7 +188,10 @@ Vue.component('navbar', {
 
 <script type="text/x-template" id="card-template">
 <div class="card">
-<div class="card-title grey lighten-4 grey-text text-darken-2">### caption ###</div>
+<div class="card-title grey lighten-4 grey-text text-darken-2">
+  ### caption ###
+  <div class="right"><slot name="toolbar"></slot></div>
+</div>
 <div class="card-content">
 <slot></slot>
 </div>
@@ -238,6 +247,7 @@ Vue.component('plots-card', {
 
 <script type="text/x-template" id="code-card-template">
 <card v-bind:caption="caption">
+<span slot="toolbar"></span>
 <pre class="source-code"><code class="r">### code ###</code></pre>
 </card>
 </script>
