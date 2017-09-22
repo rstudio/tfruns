@@ -33,7 +33,7 @@
 view_run_metrics <- function(metrics) {
 
   # create a new temp directory for the viewer's UI/data
-  viewer_dir <- tempfile("keras-metrics")
+  viewer_dir <- tempfile("tfruns-metrics")
   dir.create(viewer_dir, recursive = TRUE)
 
   # create the metrics_viewer instance
