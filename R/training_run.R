@@ -439,11 +439,10 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   if (!is.null(run$output))
     data$output <- run$output
 
-  # view the page
-  view_page("view_run",
-            stem = paste0("view-run-", basename(run$run_dir)),
-            data = data,
-            viewer = viewer)
+  # show view
+  viewer_html <- viewer_temp_file(paste0("view-run-", basename(run$run_dir)))
+  save_page("view_run", data = data, viewer_html)
+  view_page(viewer_html, viewer)
 }
 
 
@@ -474,9 +473,9 @@ compare_runs <- function(runs = ls_runs(latest_n = 2),
   )
 
   # show view
-  view_page("compare_runs",
-            data = data,
-            viewer = viewer)
+  viewer_html <- viewer_temp_file("compare-runs")
+  save_page("compare_runs", data = data, viewer_html)
+  view_page(viewer_html, viewer)
 }
 
 
