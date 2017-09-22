@@ -253,21 +253,21 @@ with_changed_file_copy <- function(training_dir, run_dir, expr) {
 }
 
 
-#' View a training run
+#' Save a run report as HTML
 #'
-#' View metrics and other attributes of a training run.
+#' The saved report includes summary information (flags, metrics, model attributes, etc.), plot and console output,
+#' and the code used for the run.
 #'
 #' @inheritParams run_info
-#' @param viewer Viewer to display training run information within
-#'   (default to an internal page viewer if available, otherwise
-#'   to the R session default web browser).
+#' @param filename Path to save the report to. If no `filename` is specified then a temporary
+#'  file is used (the path to the file is returned invisibly).
 #'
-#' @seealso [ls_runs()], [run_info()]
+#' @seealso [ls_runs()], [run_info()], [view_run()]
 #'
 #' @import base64enc
 #'
 #' @export
-view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")) {
+save_run_report <- function(run_dir = latest_run(), filename = tempfile(fileext = ".html")) {
 
   # verify run_dir
   if (is.null(run_dir))
@@ -439,9 +439,40 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   if (!is.null(run$output))
     data$output <- run$output
 
-  # show view
+  # save the report
+  save_page("view_run", data = data, filename)
+
+  # return the path saved to
+  invisible(filename)
+}
+
+
+#' View a training run
+#'
+#' View metrics and other attributes of a training run.
+#'
+#' @inheritParams run_info
+#' @param viewer Viewer to display training run information within
+#'   (default to an internal page viewer if available, otherwise
+#'   to the R session default web browser).
+#'
+#' @seealso [ls_runs()], [run_info()]
+#'
+#' @import base64enc
+#'
+#' @export
+view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")) {
+
+  # verify run_dir
+  if (is.null(run_dir))
+    stop("No runs available in the current directory")
+
+  # get run info
+  run <- run_info(run_dir)
+
+  # generate run report and view it
   viewer_html <- viewer_temp_file(paste0("view-run-", basename(run$run_dir)))
-  save_page("view_run", data = data, viewer_html)
+  save_run_report(run, filename = viewer_html)
   view_page(viewer_html, viewer)
 }
 
