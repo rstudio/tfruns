@@ -359,15 +359,14 @@ save_run_report <- function(run_dir = latest_run(), filename = "auto") {
   # training
 
   # determine the step units
-  steps_unit <- NULL
+  steps_unit <- "steps"
   for (unit in valid_steps_units) {
     if (!is.null(run[[unit]])) {
       steps_unit <- unit
       break
     }
   }
-  if (!is.null(steps_unit))
-    steps_completed_unit <- paste0(steps_unit, "_completed")
+  steps_completed_unit <- paste0(steps_unit, "_completed")
 
   # format the steps
   if (!is.null(run[[steps_unit]]) && !is.null(run[[steps_completed_unit]])) {
