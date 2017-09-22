@@ -69,4 +69,7 @@ view_page <- function(page, stem = page, data, viewer) {
   } else {
     browser_viewer(viewer_dir, viewer)(viewer_html)
   }
+
+  # return html file invisibly
+  invisible(viewer_html)
 }
