@@ -16,6 +16,7 @@
 #'   shown explictly.
 #' @param envir The environment in which the script should be evaluated
 #' @param encoding The encoding of the training script; see [file()].
+#' @param save_rendered_html Whether to save the rendered html file.
 #'
 #' @return Single row data frame with run flags, metrics, etc.
 #'
@@ -29,7 +30,8 @@ training_run <- function(file = "train.R",
                          echo = TRUE,
                          view = "auto",
                          envir = parent.frame(),
-                         encoding = getOption("encoding")) {
+                         encoding = getOption("encoding"),
+                         save_rendered_html = FALSE) {
 
   # verify that the file exists
   if (!file.exists(file))
@@ -64,8 +66,7 @@ training_run <- function(file = "train.R",
 
   # force_view means we do the view (i.e. we don't rely on printing)
   if (force_view) {
-
-    view_run(run_dir)
+    view_run(run_dir, save_rendered_html = save_rendered_html)
     invisible(run_return)
 
   # regular view means give it a class that will result in a view
@@ -261,13 +262,14 @@ with_changed_file_copy <- function(training_dir, run_dir, expr) {
 #' @param viewer Viewer to display training run information within
 #'   (default to an internal page viewer if available, otherwise
 #'   to the R session default web browser).
+#' @param save_rendered_html Whether to save the rendered html file.
 #'
 #' @seealso [ls_runs()], [run_info()]
 #'
 #' @import base64enc
 #'
 #' @export
-view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")) {
+view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer"), save_rendered_html = FALSE) {
 
   # verify run_dir
   if (is.null(run_dir))
@@ -430,7 +432,8 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   view_page("view_run",
             stem = paste0("view-run-", basename(run$run_dir)),
             data = data,
-            viewer = viewer)
+            viewer = viewer,
+            save_rendered_html_path = if (save_rendered_html) run$run_dir else NULL)
 }
 
 
