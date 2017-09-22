@@ -267,7 +267,7 @@ with_changed_file_copy <- function(training_dir, run_dir, expr) {
 #' @import base64enc
 #'
 #' @export
-save_run_report <- function(run_dir = latest_run(), filename = tempfile(fileext = ".html")) {
+save_run_report <- function(run_dir = latest_run(), filename = "auto") {
 
   # verify run_dir
   if (is.null(run_dir))
@@ -439,6 +439,10 @@ save_run_report <- function(run_dir = latest_run(), filename = tempfile(fileext 
   if (!is.null(run$output))
     data$output <- run$output
 
+  # generate filename if needed
+  if (identical(filename, "auto"))
+    filename <- viewer_temp_file(paste0("run-", basename(run$run_dir)))
+
   # save the report
   save_page("view_run", data = data, filename)
 
@@ -471,9 +475,7 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   run <- run_info(run_dir)
 
   # generate run report and view it
-  viewer_html <- viewer_temp_file(paste0("view-run-", basename(run$run_dir)))
-  save_run_report(run, filename = viewer_html)
-  view_page(viewer_html, viewer)
+  view_page(save_run_report(run), viewer)
 }
 
 

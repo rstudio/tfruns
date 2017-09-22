@@ -4,8 +4,7 @@
 \alias{save_run_report}
 \title{Save a run report as HTML}
 \usage{
-save_run_report(run_dir = latest_run(), filename = tempfile(fileext =
-  ".html"))
+save_run_report(run_dir = latest_run(), filename = "auto")
 }
 \arguments{
 \item{run_dir}{Training run directory or data frame returned from
