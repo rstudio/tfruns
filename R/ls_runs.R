@@ -287,8 +287,9 @@ run_record <- function(run_dir) {
     }
   }
 
+  steps_completed_unit <- get_steps_completed_unit(get_steps_unit(columns))
   # epochs completed
-  columns$epochs_completed <- epochs_completed
+  columns[[steps_completed_unit]] <- epochs_completed
 
   # flags
   columns <- append(columns, read_json_columns("flags.json", "flag"))
@@ -408,4 +409,19 @@ run_source_code <- function(script, run_dir) {
 }
 
 valid_steps_units <- c("steps", "epochs")
+
+get_steps_unit <- function(run) {
+  steps_unit <- "steps"
+  for (unit in valid_steps_units) {
+    if (!is.null(run[[unit]])) {
+      steps_unit <- unit
+      break
+    }
+  }
+  steps_unit
+}
+
+get_steps_completed_unit <- function(steps_unit) {
+  paste0(steps_unit, "_completed")
+}
 
