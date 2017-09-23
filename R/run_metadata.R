@@ -138,7 +138,13 @@ write_source_archive <- function(sources_dir, data_dir, archive) {
   on.exit(setwd(wd), add = TRUE)
   setwd(sources_dir)
 
-  # enumerate source files
+  # enumerate source files. note that we used to do this recursively but ran
+  # into performance issues when script files were in a directory with large
+  # subdirectories. Here's the commit where we backed this out:
+  #  https://github.com/rstudio/tfruns/commit/2dbcac627c82a2ecccecc2ba5ecada61d91255c7
+  # (note that if we bring this back we need to continue ignoring the packrat dir)
+  # the right solution might be to override `source` for the duration of the
+  # run and just track which R scripts are sourced.
   files <- list.files(path = ".",
                       pattern = utils::glob2rx("*.r"),
                       ignore.case = TRUE)
