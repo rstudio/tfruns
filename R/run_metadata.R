@@ -141,12 +141,7 @@ write_source_archive <- function(sources_dir, data_dir, archive) {
   # enumerate source files
   files <- list.files(path = ".",
                       pattern = utils::glob2rx("*.r"),
-                      recursive = TRUE,
-                      ignore.case = TRUE,
-                      include.dirs = TRUE)
-
-  # exclude packrat dir
-  files <- files[!grepl("^packrat/", files)]
+                      ignore.case = TRUE)
 
   # create temp dir for sources
   sources_tmp_dir <- file.path(tempfile("tfruns-sources"), "source")
