@@ -122,8 +122,8 @@ do_training_run <- function(file, run_dir, echo, envir, encoding) {
       filename = file.path(plots_dir, "Rplot%03d.png"),
       width=1200, height=715, res = 192 # ~ golden ratio @ highdpi
     )
-    if (capabilities("cairo"))  # required to prevent empty plot
-      png_args$type <- "cairo"  # emitted when type = "windows"
+    if (is_windows() && capabilities("cairo"))  # required to prevent empty plot
+      png_args$type <- "cairo"                  # emitted when type = "windows"
     do.call(grDevices::png, png_args)
     dev_number <- dev.cur()
     on.exit(dev.off(dev_number), add = TRUE)
