@@ -120,6 +120,12 @@
 
 <template v-else>
 
+<template v-if="files">
+<files-card
+  v-bind:files="files">
+</files-card>
+</template>
+
 <template v-if="plots">
 <plots-card v-bind:plots="plots">
 </plots-card>
@@ -141,6 +147,12 @@
 <template v-if="output_tab">
 
 <div id="output">
+
+<template v-if="files">
+<files-card
+  v-bind:files="files">
+</files-card>
+</template>
 
 <template v-if="plots">
 <plots-card v-bind:plots="plots">

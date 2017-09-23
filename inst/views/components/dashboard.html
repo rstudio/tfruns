@@ -269,5 +269,21 @@ Vue.component('error-panel', {
 })
 </script>
 
+<script type="text/x-template" id="files-card-template">
+<card caption="Files">
+<span v-for="file in files">### file ### </span>
+</card>
+</script>
+<script type="application/javascript">
+Vue.component('files-card', {
+  props: ['caption', 'files'],
+  template: '#files-card-template',
+  delimiters: ["###","###"]
+})
+</script>
+
+
+
+
 
 

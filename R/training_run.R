@@ -91,7 +91,7 @@ print.tfruns_viewed_run <- function(x, ...) {
 
 do_training_run <- function(file, run_dir, echo, envir, encoding) {
 
-  with_changed_file_copy(dirname(file), run_dir, {
+  with_changed_file_copy(getwd(), run_dir, {
 
     # write script
     write_run_property("script", basename(file))
@@ -312,6 +312,7 @@ save_run_report <- function(run_dir = latest_run(), filename = "auto") {
     optimization = NULL,
     training = NULL,
     flags = NULL,
+    files = NULL,
     plots = NULL,
     output = NULL,
     error = NULL
@@ -421,6 +422,15 @@ save_run_report <- function(run_dir = latest_run(), filename = "auto") {
 
   # source code
   data$source_code <- run_source_code(script, run$run_dir)
+
+  # files
+  files <- list.files(run$run_dir, recursive = TRUE)
+  files <- gsub("\\\\", "/", files)
+  files <- files[!grepl("^tfruns.d/", files)]
+  files <- files[!grepl("^plots/", files)]
+  files <- files[!grepl("^logs/", files)]
+  if (length(files) > 0)
+    data$files <- as.list(files)
 
   # plots
   plots <- list.files(file.path(run$run_dir, "plots"),
