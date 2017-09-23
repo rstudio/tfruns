@@ -14,6 +14,11 @@ add_in_training_run <- function() {
   }
 }
 
-add_in_view_all_runs <- function() {
+
+add_in_view_latest_run <- function() {
+  rstudioapi::sendToConsole("tfruns::view_run()")
+}
+
+add_in_view_run_history <- function() {
   rstudioapi::sendToConsole("View(tfruns::ls_runs())")
 }

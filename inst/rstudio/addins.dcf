@@ -3,7 +3,12 @@ Description: Execute a training run with the current source document
 Binding: add_in_training_run
 Interactive: false
 
-Name: View All Runs
+Name: View Latest Run
+Description: View the most recent training run
+Binding: add_in_view_latest_run
+Interactive: false
+
+Name: View Run History
 Description: View all training runs
-Binding: add_in_view_all_runs
+Binding: add_in_view_run_history
 Interactive: false
