@@ -74,6 +74,12 @@ nav .right {
   color: #e53935;
 }
 
+.file-chip {
+  border-radius: 8px;
+  background-color: #eceff1;
+  margin: 5px;
+}
+
 .plot-img {
   margin-top: 10px;
 }
@@ -271,7 +277,10 @@ Vue.component('error-panel', {
 
 <script type="text/x-template" id="files-card-template">
 <card caption="Files">
-<span v-for="file in files">### file ### </span>
+  <div class="chip file-chip center-align" v-for="file in files">
+    <i class="material-icons">attach_file</i>
+    <span class="file-name">### file ###</span>
+  </div>
 </card>
 </script>
 <script type="application/javascript">
