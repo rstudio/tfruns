@@ -125,8 +125,8 @@ do_training_run <- function(file, run_dir, echo, envir, encoding) {
     if (is_windows() && capabilities("cairo"))  # required to prevent empty plot
       png_args$type <- "cairo"                  # emitted when type = "windows"
     do.call(grDevices::png, png_args)
-    dev_number <- dev.cur()
-    on.exit(dev.off(dev_number), add = TRUE)
+    dev_number <- grDevices::dev.cur()
+    on.exit(grDevices::dev.off(dev_number), add = TRUE)
 
     # notify user of run dir
     message("Using run directory ", run_dir)
@@ -433,7 +433,7 @@ save_run_report <- function(run_dir = latest_run(), filename = "auto") {
 
   # plots
   plots <- list.files(file.path(run$run_dir, "plots"),
-                      pattern = glob2rx("*.png"),
+                      pattern = utils::glob2rx("*.png"),
                       full.names = TRUE)
   if (length(plots) > 0) {
     data$plots <- lapply(plots, function(plot) {
