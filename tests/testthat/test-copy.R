@@ -8,14 +8,14 @@ training_run()
 training_run("write_run_data.R")
 
 test_that("copy_run copies run directory", {
-  copy_run(latest_run(), "copied-run-dir")
+  copy_run(latest_run(), rename = "copied-run-dir")
   expect_true(file.exists(file.path("copied-run-dir", "subdir", "extra.dat")))
   expect_true(file.exists(file.path("copied-run-dir", "tfruns.d", "source.tar.gz")))
   unlink("copied-run-dir", recursive = TRUE)
 })
 
 test_that("copy_run_files copies run artifacts", {
-  copy_run_files(latest_run(), "run-artifacts", overwrite = TRUE)
+  copy_run_files(latest_run(), rename = "run-artifacts")
   expect_true(file.exists(file.path("run-artifacts", "extra.dat")))
   unlink("run-artifacts", recursive = TRUE)
 })
