@@ -16,5 +16,7 @@ data frame returned from \code{\link[=ls_runs]{ls_runs()}} with at least 2 eleme
 to the R session default web browser).}
 }
 \description{
-Render a visual comparison of two training runs.
+Render a visual comparison of two training runs. The runs are
+displayed with the most recent run on the right and the
+earlier run on the left.
 }

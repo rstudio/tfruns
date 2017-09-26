@@ -344,10 +344,19 @@ save_run_comparison <- function(runs = ls_runs(latest_n = 2), filename = "auto")
                                        sep = "-"))
   }
 
+  # runs to compare (order least to most recent)
+  if (runs[[1]]$start > runs[[2]]$start) {
+    run_a <- runs[[2]]
+    run_b <- runs[[1]]
+  } else {
+    run_a <- runs[[1]]
+    run_b <- runs[[2]]
+  }
+
   # data for view
   data <- list(
-    run_a = run_view_data(runs[[1]]),
-    run_b = run_view_data(runs[[2]])
+    run_a = run_view_data(run_a),
+    run_b = run_view_data(run_b)
   )
 
   # save the report
@@ -359,7 +368,9 @@ save_run_comparison <- function(runs = ls_runs(latest_n = 2), filename = "auto")
 
 #' Compare training runs
 #'
-#' Render a visual comparison of two training runs.
+#' Render a visual comparison of two training runs. The runs are
+#' displayed with the most recent run on the right and the
+#' earlier run on the left.
 #'
 #' @inheritParams view_run
 #' @inheritParams save_run_comparison
