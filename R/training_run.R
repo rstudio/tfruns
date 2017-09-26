@@ -357,10 +357,11 @@ save_run_comparison <- function(runs = ls_runs(latest_n = 2), filename = "auto")
   run_a <- run_view_data(run_a)
   run_b <- run_view_data(run_b)
 
-
+  # generate diffs
+  diffs <- run_diffs(run_a, run_b)
 
   # data for view
-  data <- list(run_a = run_a, run_b = run_b)
+  data <- list(run_a = run_a, run_b = run_b, diffs = diffs)
 
   # save the report
   save_page("compare_runs", data = data, filename)
@@ -462,12 +463,8 @@ run_view_data <- function(run) {
 
   # flags
   flags <- with_preface("flag")
-  if (!is.null(flags)) {
+  if (!is.null(flags))
     data$flags <- flags
-    data$flags_yaml <- yaml::as.yaml(flags)
-  } else {
-    data$flags_yaml <- ""
-  }
 
   # optimization
   optimization <- list()
@@ -566,6 +563,25 @@ run_view_data <- function(run) {
   data
 }
 
+
+run_diffs <- function(run_a, run_b) {
+
+  diffs <- list()
+
+  # FLAGS
+  run_flags <- function(run) ifelse(is.null(run$flags), "", yaml::as.yaml(run$flags))
+  run_a_flags <- run_flags(run_a)
+  run_b_flags <- run_flags(run_b)
+  if (!identical(run_a_flags, run_b_flags)) {
+    diffs[["FLAGS"]] <- list(
+      run_a = run_a_flags,
+      run_b = run_b_flags
+    )
+  }
+
+  # return diffs
+  diffs
+}
 
 
 

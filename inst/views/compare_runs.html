@@ -69,32 +69,11 @@
   v-bind:props_b="run_b.evaluation">
 </side-by-side-property-cards>
 
-
-<code-diff
-  filename="FLAGS"
-  v-bind:code_a="run_a.flags_yaml"
-  v-bind:code_b="run_b.flags_yaml">
+<code-diff v-for="(value, key) in diffs"
+  v-bind:filename="key"
+  v-bind:code_a="value.run_a"
+  v-bind:code_b="value.run_b">
 </code-diff>
-
-<div id="compare-code">
-</div>
-
-<script type="application/javascript">
-
-$(document).ready(function() {
-  var patch1 = JsDiff.createPatch('foo.txt', 'function() 4L + 0.2', 'function() 5L + 0.4', '', '');
-  var patch2 = JsDiff.createPatch('bar.txt', 'function() 4L + 0.2', 'function() 5L + 0.4', '', '');
-  var patch3 = JsDiff.createPatch('added.txt', '', 'function() 5L + 0.4', '', '');
-  var patch4 = JsDiff.createPatch('removed.txt', 'function() 5L + 0.4', '', '', '');
-
-
-  var diff2htmlUi = new Diff2HtmlUI({diff: patch1 + '\n' + patch2 + '\n' + patch3 + '\n' + patch4});
-  diff2htmlUi.draw('#compare-code', {inputFormat: 'diff', outputFormat: 'line-by-line', showFiles: false, matching: 'words'});
-  diff2htmlUi.highlightCode('#compare-code');
-  diff2htmlUi.fileListCloseable('#compare-code', false);
-});
-
-</script>
 
 
 </div> <!-- /container -->
