@@ -46,31 +46,24 @@
 
 <div class="container">
 
-<div class="row">
+<side-by-side-property-cards
+  caption="Attributes"
+  v-bind:props_a="run_a.attributes"
+  v-bind:props_b="run_b.attributes">
+</side-by-side-property-cards>
 
-<div class="col s12 m6">
+<side-by-side-property-cards
+  caption="Metrics"
+  v-bind:props_a="run_a.metrics"
+  v-bind:props_b="run_b.metrics">
+</side-by-side-property-cards>
 
-<card caption="Run A">
+<side-by-side-property-cards
+  caption="Evaluation"
+  v-bind:props_a="run_a.evaluation"
+  v-bind:props_b="run_b.evaluation">
+</side-by-side-property-cards>
 
-<div style="min-height: 150px;"></div>
-
-</card>
-
-</div> <!-- /col -->
-
-<div class="col s12 m6">
-
-<card caption="Run B">
-
-<div style="min-height: 150px;"></div>
-
-</card>
-
-</div> <!-- /col -->
-
-</div> <!-- /row -->
-
-<div>
 
 <div id="diff">
 </div>
