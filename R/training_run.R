@@ -353,11 +353,14 @@ save_run_comparison <- function(runs = ls_runs(latest_n = 2), filename = "auto")
     run_b <- runs[[2]]
   }
 
+  # get view_data
+  run_a <- run_view_data(run_a)
+  run_b <- run_view_data(run_b)
+
+
+
   # data for view
-  data <- list(
-    run_a = run_view_data(run_a),
-    run_b = run_view_data(run_b)
-  )
+  data <- list(run_a = run_a, run_b = run_b)
 
   # save the report
   save_page("compare_runs", data = data, filename)
@@ -459,8 +462,12 @@ run_view_data <- function(run) {
 
   # flags
   flags <- with_preface("flag")
-  if (!is.null(flags))
+  if (!is.null(flags)) {
     data$flags <- flags
+    data$flags_yaml <- yaml::as.yaml(flags)
+  } else {
+    data$flags_yaml <- ""
+  }
 
   # optimization
   optimization <- list()

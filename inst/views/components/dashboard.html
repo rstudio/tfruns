@@ -326,6 +326,29 @@ Vue.component('code-card', {
 })
 </script>
 
+<script type="text/x-template" id="code-diff-template">
+<div class="code-diff">
+</div>
+</script>
+<script type="application/javascript">
+Vue.component('code-diff', {
+  props: ['filename', 'code_a', 'code_b'],
+  template: '#code-diff-template',
+  delimiters: ["###","###"],
+  mounted: function() {
+    var diff = JsDiff.createPatch(this.filename, this.code_a, this.code_b, '', '');
+    var diff2htmlUi = new Diff2HtmlUI({diff: diff});
+    var id = '_' + Math.random().toString(36).substr(2, 9);
+    $(this.$el).attr('id', id);
+    id = '#' + id;
+    diff2htmlUi.draw(id, {inputFormat: 'diff', outputFormat: 'line-by-line', showFiles: false, matching: 'words'});
+    diff2htmlUi.highlightCode(id);
+    diff2htmlUi.fileListCloseable(id, false);
+
+  }
+})
+</script>
+
 
 <script type="text/x-template" id="error-panel-template">
 <div class="card-panel error-panel">
