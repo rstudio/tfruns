@@ -22,7 +22,7 @@ test_that("copy_run_files copies run artifacts", {
 
 test_that("copy_runs successfully copies run directories", {
   last_3_runs <- ls_runs()[1:3,]
-  copy_runs(last_3_runs, "last-three")
+  copy_run(last_3_runs, "last-three")
   expect_true(all(
     utils::file_test(
       "-d", file.path("last-three", basename(as_run_dir(last_3_runs))))
