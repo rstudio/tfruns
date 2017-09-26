@@ -181,6 +181,10 @@ list_run_dirs <- function(latest_n = NULL, runs_dir) {
 
 run_record <- function(run_dir) {
 
+  # validate that it exists
+  if (!utils::file_test("-d", run_dir))
+    stop("Run directory ", run_dir, " does not exist", call. = FALSE)
+
   # compute run name and meta dir
   run <- basename(run_dir)
   meta_dir <- file.path(run_dir, "tfruns.d")
