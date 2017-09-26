@@ -53,6 +53,10 @@ clean_runs <- function(runs = ls_runs(runs_dir = runs_dir),
     dir.create(archive_dir, recursive = TRUE)
   file.rename(run_dirs, file.path(archive_dir, basename(run_dirs)))
 
+  # print message
+  message(sprintf('Moved %d runs to %s (purge_runs() to remove permanently)',
+                  length(run_dirs), archive_dir))
+
   # return NULL
   invisible(NULL)
 }
@@ -76,6 +80,9 @@ purge_runs <- function(runs_dir = getOption("tfruns.runs_dir", "runs"),
 
   # remove
   unlink(run_dirs, recursive = TRUE)
+
+  # print message
+  message(sprintf("Permanently removed %d runs", length(run_dirs)))
 
   # return NULL
   invisible(NULL)
