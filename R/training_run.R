@@ -359,15 +359,13 @@ save_run_comparison <- function(runs = ls_runs(latest_n = 2), filename = "auto")
 
 #' Compare training runs
 #'
-#' Render a visual comparison of two training runs. By default, the last
-#' two training runs are compared, with the earlier run on the left and
-#' the more recent run on the right.
+#' Render a visual comparison of two training runs.
 #'
 #' @inheritParams view_run
 #' @inheritParams save_run_comparison
 #'
 #' @export
-compare_runs <- function(runs = ls_runs(latest_n = 2, decreasing = FALSE),
+compare_runs <- function(runs = ls_runs(latest_n = 2),
                          viewer = getOption("tfruns.viewer")) {
 
   # verify runs
