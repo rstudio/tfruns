@@ -65,6 +65,7 @@
 </side-by-side-property-cards>
 
 
+<!--
 <div id="diff">
 </div>
 
@@ -77,14 +78,13 @@ $(document).ready(function() {
   //var patch4 = JsDiff.createPatch('removed.txt', function() 5L + 0.4', '', '', '');
   var patch4 = '';
   var diff2htmlUi = new Diff2HtmlUI({diff: patch1 + '\n' + patch2 + '\n' + patch3 + '\n' + patch4});
-  diff2htmlUi.draw('#diff', {inputFormat: 'diff', showFiles: true, matching: 'lines'});
+  diff2htmlUi.draw('#diff', {inputFormat: 'diff', outputFormat: 'side-by-side', showFiles: false, matching: 'lines'});
   diff2htmlUi.highlightCode('#diff');
   diff2htmlUi.fileListCloseable('#diff', false);
 });
 
 </script>
-
-</div> <!-- /row -->
+-->
 
 </div> <!-- /container -->
 
