@@ -4,7 +4,7 @@
 \alias{compare_runs}
 \title{Compare training runs}
 \usage{
-compare_runs(runs = ls_runs(latest_n = 2),
+compare_runs(runs = ls_runs(latest_n = 2, decreasing = FALSE),
   viewer = getOption("tfruns.viewer"))
 }
 \arguments{
@@ -16,5 +16,7 @@ data frame returned from \code{\link[=ls_runs]{ls_runs()}} with at least 2 eleme
 to the R session default web browser).}
 }
 \description{
-Render a visual comparison of two training runs.
+Render a visual comparison of two training runs. By default, the last
+two training runs are compared, with the earlier run on the left and
+the more recent run on the right.
 }
