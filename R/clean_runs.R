@@ -17,6 +17,9 @@
 #' @examples \dontrun{
 #' clean_runs(ls_runs(completed == FALSE))
 #' }
+#'
+#' @family run management
+#'
 #' @export
 clean_runs <- function(runs = ls_runs(runs_dir = runs_dir),
                        runs_dir = getOption("tfruns.runs_dir", "runs"),

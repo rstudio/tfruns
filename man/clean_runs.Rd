@@ -36,4 +36,8 @@ subdirectory.
 \dontrun{
 clean_runs(ls_runs(completed == FALSE))
 }
+
+}
+\seealso{
+Other run management: \code{\link{copy_run}}
 }
