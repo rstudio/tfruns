@@ -27,6 +27,11 @@
 {{{ dashboard }}}
 
 <style type="text/css">
+
+#compare-code {
+  margin-top: 15px;
+}
+
 @media only screen and (min-width: 601px) {
 .row .col:last-child {
   padding-left: 0.2rem;
@@ -65,8 +70,7 @@
 </side-by-side-property-cards>
 
 
-<!--
-<div id="diff">
+<div id="compare-code">
 </div>
 
 <script type="application/javascript">
@@ -75,16 +79,17 @@ $(document).ready(function() {
   var patch1 = JsDiff.createPatch('foo.txt', 'function() 4L + 0.2', 'function() 5L + 0.4', '', '');
   var patch2 = JsDiff.createPatch('bar.txt', 'function() 4L + 0.2', 'function() 5L + 0.4', '', '');
   var patch3 = JsDiff.createPatch('added.txt', '', 'function() 5L + 0.4', '', '');
-  //var patch4 = JsDiff.createPatch('removed.txt', function() 5L + 0.4', '', '', '');
-  var patch4 = '';
+  var patch4 = JsDiff.createPatch('removed.txt', 'function() 5L + 0.4', '', '', '');
+
+
   var diff2htmlUi = new Diff2HtmlUI({diff: patch1 + '\n' + patch2 + '\n' + patch3 + '\n' + patch4});
-  diff2htmlUi.draw('#diff', {inputFormat: 'diff', outputFormat: 'side-by-side', showFiles: false, matching: 'lines'});
-  diff2htmlUi.highlightCode('#diff');
-  diff2htmlUi.fileListCloseable('#diff', false);
+  diff2htmlUi.draw('#compare-code', {inputFormat: 'diff', outputFormat: 'line-by-line', showFiles: false, matching: 'words'});
+  diff2htmlUi.highlightCode('#compare-code');
+  diff2htmlUi.fileListCloseable('#compare-code', false);
 });
 
 </script>
--->
+
 
 </div> <!-- /container -->
 
