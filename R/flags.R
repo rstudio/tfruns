@@ -236,7 +236,7 @@ parse_flags <- function(FLAGS, config, file, arguments) {
       string = as.character(flags[[name]])
     ))
     # error if type coersion fails
-    if (is.na(value)) {
+    if (any(is.na(value))) {
       value <- paste0("'", flags[[name]], "'")
       stop("Unable to convert flag '", name, "' with value ", value,
            " to type ", type, call. = FALSE)
