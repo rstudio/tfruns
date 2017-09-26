@@ -258,21 +258,21 @@ with_changed_file_copy <- function(training_dir, run_dir, expr) {
 }
 
 
-#' Save a run report as HTML
+#' Save a run view as HTML
 #'
-#' The saved report includes summary information (flags, metrics, model attributes, etc.), plot and console output,
-#' and the code used for the run.
+#' The saved view includes summary information (flags, metrics, model
+#' attributes, etc.), plot and console output, and the code used for the run.
 #'
 #' @inheritParams run_info
-#' @param filename Path to save the report to. If no `filename` is specified then a temporary
-#'  file is used (the path to the file is returned invisibly).
+#' @param filename Path to save the view to. If no `filename` is specified
+#'   then a temporary file is used (the path to the file is returned invisibly).
 #'
 #' @seealso [ls_runs()], [run_info()], [view_run()]
 #'
 #' @import base64enc
 #'
 #' @export
-save_run_report <- function(run_dir = latest_run(), filename = "auto") {
+save_run_view <- function(run_dir = latest_run(), filename = "auto") {
 
   # verify run_dir
   if (is.null(run_dir))
@@ -483,7 +483,7 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   run <- run_info(run_dir)
 
   # generate run report and view it
-  view_page(save_run_report(run), viewer)
+  view_page(save_run_view(run), viewer)
 }
 
 
@@ -503,8 +503,8 @@ compare_runs <- function(runs = ls_runs(latest_n = 2),
   # cast to run_info
   runs <- run_info(runs)
 
-  # verify at least 2 runs provided
-  if (length(runs) < 2)
+  # verify exactly 2 runs provided
+  if (length(runs) != 2)
     stop("You must pass at least 2 run directories to compare_runs")
 
   # data for view
@@ -517,6 +517,11 @@ compare_runs <- function(runs = ls_runs(latest_n = 2),
   viewer_html <- viewer_temp_file("compare-runs")
   save_page("compare_runs", data = data, viewer_html)
   view_page(viewer_html, viewer)
+}
+
+save_run_comparison <- function(runs = ls_runs(latest_n = 2)) {
+
+
 }
 
 
