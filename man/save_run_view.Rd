@@ -10,7 +10,7 @@ save_run_view(run_dir = latest_run(), filename = "auto")
 \item{run_dir}{Training run directory or data frame returned from
 \code{\link[=ls_runs]{ls_runs()}}.}
 
-\item{filename}{Path to save the view to. If no \code{filename} is specified
+\item{filename}{Path to save the HTML to. If no \code{filename} is specified
 then a temporary file is used (the path to the file is returned invisibly).}
 }
 \description{

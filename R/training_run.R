@@ -264,7 +264,7 @@ with_changed_file_copy <- function(training_dir, run_dir, expr) {
 #' attributes, etc.), plot and console output, and the code used for the run.
 #'
 #' @inheritParams run_info
-#' @param filename Path to save the view to. If no `filename` is specified
+#' @param filename Path to save the HTML to. If no `filename` is specified
 #'   then a temporary file is used (the path to the file is returned invisibly).
 #'
 #' @seealso [ls_runs()], [run_info()], [view_run()]
@@ -479,26 +479,19 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
   if (is.null(run_dir))
     stop("No runs available in the current directory")
 
-  # get run info
-  run <- run_info(run_dir)
-
   # generate run report and view it
-  view_page(save_run_view(run), viewer)
+  view_page(save_run_view(run_dir), viewer)
 }
 
-
-#' Compare training runs
+#' Save a run comparison as HTML
 #'
-#' Render a visual comparison of two training runs.
-#'
-#' @inheritParams view_run
+#' @inheritParams save_run_view
 #'
 #' @param runs @param run_dir Character vector of 2 training run directories or
 #'   data frame returned from [ls_runs()] with at least 2 elements.
 #'
 #' @export
-compare_runs <- function(runs = ls_runs(latest_n = 2),
-                         viewer = getOption("tfruns.viewer")) {
+save_run_comparison <- function(runs = ls_runs(latest_n = 2), filename = "auto") {
 
   # cast to run_info
   runs <- run_info(runs)
@@ -507,21 +500,44 @@ compare_runs <- function(runs = ls_runs(latest_n = 2),
   if (length(runs) != 2)
     stop("You must pass at least 2 run directories to compare_runs")
 
+  # generate filename if needed
+  if (identical(filename, "auto")) {
+    filename <- viewer_temp_file(paste("compare-runs",
+                                       basename(runs[[1]]$run_dir),
+                                       basename(runs[[2]]$run_dir),
+                                       sep = "-"))
+  }
+
   # data for view
   data <- list(
     run_a = unclass(runs[[1]]),
     run_b = unclass(runs[[2]])
   )
 
-  # show view
-  viewer_html <- viewer_temp_file("compare-runs")
-  save_page("compare_runs", data = data, viewer_html)
-  view_page(viewer_html, viewer)
+  # save the report
+  save_page("compare_runs", data = data, filename)
+
+  # return the path saved to
+  invisible(filename)
 }
 
-save_run_comparison <- function(runs = ls_runs(latest_n = 2)) {
+#' Compare training runs
+#'
+#' Render a visual comparison of two training runs.
+#'
+#' @inheritParams view_run
+#' @inheritParams save_run_comparison
+#'
+#' @export
+compare_runs <- function(runs = ls_runs(latest_n = 2),
+                         viewer = getOption("tfruns.viewer")) {
 
+  # verify runs
+  if (is.null(runs))
+    stop("No runs available in the current directory")
 
+  # save and view
+  view_page(save_run_comparison(runs), viewer)
 }
 
 
