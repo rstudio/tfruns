@@ -82,6 +82,22 @@
 
 <!-- Training History -->
 
+<side-by-side>
+  <div slot="left">
+    <template v-if="run_a.history">
+    <card caption="History">
+    <div id="run_a_history"></div>
+    </card>
+    </template>
+  </div>
+  <div slot="right">
+    <template v-if="run_b.history">
+    <card caption="History">
+    <div id="run_b_history"></div>
+    </card>
+    </template>
+  </div>
+</side-by-side>
 
 
 <!-- Plot Output -->
@@ -130,6 +146,16 @@ var app = new Vue({
   data: app_data,
   delimiters: ["###","###"]
 });
+
+// initialize metrics charts
+function init_charts(id, history) {
+  var c3_container = document.getElementById(id);
+  var charts = new MetricsCharts(c3_container, history, null, true);
+}
+if (app_data.run_a.history)
+  init_charts("run_a_history", app_data.run_a.history);
+if (app_data.run_b.history)
+  init_charts("run_b_history", app_data.run_b.history);
 
 </script>
 

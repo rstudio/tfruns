@@ -1,35 +1,43 @@
 <script type="application/javascript">
 
-var MetricsCharts = (function () {
+function MetricsCharts(container, metrics, update_url, auto_resize) {
 
-  var MetricsCharts = function(container, metrics, update_url, auto_resize) {
+  // instance variables
+  this.$container = container;
+  this.$metrics = metrics;
+  this.$update_url = update_url;
+  this.$auto_resize = auto_resize;
+  this.$metric_names = [];
+  this.$c3_charts = [];
 
-    // save container and update_url
-    _container = container;
-    _update_url = update_url;
+  // alias this function functions
+  var thiz = this;
+
+  // contruction
+  this.$initialize = function() {
 
     // determine metrics we will be plotting (filter out val_ prefixed ones)
-    var keys = Object.keys(metrics);
+    var keys = Object.keys(this.$metrics);
     for (var k = 0; k<keys.length; k++) {
       if (keys[k].lastIndexOf('val_', 0) !== 0)
-        _metric_names.push(keys[k]);
+        this.$metric_names.push(keys[k]);
     }
 
     // create a C3 chart for each metric
-    var total_epochs = get_total_epochs(metrics);
-    for (var i = 0; i<_metric_names.length; i++) {
+    var total_epochs = this.$get_total_epochs(this.$metrics);
+    for (var i = 0; i<this.$metric_names.length; i++) {
 
       // get the metric
-      var metric = _metric_names[i];
+      var metric = this.$metric_names[i];
 
       // default y_axis options
       var y_axis = {
         tick: {
-          format: y_tick_format
+          format: this.$y_tick_format
         }
       };
       // special y-axis treatment for accuracy
-      if (is_accuracy(metric)) {
+      if (this.$is_accuracy(metric)) {
         y_axis.padding = {
           top: 0
         };
@@ -37,7 +45,7 @@ var MetricsCharts = (function () {
 
       // create a chart wrapper div
       var c3_div = document.createElement("div");
-      _container.appendChild(c3_div);
+      this.$container.appendChild(c3_div);
 
       // create c3 chart bound to div
       var tick_values = null;
@@ -58,7 +66,7 @@ var MetricsCharts = (function () {
           y: y_axis
         },
         data: {
-          columns: chart_columns(metric, metrics)
+          columns: this.$chart_columns(metric, this.$metrics)
         },
         color: {
           pattern: ['#42a5f5', '#66BB6A']
@@ -69,26 +77,25 @@ var MetricsCharts = (function () {
       });
 
       // adjust y axis
-      adjust_y_axis(chart, metric, metrics);
+      this.$adjust_y_axis(chart, metric, this.$metrics);
 
       // track chart
-      _c3_charts.push(chart);
+      this.$c3_charts.push(chart);
 
     }
 
     // auto update if appropriate
-    if (_update_url !== null && !run_completed(metrics) && (window.location.protocol !== "file"))
-      auto_update();
+    if (this.$update_url !== null && !this.$run_completed(this.$metrics) && (window.location.protocol !== "file"))
+      this.$auto_update();
 
     // auto resize if requested
-    var thiz = this;
-    if (auto_resize) {
-      window.setTimeout(resize, 200);
+    if (this.$auto_resize) {
+      window.setTimeout(function() { thiz.resize(); }, 200);
       $(window).on('resize', function(e) {
-        if ($(_container).is(':visible'))
+        if ($(thiz.$container).is(':visible'))
           thiz.resize();
       });
-      $(_container).visibilityChanged({
+      $(this.$container).visibilityChanged({
         callback: function(element, visible) {
           if (visible)
             thiz.resize();
@@ -99,16 +106,52 @@ var MetricsCharts = (function () {
     }
   };
 
+  // get the array of charts
+  this.charts = function() {
+    return this.$c3_charts;
+  };
+
+  // update with new data
+  this.update = function(data) {
+    for (var i = 0; i<this.$metric_names.length; i++) {
+      var metric = this.$metric_names[i];
+      var chart = this.$c3_charts[i];
+      chart.load({
+        columns: this.$chart_columns(metric, data)
+      });
+      this.$adjust_y_axis(chart, metric, data);
+      // ensure repaint
+      chart.flush();
+    }
+  };
+
+  // resize charts to fit within their container
+  this.resize = function() {
+    var chart_height = this.$container.offsetHeight / this.$c3_charts.length;
+    for (var i = 0; i<this.$c3_charts.length; i++) {
+      var chart = this.$c3_charts[i];
+      var element = chart.element;
+      element.style.maxHeight = "none";
+      element.style.height = chart_height + "px";
+      var elementRect = element.getBoundingClientRect();
+      chart.resize({
+        height: elementRect.height,
+        width: elementRect.width
+      });
+    }
+  };
+
+
   // periodically update metrics from a url
-  function auto_update() {
+  this.$auto_update = function() {
     var updateInterval = setInterval(function() {
-      load_metrics(function(data) {
+      thiz.$load_metrics(function(data) {
 
         // perform update
-        update(data);
+        thiz.update(data);
 
         // stop refreshing metrics when the run is completed
-        if (run_completed(data))
+        if (thiz.$run_completed(data))
           clearInterval(updateInterval);
       },
       // error handler
@@ -116,57 +159,57 @@ var MetricsCharts = (function () {
         clearInterval(updateInterval);
       });
     }, 1000);
-  }
+  };
 
   // helper to determine whether we've seen all the data
-  function run_completed(data) {
-    return get_current_epochs(data) >= get_total_epochs(data);
-  }
+  this.$run_completed = function(data) {
+    return this.$get_current_epochs(data) >= this.$get_total_epochs(data);
+  };
 
   // see how many total epochs there are
-  function get_total_epochs(data) {
-    var first_metric = data[_metric_names[0]];
+  this.$get_total_epochs = function(data) {
+    var first_metric = data[this.$metric_names[0]];
     return first_metric.length;
-  }
+  };
 
   // see how many epochs are in the data
-  function get_current_epochs(data) {
-    var first_metric = data[_metric_names[0]];
+  this.$get_current_epochs = function(data) {
+    var first_metric = data[this.$metric_names[0]];
     for (var r = 0; r<first_metric.length; r++) {
       if (first_metric[r] === null) {
         break;
       }
     }
     return r;
-  }
+  };
 
   // determine whether a metric is 'accuracy'
-  function is_accuracy(metric) {
+  this.$is_accuracy = function(metric) {
     return metric === 'acc' || metric === 'accuracy';
-  }
+  };
 
-  // helper to format y tick marks. use the default
+   // helper to format y tick marks. use the default
   // d3 formatter but strip long sequences of zeros
   // followed by a single digit at the end (result
   // of JavaScript floating point rouning issues
   // during axis interpolation)
-  var _default_format = d3.format("");
-  function y_tick_format(d) {
-    var fmt = _default_format(d);
+  var default_format = d3.format("");
+  this.$y_tick_format = function(d) {
+    var fmt = default_format(d);
     return fmt.replace(/0+\d$/, '');
-  }
+  };
 
   // tweak chart y-axis
-  function adjust_y_axis(chart, metric, data) {
-    var current_epochs = get_current_epochs(data);
-    if (is_accuracy(metric) && (current_epochs > 0))
+  this.$adjust_y_axis = function(chart, metric, data) {
+    var current_epochs = this.$get_current_epochs(data);
+    if (this.$is_accuracy(metric) && (current_epochs > 0))
       chart.axis.max({
         y: 1
       });
-  }
+  };
 
   // yield chart column data
-  function chart_columns(metric, data) {
+  this.$chart_columns = function(metric, data) {
 
     var columns = [
       [metric,null].concat(data[metric])
@@ -180,10 +223,10 @@ var MetricsCharts = (function () {
     }
 
     return columns;
-  }
+  };
 
   // load metrics from the update url
-  function load_metrics(callback, on_error) {
+  this.$load_metrics = function(callback, on_error) {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function() {
     if (request.readyState === 4) {
@@ -202,60 +245,13 @@ var MetricsCharts = (function () {
       }
     }
     };
-    request.open('GET', _update_url);
+    request.open('GET', this.$update_url);
     request.setRequestHeader('Cache-Control', 'no-cache');
     request.send();
-  }
-
-  // get the array of charts
-  function charts() {
-    return _c3_charts;
-  }
-
-  // update with new data
-  function update(data) {
-    for (var i = 0; i<_metric_names.length; i++) {
-      var metric = _metric_names[i];
-      var chart = _c3_charts[i];
-      chart.load({
-        columns: chart_columns(metric, data)
-      });
-      adjust_y_axis(chart, metric, data);
-      // ensure repaint
-      chart.flush();
-    }
-  }
-
-  // resize charts to fit within their container
-  function resize() {
-    var chart_height = _container.offsetHeight / _c3_charts.length;
-    for (var i = 0; i<_c3_charts.length; i++) {
-      var chart = _c3_charts[i];
-      var element = chart.element;
-      element.style.maxHeight = "none";
-      element.style.height = chart_height + "px";
-      var elementRect = element.getBoundingClientRect();
-      chart.resize({
-        height: elementRect.height,
-        width: elementRect.width
-      });
-    }
-  }
-
-  var _container = null;
-  var _metric_names = [];
-  var _c3_charts = [];
-  var _update_url = null;
-
-  MetricsCharts.prototype = {
-    constructor: MetricsCharts,
-    charts: charts,
-    update: update,
-    resize: resize
   };
 
-  return MetricsCharts;
-
-})();
+  // initialize
+  this.$initialize();
+}
 
 </script>
