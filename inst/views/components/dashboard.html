@@ -323,7 +323,7 @@ Vue.component('property-card', {
 <script type="text/x-template" id="plots-card-template">
 <card caption="Plots">
 <div class="row">
-<div v-for="plot in plots" class="col s12 m12 l6">
+<div v-for="plot in plots" v-bind:class="col_class">
 <div class="center-align">
 <img class="materialboxed responsive-img plot-img" v-bind:src="plot"/>
 </div>
@@ -333,7 +333,15 @@ Vue.component('property-card', {
 </script>
 <script type="application/javascript">
 Vue.component('plots-card', {
-  props: ['plots'],
+   props: {
+    "plots": {
+      type: Object
+    },
+    "col_class": {
+      type: String,
+      default: "col s12 m12 l6"
+    }
+  },
   template: '#plots-card-template',
   delimiters: ["###","###"]
 })
