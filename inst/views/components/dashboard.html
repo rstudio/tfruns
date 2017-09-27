@@ -182,11 +182,11 @@ table.attributes td {
   font-size: 0.8rem;
 }
 
-.side-by-side-property-cards .row {
+.side-by-side .row {
   margin-bottom: 10px;
 }
 
-.side-by-side-property-cards .card {
+.side-by-side .card {
   margin-bottom: 0;
 }
 
@@ -320,12 +320,24 @@ Vue.component('property-card', {
 </script>
 
 
+<script type="text/x-template" id="plot-img-template">
+<img class="materialboxed responsive-img plot-img" v-bind:src="plot"/>
+</script>
+<script type="application/javascript">
+Vue.component('plot-img', {
+  props: ['plot'],
+  template: '#plot-img-template',
+  delimiters: ["###","###"]
+})
+</script>
+
+
 <script type="text/x-template" id="plots-card-template">
 <card caption="Plots">
 <div class="row">
 <div v-for="plot in plots" v-bind:class="col_class">
 <div class="center-align">
-<img class="materialboxed responsive-img plot-img" v-bind:src="plot"/>
+<plot-img v-bind:plot="plot"/>
 </div>
 </div> <!-- /col -->
 </div> <!-- /row -->
@@ -424,22 +436,40 @@ Vue.component('files-card', {
 })
 </script>
 
-
-<script type="text/x-template" id="side-by-side-property-cards-template">
-<div class="side-by-side-property-cards">
+<script type="text/x-template" id="side-by-side-template">
+<div class="side-by-side">
 <div class="row">
 <div class="col s12 m6">
+<slot name="left"></slot>
+</div> <!-- /col -->
+<div class="col s12 m6">
+<slot name="right"></slot>
+</div> <!-- /col -->
+</div> <!-- /row -->
+</div> <!-- /side-by-side -->
+</script>
+<script type="application/javascript">
+Vue.component('side-by-side', {
+  props: ['caption', 'props_a', 'props_b'],
+  template: '#side-by-side-template',
+  delimiters: ["###","###"]
+})
+</script>
+
+
+<script type="text/x-template" id="side-by-side-property-cards-template">
+<side-by-side>
+<div slot="left">
 <template v-if="props_a">
 <property-card v-bind:caption="caption" v-bind:data="props_a"></property-card>
 </template>
-</div> <!-- /col -->
-<div class="col s12 m6">
+</div>
+<div slot="right">
 <template v-if="props_b">
 <property-card v-bind:caption="caption" v-bind:data="props_b"></property-card>
 </template>
-</div> <!-- /col -->
-</div> <!-- /row -->
-</div> <!-- /side-by-side-property-cards -->
+</div>
+</side-by-side>
 </script>
 <script type="application/javascript">
 Vue.component('side-by-side-property-cards', {

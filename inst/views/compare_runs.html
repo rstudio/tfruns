@@ -80,25 +80,28 @@
 </code-diff>
 
 
+<!-- Training History -->
+
+
+
 <!-- Plot Output -->
 
-<div class="row">
-<div class="col s12 m6">
-<template v-if="run_a.plots">
-<card caption="Plots">
-<img v-for="plot in run_a.plots" class="materialboxed responsive-img plot-img" v-bind:src="plot"/>
-</card>
-</template>
-</div> <!-- /col -->
-<div class="col s12 m6">
-<template v-if="run_b.plots">
-<card caption="Plots">
-<img v-for="plot in run_b.plots" class="materialboxed responsive-img plot-img" v-bind:src="plot"/>
-</card>
-</template>
-</div> <!-- /col -->
-</div> <!-- /row -->
-
+<side-by-side>
+  <div slot="left">
+    <template v-if="run_a.plots">
+    <card caption="Plots">
+    <plot-img v-for="plot in run_a.plots" v-bind:plot="plot"></plot-img>
+    </card>
+    </template>
+  </div>
+  <div slot="right">
+    <template v-if="run_b.plots">
+    <card caption="Plots">
+    <plot-img v-for="plot in run_a.plots" v-bind:plot="plot"></plot-img>
+    </card>
+    </template>
+  </div>
+</side-by-side>
 
 <!-- Console Output -->
 
