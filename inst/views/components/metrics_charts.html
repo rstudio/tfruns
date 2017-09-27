@@ -47,20 +47,13 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
       var c3_div = document.createElement("div");
       this.$container.appendChild(c3_div);
 
-      // create c3 chart bound to div
-      var tick_values = null;
-      if (total_epochs <= 30) {
-        tick_values = [];
-        for (var n = 1; n <= total_epochs; n++)
-          tick_values.push(n);
-      }
       var chart = c3.generate({
         bindto: c3_div,
         axis: {
           x: {
             min: 1,
             tick: {
-              values: tick_values
+              values: this.$get_x_axis_ticks(total_epochs)
             }
           },
           y: y_axis
@@ -201,10 +194,20 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
 
   // tweak chart y-axis
   this.$adjust_axes = function(chart, metric, data) {
+
+    // adjust x-axis range
     var total_epochs = this.$get_total_epochs(data);
     chart.axis.max({
       x: total_epochs
     });
+
+    // define new x axis tick generator
+    var self = this;
+    chart.internal.axis.getXAxisTickValues = function() {
+      return self.$get_x_axis_ticks(total_epochs);
+    }
+
+    // adjust y-axis range
     var current_epochs = this.$get_current_epochs(data);
     if (this.$is_accuracy(metric) && (current_epochs > 0))
       chart.axis.max({
@@ -253,6 +256,45 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
     request.setRequestHeader('Cache-Control', 'no-cache');
     request.send();
   };
+
+  // determine ticks for x-axis
+  this.$get_x_axis_ticks = function(total_epochs) {
+
+      // TODO: should depend on width of chart?
+      var total_ticks = 10;
+
+      if (total_epochs < total_ticks) {
+        var ticks = [];
+        for (var i = 0; i < total_epochs; i++)
+          ticks.push(i);
+        return ticks;
+      }
+
+      // otherwise, choose an appropriate increment and
+      // use that when drawing ticks
+      var logged = Math.log10(total_epochs);
+      var floor = Math.floor(logged);
+      var increment = Math.pow(10, floor - 1);
+
+      // adjust increment based on remainder
+      var diff = logged - floor;
+      if (diff < 0.1)
+        increment = increment * 1.0;
+      else if (diff < 0.2)
+        increment = increment * 2.0;
+      else
+        increment = increment * 5.0;
+
+      // draw the ticks
+      var ticks = [];
+      var current = 0;
+      while (current < total_epochs) {
+        ticks.push(current);
+        current = current + increment;
+      }
+
+      return ticks;
+  }
 
   // initialize
   this.$initialize();
