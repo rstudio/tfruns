@@ -76,8 +76,8 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
         }
       });
 
-      // adjust y axis
-      this.$adjust_y_axis(chart, metric, this.$metrics);
+      // adjust axes
+      this.$adjust_axes(chart, metric, this.$metrics);
 
       // track chart
       this.$c3_charts.push(chart);
@@ -119,7 +119,7 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
       chart.load({
         columns: this.$chart_columns(metric, data)
       });
-      this.$adjust_y_axis(chart, metric, data);
+      this.$adjust_axes(chart, metric, data);
       // ensure repaint
       chart.flush();
     }
@@ -200,7 +200,11 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
   };
 
   // tweak chart y-axis
-  this.$adjust_y_axis = function(chart, metric, data) {
+  this.$adjust_axes = function(chart, metric, data) {
+    var total_epochs = this.$get_total_epochs(data);
+    chart.axis.max({
+      x: total_epochs
+    });
     var current_epochs = this.$get_current_epochs(data);
     if (this.$is_accuracy(metric) && (current_epochs > 0))
       chart.axis.max({
