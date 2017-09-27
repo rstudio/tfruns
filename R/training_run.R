@@ -579,6 +579,28 @@ run_diffs <- function(run_a, run_b) {
     )
   }
 
+  # source code: changes and deletions
+  for (source_file in names(run_a$source_code)) {
+    run_a_source_file <- run_a$source_code[[source_file]]
+    run_b_source_file <- run_b$source_code[[source_file]]
+    if (is.null(run_b_source_file))
+      run_b_source_file <- ""
+    if (!identical(run_a_source_file, run_b_source_file)) {
+      diffs[[source_file]] <- list(
+        run_a = run_a_source_file,
+        run_b = run_b_source_file
+      )
+    }
+  }
+  # source code: additions
+  new_source_files <- setdiff(names(run_b$source_code), names(run_a$source_code))
+  for (source_file in new_source_files) {
+    diffs[[source_file]] <- list(
+      run_a = "",
+      run_b = run_b$source_code[[source_file]]
+    )
+  }
+
   # return diffs
   diffs
 }
