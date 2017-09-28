@@ -196,7 +196,10 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
   var default_format = d3.format("");
   this.$y_tick_format = function(d) {
     var fmt = default_format(d);
-    return fmt.replace(/0{4,}[1-9]$/, '0');
+    if (fmt.indexOf('.') > -1)
+      return fmt.replace(/0{4,}[1-9]$/, '0');
+    else
+      return fmt;
   };
 
   // tweak chart y-axis
