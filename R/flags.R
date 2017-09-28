@@ -235,8 +235,12 @@ parse_flags <- function(FLAGS, config, file, arguments) {
       boolean = as.logical(flags[[name]]),
       string = as.character(flags[[name]])
     ))
+    # error if length > 1 (no support for parsing lists @ the command line)
+    if (length(value) > 1) {
+      stop('flag "', name, '" has length > 1 (only scalar flag values are supported)')
+    }
     # error if type coersion fails
-    if (any(is.na(value))) {
+    if (is.na(value)) {
       value <- paste0("'", flags[[name]], "'")
       stop("Unable to convert flag '", name, "' with value ", value,
            " to type ", type, call. = FALSE)
