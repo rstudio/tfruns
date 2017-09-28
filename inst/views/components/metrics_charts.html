@@ -289,7 +289,7 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
 
       // draw the ticks
       var ticks = [];
-      var current = 0;
+      var current = increment;
       while (current <= total_epochs) {
         ticks.push(current);
         current = current + increment;
