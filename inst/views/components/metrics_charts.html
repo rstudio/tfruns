@@ -188,7 +188,7 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
     return metric === 'acc' || metric === 'accuracy';
   };
 
-   // helper to format y tick marks. use the default
+  // helper to format y tick marks. use the default
   // d3 formatter but strip long sequences of zeros
   // followed by a single digit at the end (result
   // of JavaScript floating point rouning issues
@@ -196,7 +196,7 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
   var default_format = d3.format("");
   this.$y_tick_format = function(d) {
     var fmt = default_format(d);
-    return fmt.replace(/0+\d$/, '');
+    return fmt.replace(/0{4,}[1-9]$/, '0');
   };
 
   // tweak chart y-axis
