@@ -44,3 +44,16 @@ Single row data frame with run flags, metrics, etc.
 \description{
 Run a training script
 }
+\details{
+The training run will by default use a unique new run directory
+within the "runs" sub-directory of the current working directory (or to the
+value of the \code{tfruns.runs_dir} R option if specified).
+
+The directory name will be a timestamp (in GMT time). If a duplicate name is
+generated then the function will wait long enough to return a unique one.
+
+If you want to use an alternate directory to store run data you can either
+set the global \code{tfruns.runs_dir} R option, or you can pass a \code{run_dir}
+explicitly to \code{training_run()}, optionally using the \code{\link[=unique_run_dir]{unique_run_dir()}}
+function to generate a timestamp-based directory name.
+}

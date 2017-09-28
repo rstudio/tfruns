@@ -1,0 +1,50 @@
+template:
+  params:
+    bootswatch: cosmo
+
+navbar:
+  title: "tfruns"
+  type: inverse
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Reference"
+      href: reference/index.html
+  right:
+   - icon: fa-github
+     href: https://github.com/rstudio/tfruns
+
+reference:
+  - title: "Training"
+    contents:
+       - training_run
+       - flags
+       - run_dir
+       - unique_run_dir
+
+  - title: "Visualizing Runs"
+    contents:
+       - view_run
+       - compare_runs
+       - save_run_view
+       - save_run_comparison
+
+  - title: "Managing Runs"
+    contents:
+       - ls_runs
+       - latest_run
+       - run_info
+       - clean_runs
+       - purge_runs
+       - copy_run
+       - copy_run_files
+
+  - title: "Package API"
+    description: "Functions for use by R packages that integrate with tfruns"
+    contents:
+       - is_run_active
+       - as_run_dir
+       - view_run_metrics
+       - update_run_metrics
+       - write_run_metadata
+

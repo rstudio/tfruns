@@ -1,6 +1,6 @@
 
 
-#' Write run metadata into the current run directory
+#' Write run metadata
 #'
 #' Record various types of training run metadata This function can be called
 #' even when a run directory isn't active (metadata will only be written if
@@ -120,7 +120,13 @@ write_run_property <- function(name, value) {
 }
 
 
-#' @rdname write_run_metadata
+#' Write run data (deprecated)
+#'
+#' Deprecated alias for [write_run_metadata()].
+#'
+#' @inheritParams write_run_metadata
+#'
+#' @keywords internal
 #' @export
 write_run_data <- function(type, data) {
   write_run_metadata(paste0("custom", type), data)

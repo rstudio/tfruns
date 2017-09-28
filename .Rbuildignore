@@ -1,6 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^man-roxygen/
+^pkgdown$
 ^runs$
 ^dev
 
+^docs$

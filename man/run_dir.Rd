@@ -2,7 +2,7 @@
 % Please edit documentation in R/run_dir.R
 \name{run_dir}
 \alias{run_dir}
-\title{Training run directory}
+\title{Current run directory}
 \usage{
 run_dir()
 }

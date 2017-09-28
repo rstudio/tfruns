@@ -91,7 +91,7 @@ latest_run <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
 }
 
 
-#' Summary information for training runs
+#' Summary of training run
 #'
 #' @param run_dir Training run directory or data frame returned from
 #'   [ls_runs()].

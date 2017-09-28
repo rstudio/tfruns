@@ -1,6 +1,7 @@
 #' Run a training script
 #'
-#' @inheritParams  flags
+#' @inheritParams flags
+#' @inheritParams ls_runs
 #' @param file Path to training script (defaults to "train.R")
 #' @param context Run context (defaults to "local")
 #' @param flags Named character vector with flag values (see [flags()]) or path
@@ -18,6 +19,18 @@
 #' @param encoding The encoding of the training script; see [file()].
 #'
 #' @return Single row data frame with run flags, metrics, etc.
+#'
+#' @details The training run will by default use a unique new run directory
+#' within the "runs" sub-directory of the current working directory (or to the
+#' value of the `tfruns.runs_dir` R option if specified).
+#'
+#' The directory name will be a timestamp (in GMT time). If a duplicate name is
+#' generated then the function will wait long enough to return a unique one.
+#'
+#' If you want to use an alternate directory to store run data you can either
+#' set the global `tfruns.runs_dir` R option, or you can pass a `run_dir`
+#' explicitly to `training_run()`, optionally using the [unique_run_dir()]
+#' function to generate a timestamp-based directory name.
 #'
 #' @export
 training_run <- function(file = "train.R",

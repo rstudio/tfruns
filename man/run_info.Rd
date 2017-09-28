@@ -2,7 +2,7 @@
 % Please edit documentation in R/ls_runs.R
 \name{run_info}
 \alias{run_info}
-\title{Summary information for training runs}
+\title{Summary of training run}
 \usage{
 run_info(run_dir)
 }
@@ -16,7 +16,7 @@ and evaluation metrics, etc. If more than one \code{run_dir} is passed then
 a list of training run summary objects is returned.
 }
 \description{
-Summary information for training runs
+Summary of training run
 }
 \seealso{
 \code{\link[=view_run]{view_run()}}

@@ -2,12 +2,9 @@
 % Please edit documentation in R/run_metadata.R
 \name{write_run_metadata}
 \alias{write_run_metadata}
-\alias{write_run_data}
-\title{Write run metadata into the current run directory}
+\title{Write run metadata}
 \usage{
 write_run_metadata(type, data)
-
-write_run_data(type, data)
 }
 \arguments{
 \item{type}{Type of metadata to write. Standard types include "flags",

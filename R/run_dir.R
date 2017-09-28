@@ -1,5 +1,5 @@
 
-#' Training run directory
+#' Current run directory
 #'
 #' Returns the current training run directory. If a training run is
 #' not currently active (see [is_run_active()]) then the current
