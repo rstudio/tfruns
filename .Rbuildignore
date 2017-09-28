@@ -3,6 +3,8 @@
 ^man-roxygen/
 ^pkgdown$
 ^runs$
-^dev
-
+^dev$
 ^docs$
+^index\.Rmd$
+^index\.html$
+
