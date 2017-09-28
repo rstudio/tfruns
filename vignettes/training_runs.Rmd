@@ -1,0 +1,15 @@
+---
+title: "TensorFlow Training Runs"
+output: 
+  rmarkdown::html_vignette:
+    readme: true
+vignette: >
+  %\VignetteIndexEntry{Training}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+Training runs
+
+

@@ -6,8 +6,12 @@ navbar:
   title: "tfruns"
   type: inverse
   left:
-    - text: "Home"
+    - text: "Training"
       href: index.html
+    - text: Visualization
+      href: articles/visualization.html
+    - text: Tuning
+      href: articles/tuning.html
     - text: "Reference"
       href: reference/index.html
   right:

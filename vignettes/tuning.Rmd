@@ -1,0 +1,15 @@
+---
+title: "Hyper-Parameter Tuning"
+output: 
+  rmarkdown::html_vignette: default
+vignette: >
+  %\VignetteIndexEntry{Tuning}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Tuning
+
+
+
+

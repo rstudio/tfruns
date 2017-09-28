@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Summary of training run — run_info • tfruns</title>
+<title>Articles • tfruns</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -37,7 +37,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-vignette-index">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -80,50 +80,22 @@
       
       </header>
 
-      <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
-    <h1>Summary of training run</h1>
+      <div class="page-header">
+  <h1>Articles <small>version&nbsp;0.9.1.9003</small></h1>
+</div>
+
+<div class="row">
+  <div class="col-md-9">
+    <div class="section ">
+      <h3>All vignettes</h3>
+      <p class="section-desc"></p>
+
+      <ul>
+        <li><a href="training_runs.html">TensorFlow Training Runs</a></li>
+        <li><a href="tuning.html">Hyper-Parameter Tuning</a></li>
+        <li><a href="visualization.html">Training Run Visualization</a></li>
+      </ul>
     </div>
-
-    
-    <p>Summary of training run</p>
-    
-
-    <pre class="usage"><span class='fu'>run_info</span>(<span class='no'>run_dir</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>run_dir</th>
-      <td><p>Training run directory or data frame returned from
-<code><a href='ls_runs.html'>ls_runs()</a></code>.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Training run summary object with timing, flags, model info, training
-and evaluation metrics, etc. If more than one <code>run_dir</code> is passed then
-a list of training run summary objects is returned.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><code><a href='view_run.html'>view_run()</a></code></p>
-    
-
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
-
   </div>
 </div>
 
