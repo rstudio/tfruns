@@ -29,13 +29,25 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">Training</a>
+  <a href="index.html">Home</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
 <li>
-  <a href="articles/visualization.html">Visualization</a>
-</li>
-<li>
-  <a href="articles/tuning.html">Tuning</a>
+      <a href="articles/visualization.html">Run Visualization</a>
+    </li>
+    <li>
+      <a href="articles/flags.html">Training Run Flags</a>
+    </li>
+    <li>
+      <a href="articles/managing.html">Managing Runs</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
@@ -59,10 +71,32 @@
       
       </header><div class="row">
   <div class="contents col-md-9">
-    <div id="tensorflow-training-runs" class="section level1">
+    <div id="tfruns-track-visualize-and-manage-tensorflow-training-runs" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#tensorflow-training-runs" class="anchor"></a>TensorFlow Training Runs</h1></div>
-<p>Training runs</p>
+<a href="#tfruns-track-visualize-and-manage-tensorflow-training-runs" class="anchor"></a>tfruns: Track, Visualize, and Manage TensorFlow Training Runs</h1></div>
+<div id="overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h2>
+</div>
+<div id="demo" class="section level2">
+<h2 class="hasAnchor">
+<a href="#demo" class="anchor"></a>Demo</h2>
+<ul>
+<li><p>Do a training run and view the results</p></li>
+<li><p>Make some changes and view a comparison</p></li>
+<li><p>Do some additional experimentation (using flags) then run queries against all the runs</p></li>
+<li><p>Once I’ve found the best run copy it out</p></li>
+</ul>
+</div>
+<div id="learning-more" class="section level2">
+<h2 class="hasAnchor">
+<a href="#learning-more" class="anchor"></a>Learning More</h2>
+<ul>
+<li><p><a href="visualization.html">Run Visualization</a> describes the various options for viewing and comparing runs, including the ability to save and publish run reports.</p></li>
+<li><p><a href="flags.html">Training Run Flags</a> covers the use of flags to paramaterize key hyperparameters of your model.</p></li>
+<li><p><a href="managing.html">Managing Training Runs</a> provides documentation on listing runs (including sorting and filtering by various criteria), exporting run data (e.g. model artifcats), and removing runs no longer of interest.</p></li>
+</ul>
+</div>
 </div>
   </div>
 

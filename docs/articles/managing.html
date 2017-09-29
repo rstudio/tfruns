@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>tfruns: Track, Visualize, and Manage TensorFlow Training Runs • tfruns</title>
+<title>Managing Runs • tfruns</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -72,7 +72,7 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>tfruns: Track, Visualize, and Manage TensorFlow Training Runs</h1>
+      <h1>Managing Runs</h1>
             
           </div>
 
@@ -83,24 +83,17 @@
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
 </div>
-<div id="demo" class="section level2">
+<div id="listing-runs" class="section level2">
 <h2 class="hasAnchor">
-<a href="#demo" class="anchor"></a>Demo</h2>
-<ul>
-<li><p>Do a training run and view the results</p></li>
-<li><p>Make some changes and view a comparison</p></li>
-<li><p>Do some additional experimentation (using flags) then run queries against all the runs</p></li>
-<li><p>Once I’ve found the best run copy it out</p></li>
-</ul>
+<a href="#listing-runs" class="anchor"></a>Listing Runs</h2>
 </div>
-<div id="learning-more" class="section level2">
+<div id="exporting-runs" class="section level2">
 <h2 class="hasAnchor">
-<a href="#learning-more" class="anchor"></a>Learning More</h2>
-<ul>
-<li><p><a href="visualization.html">Run Visualization</a> describes the various options for viewing and comparing runs, including the ability to save and publish run reports.</p></li>
-<li><p><a href="flags.html">Training Run Flags</a> covers the use of flags to paramaterize key hyperparameters of your model.</p></li>
-<li><p><a href="managing.html">Managing Training Runs</a> provides documentation on listing runs (including sorting and filtering by various criteria), exporting run data (e.g. model artifcats), and removing runs no longer of interest.</p></li>
-</ul>
+<a href="#exporting-runs" class="anchor"></a>Exporting Runs</h2>
+</div>
+<div id="cleaning-runs" class="section level2">
+<h2 class="hasAnchor">
+<a href="#cleaning-runs" class="anchor"></a>Cleaning Runs</h2>
 </div>
 </div>
   </div>
@@ -111,8 +104,9 @@
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#overview">Overview</a></li>
-      <li><a href="#demo">Demo</a></li>
-      <li><a href="#learning-more">Learning More</a></li>
+      <li><a href="#listing-runs">Listing Runs</a></li>
+      <li><a href="#exporting-runs">Exporting Runs</a></li>
+      <li><a href="#cleaning-runs">Cleaning Runs</a></li>
       </ul>
 </div>
       </div>
