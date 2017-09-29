@@ -164,9 +164,8 @@ list_run_dirs <- function(latest_n = NULL, runs_dir) {
     return(character())
 
   # list directories
-  runs <- list.files(runs_dir,
-                     pattern = "\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}-\\d{2}Z",
-                     full.names = FALSE)
+  runs <- list.files(runs_dir, full.names = FALSE)
+  runs <- runs[utils::file_test("-d", file.path(runs_dir, runs, "tfruns.d"))]
 
   # filter and order
   if (length(runs) > 0) {
