@@ -87,11 +87,11 @@
     </div>
 
     
-    <p>Create a new uniquely named run directory within the specified
-<code>runs_dir</code>.</p>
+    <p>Create a new uniquely named run directory within the specified <code>runs_dir</code>.</p>
     
 
-    <pre class="usage"><span class='fu'>unique_run_dir</span>(<span class='kw'>runs_dir</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"tfruns.runs_dir"</span>, <span class='st'>"runs"</span>))</pre>
+    <pre class="usage"><span class='fu'>unique_run_dir</span>(<span class='kw'>runs_dir</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"tfruns.runs_dir"</span>, <span class='st'>"runs"</span>),
+  <span class='kw'>seconds_scale</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -102,13 +102,20 @@
 current working directory (or to the value of the <code>tfruns.runs_dir</code> R
 option if specified).</p></td>
     </tr>
+    <tr>
+      <th>seconds_scale</th>
+      <td><p>Decimal scale for the seconds component of the
+timestamp. Defaults to 0 which results in only the rounded seconds value
+being used in the timestamp. Specify larger numbers to include a decimal
+component (useful if you need to create many unique run directories at the
+same time).</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The directory name will be a timestamp (in GMT time). If a
-duplicate name is generated then the function will wait
-long enough to return a unique one.</p>
+    <p>The directory name will be a timestamp (in GMT time). If a duplicate name is
+generated then the function will wait long enough to return a unique one.</p>
     
 
   </div>
