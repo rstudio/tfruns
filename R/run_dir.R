@@ -36,28 +36,48 @@ is_run_active <- function() {
 
 #' Create a unique run directory
 #'
-#' Create a new uniquely named run directory within the specified
-#' `runs_dir`.
+#' Create a new uniquely named run directory within the specified `runs_dir`.
 #'
-#' The directory name will be a timestamp (in GMT time). If a
-#' duplicate name is generated then the function will wait
-#' long enough to return a unique one.
+#' The directory name will be a timestamp (in GMT time). If a duplicate name is
+#' generated then the function will wait long enough to return a unique one.
 #'
 #' @inheritParams ls_runs
+#' @param seconds_scale Decimal scale for the seconds component of the
+#'   timestamp. Defaults to 0 which results in only the rounded seconds value
+#'   being used in the timestamp. Specify larger numbers to include a decimal
+#'   component (useful if you need to create many unique run directories at the
+#'   same time).
 #'
 #' @export
-unique_run_dir <- function(runs_dir = getOption("tfruns.runs_dir", "runs")) {
+unique_run_dir <- function(runs_dir = getOption("tfruns.runs_dir", "runs"),
+                           seconds_scale = 0) {
+
+  # determine seconds format
+  if (seconds_scale == 0)
+    seconds_format <- "S"
+  else
+    seconds_format <- paste0("OS", seconds_scale)
+
+  # loop while waiting to create a unique run directory
   while(TRUE) {
     run_dir <- file.path(
       runs_dir,
-      paste0(strftime(Sys.time(), format = "%Y-%m-%dT%H-%M-%SZ", tz = "GMT"))
+      paste0(strftime(
+        Sys.time(),
+        format = paste0("%Y-%m-%dT%H-%M-%", seconds_format, "Z"),
+        tz = "GMT")
+      )
     )
     if (!file.exists(run_dir)) {
       dir.create(run_dir, recursive = TRUE)
       return(run_dir)
     }
-    else
-      Sys.sleep(0.1)
+    # sleep for an appropriate interval before trying again
+    else {
+      sleep_for <- (1 / 10^seconds_scale) * 0.5
+      Sys.sleep(sleep_for)
+    }
+
   }
 }
 

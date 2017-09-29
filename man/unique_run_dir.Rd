@@ -4,19 +4,24 @@
 \alias{unique_run_dir}
 \title{Create a unique run directory}
 \usage{
-unique_run_dir(runs_dir = getOption("tfruns.runs_dir", "runs"))
+unique_run_dir(runs_dir = getOption("tfruns.runs_dir", "runs"),
+  seconds_scale = 0)
 }
 \arguments{
 \item{runs_dir}{Directory containing runs. Defaults to "runs" beneath the
 current working directory (or to the value of the \code{tfruns.runs_dir} R
 option if specified).}
+
+\item{seconds_scale}{Decimal scale for the seconds component of the
+timestamp. Defaults to 0 which results in only the rounded seconds value
+being used in the timestamp. Specify larger numbers to include a decimal
+component (useful if you need to create many unique run directories at the
+same time).}
 }
 \description{
-Create a new uniquely named run directory within the specified
-\code{runs_dir}.
+Create a new uniquely named run directory within the specified \code{runs_dir}.
 }
 \details{
-The directory name will be a timestamp (in GMT time). If a
-duplicate name is generated then the function will wait
-long enough to return a unique one.
+The directory name will be a timestamp (in GMT time). If a duplicate name is
+generated then the function will wait long enough to return a unique one.
 }
