@@ -26,6 +26,12 @@ vignette: >
 - Once I've found the best run copy it out
 
 
+## IDE Integration
+
+- Addin
+- Use of terminal
+- Publishing
+
 ## Learning More
 
 
