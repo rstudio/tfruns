@@ -3,6 +3,7 @@ title: "tfruns: Track, Visualize, and Manage Training Runs"
 output: 
   rmarkdown::html_vignette: 
     readme: true
+    toc: true
 vignette: >
   %\VignetteIndexEntry{Introduction to tfruns}
   %\VignetteEngine{knitr::rmarkdown}
@@ -28,7 +29,7 @@ The **tfruns** package provides a suite of tools for managing TensorFlow trainin
 
 - No changes to source code required (run data is automatically captured for all Keras and TF Estimator models).
 
-### Installation
+## Installation
 
 You can install the **tfruns** package from GitHub as follows:
 
@@ -43,12 +44,9 @@ install.packages("keras")
 devtools::install_github("rstudio/tfestimators")
 ```
 
+## Training
 
-## Demo
-
-The following is a brief demonstration of the various capabilities of **tfruns**. For this demo we'll be using a Keras model trained to recognize MNIST digits. The full source code for the model is here: <https://github.com/rstudio/tfruns/blob/master/inst/examples/mnist_mlp/mnist_mlp.R>.
-
-### Training
+In the following sections we'll describe the various capabilities of **tfruns**. Our example training script ([mnist_mlp.R](https://github.com/rstudio/tfruns/blob/master/inst/examples/mnist_mlp/mnist_mlp.R)) trains a Keras model to recognize MNIST digits.
 
 To train a model with **tfruns**, just use the `training_run()` function in place of the `source()` function to execute your R script. For example:
 
@@ -57,48 +55,48 @@ library(tfruns)
 training_run("mnist_mlp.R")
 ```
 
-When training is completed, a summary of the run will automatically be displayed if you are within an interactive R session (note that this behavior can be suppressed, the [Training Options] section below for details):
+When training is completed, a summary of the run will automatically be displayed if you are within an interactive R session:
 
 <kbd><img src="images/view_run.png" width=675/></kbd>
 
 The metrics and output of each run are automatically captured within a *run directory* which is unique for each run that you initiate. Note that for Keras and TF Estimator models this data is captured automatically (no changes to your source code are required).
 
-You can call the `latest_run()` function to view the results of the last run along with the path to the run directory:
+You can call the `latest_run()` function to view the results of the last run (including the path to the run directory which stores all of the run's output):
 
 ```{r}
 latest_run()
 ```
 ```
 $ run_dir           : chr "runs/2017-10-02T14-23-38Z"
- $ eval_loss         : num 0.0956
- $ eval_acc          : num 0.98
- $ metric_loss       : num 0.0624
- $ metric_acc        : num 0.984
- $ metric_val_loss   : num 0.0962
- $ metric_val_acc    : num 0.98
- $ flag_dropout1     : num 0.4
- $ flag_dropout2     : num 0.3
- $ samples           : int 48000
- $ validation_samples: int 12000
- $ batch_size        : int 128
- $ epochs            : int 20
- $ epochs_completed  : int 20
- $ metrics           : chr "(metrics data frame)"
- $ model             : chr "(model summary)"
- $ loss_function     : chr "categorical_crossentropy"
- $ optimizer         : chr "RMSprop"
- $ learning_rate     : num 0.001
- $ script            : chr "mnist_mlp.R"
- $ start             : POSIXct[1:1], format: "2017-10-02 14:23:38"
- $ end               : POSIXct[1:1], format: "2017-10-02 14:24:24"
- $ completed         : logi TRUE
- $ output            : chr "(script ouptut)"
- $ source_code       : chr "(source archive)"
- $ context           : chr "local"
- $ type              : chr "training"
+$ eval_loss         : num 0.0956
+$ eval_acc          : num 0.98
+$ metric_loss       : num 0.0624
+$ metric_acc        : num 0.984
+$ metric_val_loss   : num 0.0962
+$ metric_val_acc    : num 0.98
+$ flag_dropout1     : num 0.4
+$ flag_dropout2     : num 0.3
+$ samples           : int 48000
+$ validation_samples: int 12000
+$ batch_size        : int 128
+$ epochs            : int 20
+$ epochs_completed  : int 20
+$ metrics           : chr "(metrics data frame)"
+$ model             : chr "(model summary)"
+$ loss_function     : chr "categorical_crossentropy"
+$ optimizer         : chr "RMSprop"
+$ learning_rate     : num 0.001
+$ script            : chr "mnist_mlp.R"
+$ start             : POSIXct[1:1], format: "2017-10-02 14:23:38"
+$ end               : POSIXct[1:1], format: "2017-10-02 14:24:24"
+$ completed         : logi TRUE
+$ output            : chr "(script ouptut)"
+$ source_code       : chr "(source archive)"
+$ context           : chr "local"
+$ type              : chr "training"
 ```
 
-The run directory used in the example above is "runs/2017-10-02T14-23-38Z" (the directory name is simply a timestamp). You can view the report for any given run using the `view_run()` function:
+The run directory used in the example above is "runs/2017-10-02T14-23-38Z". Run directories are by default generated within the "runs" subdirectory of the current working directory, and use a timestamp as the name of the run directory. You can view the report for any given run using the `view_run()` function:
 
 ```{r}
 view_run("runs/2017-10-02T14-23-38Z")
@@ -162,13 +160,11 @@ for (dropout1 in c(0.1, 0.2, 0.3))
   training_run('mnist_mlp.R', flags = c(dropout1 = dropout1))
 ```
 
-<!---
-The article on [Tuning](tuning.html) goes into more depth on best practices for using flags.
---->
+Flag values are automatically included in run data with a "flag_" prefix (e.g. `flag_dropout1`, `flag_dropout2`).
 
 ## Analyzing Runs
 
-We've demonstrated visualizing and comparing one or two runs, however as you accumulate more runs you'll want generally want to analyze and compare runs in aggregate. You can use the `ls_runs()` function to yield a data frame with summary information on all of the runs you've conducted within a given directory:
+We've demonstrated visualizing and comparing one or two runs, however as you accumulate more runs you'll want generally want to analyze and compare runs many runs. You can use the `ls_runs()` function to yield a data frame with summary information on all of the runs you've conducted within a given directory:
 
 ```{r}
 ls_runs()
@@ -204,14 +200,13 @@ The `ls_runs()` function also supports `subset` and `order` arguments. For examp
 ls_runs(eval_acc > 0.98, order = eval_acc)
 ```
 
-You can pass the results of `ls_runs()` to compare runs (which will always compare the first two runs passed). For example, this will compare our best two runs in terms of evaluation accuracy:
+You can pass the results of `ls_runs()` to compare runs (which will always compare the first two runs passed). For example, this will compare the two runs that performed best in terms of evaluation accuracy:
 
 ```{r}
 compare_runs(ls_runs(eval_acc > 0.98, order = eval_acc))
 ```
 
 <kbd><img src="images/ls_runs_compare.png" width=675/></kbd>
-
 
 ## Run Output
 
@@ -225,15 +220,75 @@ You can use the `copy_run_files()` function to export file artifacts from runs i
 copy_run_files("runs/2017-09-24T10-54-00Z", to = "saved-model")
 ```
 
-You can also use the `copy_run()` function to export an run directory. Note that this function will accept any number of runs. For example, this code exports all run directories with an evaluation accuracy greater than 0.98 to a "best-runs" directory:
+You can also use the `copy_run()` function to export a run directory in it's entirety. Note that this function will accept any number of runs. For example, this code exports all run directories with an evaluation accuracy greater than 0.98 to a "best-runs" directory:
 
 ```{r}
 copy_run(ls_runs(eval_acc >= 0.98), to = "best-runs")
 ```
 
-<!---
-See the article on [Managing Runs](managing.html) for additional details on functions used to manipulate run output.
---->
+## Managing Runs
+
+### Cleaning Runs
+
+You can use the `clean_runs()` function to archive a set of runs you no longer need the data from. For example, this code archives all runs with an eval accuracy less than 0.98:
+
+```{r}
+clean_runs(ls_runs(eval_acc < 0.98))
+```
+
+If you don't specify a set of runs to clean then all runs will be archived:
+
+```{r}
+clean_runs() # archives all runs in the "runs" directory
+```
+
+Note that you'll always get a confirmation prompt before the runs are actually archived.
+
+### Purging Runs
+
+When runs are archived they are moved to the "archive" subdirectory of the "runs" directory. If you want to permanently remove runs from the archive you call the `purge_runs()` function:
+
+```{r}
+purge_runs()
+```
+
+
+### Experiment Scopes
+
+By default all runs go into the "runs" sub-directory of the current working directory. For various types of ad-hoc experimentation this works well, but in some cases you may want to create a standalone scope of a set of runs that compose an experiment.
+
+To do this you can either call `clean_runs()` before beginning work on a new experiment, or you can set the `tfruns.runs_dir` global option to ensure that all run operations (including queries with `ls_runs()` use a separate scope). To return to the previous example of experimenting with various dropout values, I might have a driver script that looks like this:
+
+```{r}
+library(tfruns)
+
+# use 'dropout_experiment_runs' as the run_dir (clean any existing runs)
+options(tfruns.runs_dir = "dropout_experiment_runs")
+clean_runs(confirm = FALSE)
+
+# try 9 perumutations of dropout
+for (dropout1 in c(0.1, 0.2, 0.3))
+  for (dropout2 in c(0.1, 0.2, 0.3))
+    training_run('mnist_mlp.R', flags = c(dropout1 = dropout1, dropout2 = dropout2))
+
+# see which combination of dropout values performed best
+ls_runs(order = eval_acc)[,c("eval_acc", "metric_acc", "flag_dropout1", "flag_dropout2")]
+```
+```
+# A tibble: 9 x 4
+  eval_acc metric_acc flag_dropout1 flag_dropout2
+     <dbl>      <dbl>         <dbl>         <dbl>
+1   0.9832     0.9936           0.2           0.1
+2   0.9827     0.9920           0.2           0.3
+3   0.9824     0.9903           0.3           0.2
+4   0.9817     0.9949           0.1           0.3
+5   0.9813     0.9932           0.2           0.2
+6   0.9811     0.9968           0.1           0.1
+7   0.9810     0.9883           0.3           0.3
+8   0.9798     0.9958           0.1           0.2
+9   0.9794     0.9904           0.3           0.1
+```
+
 
 ## RStudio IDE
 
@@ -264,13 +319,12 @@ Training run views and comparisons are HTML documents which can be saved and sha
 If you are not running within RStudio then you can use the `save_run_view()` and `save_run_comparison()` functions to create standalone HTML versions of run reports.
 
 
-<!---
-## Learning More
 
-- [Run Visualization](visualization.html) describes the various options for viewing and comparing runs, including the ability to save and publish run reports. 
 
-- [Training Run Flags](flags.html) covers the use of flags to paramaterize key hyperparameters of your model.
 
-- [Managing Training Runs](managing.html) provides documentation on listing runs (including sorting and filtering by various criteria), exporting run data (e.g. model artifacts), and purging runs no longer of interest.
---->
+
+
+
+
+
 
