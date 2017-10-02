@@ -4,7 +4,7 @@ tfruns: Track, Visualize, and Manage Training Runs
 Overview
 --------
 
-<kbd><img src="images/view_run.png" align="right" width=220/></kbd>
+<img src="images/view_run.png" align="right" width=220/>
 
 The **tfruns** package provides a suite of tools for managing TensorFlow training runs and experiments from Rg:
 
