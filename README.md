@@ -1,4 +1,4 @@
-tfruns: Track, Visualize, and Manage TF Training Runs
+tfruns: Track, Visualize, and Manage Training Runs
 ================
 
 Overview
@@ -6,7 +6,7 @@ Overview
 
 <img src="images/view_run.png" align="right" width=220/>
 
-The **tfruns** package provides a suite of tools for managing TensorFlow training runs and experiments:
+The **tfruns** package provides a suite of tools for managing TensorFlow training runs and experiments from Rg:
 
 -   Track the hyperparameters, metrics, output, and source code of every training run.
 
@@ -47,7 +47,7 @@ training_run("mnist_mlp.R")
 
 When training is completed, a summary of the run will automatically be displayed if you are within an interactive R session (note that this behavior can be suppressed, the \[Training Options\] section below for details):
 
-<img src="images/view_run.png" width=675/>
+<kbd><img src="images/view_run.png" width=675/></kbd>
 
 The metrics and output of each run are automatically captured within a *run directory* which is unique for each run that you initiate. Note that for Keras and TF Estimator models this data is captured automatically (no changes to your source code are required).
 
