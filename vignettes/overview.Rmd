@@ -40,7 +40,10 @@ devtools::install_github("rstudio/tfruns")
 The package is intended to be used with the [keras](https://tensorflow.rstudio.com/keras) and/or the [tfestimators](https://tensorflow.rstudio.com/keras) packages, both of which provide higher level interfaces to TensorFlow from R. These packages can be installed with:
 
 ```{r}
+# keras
 install.packages("keras")
+
+# tfestimators
 devtools::install_github("rstudio/tfestimators")
 ```
 

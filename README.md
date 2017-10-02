@@ -28,14 +28,17 @@ devtools::install_github("rstudio/tfruns")
 The package is intended to be used with the [keras](https://tensorflow.rstudio.com/keras) and/or the [tfestimators](https://tensorflow.rstudio.com/keras) packages, both of which provide higher level interfaces to TensorFlow from R. These packages can be installed with:
 
 ``` r
+# keras
 install.packages("keras")
+
+# tfestimators
 devtools::install_github("rstudio/tfestimators")
 ```
 
 Training
 --------
 
-In the following sections we'll describe the various capabilities of **tfruns**. Our example training script ([mnist\_mlp.R](https://github.com/rstudio/tfruns/blob/master/inst/examples/mnist_mlp/mnist_mlp.R)) will train a Keras model to recognize MNIST digits.
+In the following sections we'll describe the various capabilities of **tfruns**. Our example training script ([mnist\_mlp.R](https://github.com/rstudio/tfruns/blob/master/inst/examples/mnist_mlp/mnist_mlp.R)) trains a Keras model to recognize MNIST digits.
 
 To train a model with **tfruns**, just use the `training_run()` function in place of the `source()` function to execute your R script. For example:
 
@@ -190,7 +193,7 @@ The `ls_runs()` function also supports `subset` and `order` arguments. For examp
 ls_runs(eval_acc > 0.98, order = eval_acc)
 ```
 
-You can pass the results of `ls_runs()` to compare runs (which will always compare the first two runs passed). For example, this will compare our best two runs in terms of evaluation accuracy:
+You can pass the results of `ls_runs()` to compare runs (which will always compare the first two runs passed). For example, this will compare the two runs that performed best in terms of evaluation accuracy:
 
 ``` r
 compare_runs(ls_runs(eval_acc > 0.98, order = eval_acc))
@@ -211,7 +214,7 @@ You can use the `copy_run_files()` function to export file artifacts from runs i
 copy_run_files("runs/2017-09-24T10-54-00Z", to = "saved-model")
 ```
 
-You can also use the `copy_run()` function to export a run directory. Note that this function will accept any number of runs. For example, this code exports all run directories with an evaluation accuracy greater than 0.98 to a "best-runs" directory:
+You can also use the `copy_run()` function to export a run directory in it's entirety. Note that this function will accept any number of runs. For example, this code exports all run directories with an evaluation accuracy greater than 0.98 to a "best-runs" directory:
 
 ``` r
 copy_run(ls_runs(eval_acc >= 0.98), to = "best-runs")
