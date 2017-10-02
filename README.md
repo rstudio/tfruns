@@ -1,4 +1,4 @@
-tfruns: Track, Visualize, and Manage TensorFlow Training Runs
+tfruns: Track, Visualize, and Manage TF Training Runs
 ================
 
 Overview

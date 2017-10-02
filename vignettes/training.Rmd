@@ -1,5 +1,5 @@
 ---
-title: "tfruns: Track, Visualize, and Manage TensorFlow Training Runs"
+title: "tfruns: Track, Visualize, and Manage TF Training Runs"
 output: 
   rmarkdown::html_vignette: 
     readme: true
