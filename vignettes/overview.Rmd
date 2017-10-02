@@ -121,7 +121,7 @@ compare_runs()
 
 <kbd><img src="images/compare_runs.png" width=675/></kbd>
 
-The comparison report shows the model attributes and metrics side-by-side, as well as differences in the source code and output of the training script. We can see from the comparison that our changes have resulted in a slightly worse performing model. 
+The comparison report shows the model attributes and metrics side-by-side, as well as differences in the source code and output of the training script. 
 
 Note that `compare_runs()` will by default compare the last two runs, however you can pass any two run directories you like to be compared.
 
@@ -167,7 +167,7 @@ Flag values are automatically included in run data with a "flag_" prefix (e.g. `
 
 ## Analyzing Runs
 
-We've demonstrated visualizing and comparing one or two runs, however as you accumulate more runs you'll want generally want to analyze and compare runs many runs. You can use the `ls_runs()` function to yield a data frame with summary information on all of the runs you've conducted within a given directory:
+We've demonstrated visualizing and comparing one or two runs, however as you accumulate more runs you'll generally want to analyze and compare runs many runs. You can use the `ls_runs()` function to yield a data frame with summary information on all of the runs you've conducted within a given directory:
 
 ```{r}
 ls_runs()
@@ -223,7 +223,13 @@ You can use the `copy_run_files()` function to export file artifacts from runs i
 copy_run_files("runs/2017-09-24T10-54-00Z", to = "saved-model")
 ```
 
-You can also use the `copy_run()` function to export a run directory in it's entirety. Note that this function will accept any number of runs. For example, this code exports all run directories with an evaluation accuracy greater than 0.98 to a "best-runs" directory:
+You can also use the `copy_run()` function to export a run directory in it's entirety. For example, this code exports the specified run to a "best-run" directory:
+
+```{r}
+copy_run("runs/2017-09-24T10-54-00Z", to = "best-run")
+```
+
+Note that `copy_run()` will accept any number of runs. For example, this code exports all run directories with an evaluation accuracy greater than 0.98 to a "best-runs" directory:
 
 ```{r}
 copy_run(ls_runs(eval_acc >= 0.98), to = "best-runs")
