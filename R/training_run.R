@@ -116,6 +116,9 @@ do_training_run <- function(file, run_dir, echo, envir, encoding) {
     # clear run on exit
     on.exit(clear_run(), add = TRUE)
 
+    # clear TF session on exist
+    on.exit(reset_tf_graph(), add = TRUE)
+
     # set width for run
     old_width <- getOption("width")
     options(width = min(100, old_width))
@@ -228,6 +231,25 @@ clear_run <- function() {
   .globals$run_dir$flags <- NULL
   .globals$run_dir$flags_file <- NULL
   .globals$run_dir$pending_writes <- new.env(parent = emptyenv())
+}
+
+reset_tf_graph <- function() {
+  tryCatch({
+    if (reticulate::py_module_available("tensorflow")) {
+      tf <- reticulate::import("tensorflow")
+      tf$reset_default_graph()
+      if (reticulate::py_has_attr(tf$contrib, "keras"))
+        tf$contrib$keras$backend$clear_session()
+      else if (reticulate::py_has_attr(tf, "keras"))
+        tf$keras$clear_session()
+    }
+    if (reticulate::py_module_available("keras")) {
+      keras <- reticulate::import("keras")
+      keras$backend$clear_session()
+    }
+  }, error = function(e) {
+    warning("Error occurred resetting tf graph: ", e$message)
+  })
 }
 
 capture_stacktrace <- function(stack) {
