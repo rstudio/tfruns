@@ -4,7 +4,7 @@ tfruns: Track, Visualize, and Manage Training Runs
 Overview
 --------
 
-<img src="images/view_run.png" style="border-radius: 3px; border: 1px solid #CCCCCC;" align="right" width=220/>
+<kbd><img src="images/view_run.png" align="right" width=220/></kbd>
 
 The **tfruns** package provides a suite of tools for managing TensorFlow training runs and experiments from Rg:
 
@@ -47,7 +47,7 @@ training_run("mnist_mlp.R")
 
 When training is completed, a summary of the run will automatically be displayed if you are within an interactive R session (note that this behavior can be suppressed, the \[Training Options\] section below for details):
 
-<img src="images/view_run.png" style="border-radius: 3px; border: 1px solid #CCCCCC;" width=675/>
+<kbd><img src="images/view_run.png" width=675/></kbd>
 
 The metrics and output of each run are automatically captured within a *run directory* which is unique for each run that you initiate. Note that for Keras and TF Estimator models this data is captured automatically (no changes to your source code are required).
 
@@ -106,7 +106,7 @@ This will also show us a report summarizing the results of the run, but what we 
 compare_runs()
 ```
 
-<img src="images/compare_runs.png" style="border-radius: 3px; border: 1px solid #CCCCCC;" width=675/>
+<kbd><img src="images/compare_runs.png" width=675/></kbd>
 
 The comparison report shows the model attributes and metrics side-by-side, as well as differences in the source code and output of the training script. We can see from the comparison that our changes have resulted in a slightly worse performing model.
 
@@ -184,7 +184,7 @@ Since `ls_runs()` returns a data frame you can also render a sortable, filterabl
 View(ls_runs())
 ```
 
-<img src="images/ls_runs_rstudio.png" style="border-radius: 3px; border: 1px solid #CCCCCC;" width=675/>
+<kbd><img src="images/ls_runs_rstudio.png" width=675/></kbd>
 
 The `ls_runs()` function also supports `subset` and `order` arguments. For example, the following will yield all runs with an eval accuracy better than 0.98:
 
@@ -198,14 +198,14 @@ You can pass the results of `ls_runs()` to compare runs (which will always compa
 compare_runs(ls_runs(eval_acc > 0.98, order = eval_acc))
 ```
 
-<img src="images/ls_runs_compare.png" style="border-radius: 3px; border: 1px solid #CCCCCC;" width=675/>
+<kbd><img src="images/ls_runs_compare.png" width=675/></kbd>
 
 Run Output
 ----------
 
 Any graphical or console output as well as file artifacts created by a training run (e.g. saved models or saved model weights) can be viewed from the **Output** tab of the run view:
 
-<img src="images/view_run_output.png" style="border-radius: 3px; border: 1px solid #CCCCCC;" width=675/>
+<kbd><img src="images/view_run_output.png" width=675/></kbd>
 
 You can use the `copy_run_files()` function to export file artifacts from runs into another directory. For example:
 
@@ -231,7 +231,7 @@ If you use RStudio with **tfruns**, it's strongly recommended that you update to
 
 The **tfruns** package installs an RStudio IDE addin which provides quick access to frequently used functions from the Addins menu:
 
-<img src="images/rstudio_addin.png" style="border-radius: 3px; border: 1px solid #CCCCCC;" width=675/>
+<kbd><img src="images/rstudio_addin.png" width=675/></kbd>
 
 Note that you can use **Tools** -&gt; **Modify Keyboard Shortcuts** within RStudio to assign a keyboard shortcut to one or more of the addin commands.
 
@@ -239,7 +239,7 @@ Note that you can use **Tools** -&gt; **Modify Keyboard Shortcuts** within RStud
 
 RStudio v1.1 includes a Terminal pane alongside the Console pane. Since training runs can become quite lengthy, it's often useful to run them in the background in order to keep the R console free for other work. You can do this from a Terminal as follows:
 
-<img src="images/rstudio_terminal.png" style="border-radius: 3px; border: 1px solid #CCCCCC;" width=675/>
+<kbd><img src="images/rstudio_terminal.png" width=675/></kbd>
 
 If you are not running within RStudio then you can of course use a system terminal window for background training.
 
@@ -247,7 +247,7 @@ If you are not running within RStudio then you can of course use a system termin
 
 Training run views and comparisons are HTML documents which can be saved and shared with others. When viewing a report within RStudio v1.1 you can save a copy of the report or publish it to RPubs or RStudio Connect:
 
-<img src="images/rstudio_publish.png" style="border-radius: 3px; border: 1px solid #CCCCCC;" width=675/>
+<kbd><img src="images/rstudio_publish.png" width=675/></kbd>
 
 If you are not running within RStudio then you can use the `save_run_view()` and `save_run_comparison()` functions to create standalone HTML versions of run reports.
 
