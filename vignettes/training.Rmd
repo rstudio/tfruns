@@ -1,8 +1,7 @@
 ---
 title: "tfruns: Track, Visualize, and Manage TensorFlow Training Runs"
 output: 
-  rmarkdown::html_vignette:
-    readme: true
+  rmarkdown::html_vignette: default
 vignette: >
   %\VignetteIndexEntry{Training}
   %\VignetteEngine{knitr::rmarkdown}
@@ -10,6 +9,9 @@ vignette: >
 ---
 
 ## Overview
+
+<img src="images/view_run.png" width=600/>
+
 
 
 ## Demo
