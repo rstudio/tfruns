@@ -6,7 +6,7 @@ Overview
 
 <img src="images/view_run.png" align="right" width=220/>
 
-The **tfruns** package provides a suite of tools for managing TensorFlow training runs and experiments from Rg:
+The **tfruns** package provides a suite of tools for managing TensorFlow training runs and experiments from R:
 
 -   Track the hyperparameters, metrics, output, and source code of every training run.
 
