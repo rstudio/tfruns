@@ -255,16 +255,15 @@ purge_runs()
 
 ### Experiment Scopes
 
-By default all runs go into the "runs" sub-directory of the current working directory. For various types of ad-hoc experimentation this works well, but in some cases you may want to create a standalone scope of a set of runs that compose an experiment.
+By default all runs go into the "runs" sub-directory of the current working directory. For various types of ad-hoc experimentation this works well, but in some cases you may want to create a separate directory scope for the set of runs that compose an experiment.
 
 To do this you can either call `clean_runs()` before beginning work on a new experiment, or you can set the `tfruns.runs_dir` global option to ensure that all run operations (including queries with `ls_runs()` use a separate scope). To return to the previous example of experimenting with various dropout values, I might have a driver script that looks like this:
 
 ``` r
 library(tfruns)
 
-# use 'dropout_experiment_runs' as the run_dir (clean any existing runs)
+# use 'dropout_experiment_runs' as the run_dir
 options(tfruns.runs_dir = "dropout_experiment_runs")
-clean_runs(confirm = FALSE)
 
 # try 9 perumutations of dropout
 for (dropout1 in c(0.1, 0.2, 0.3))
