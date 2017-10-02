@@ -151,8 +151,9 @@ for (dropout1 in c(0.1, 0.2, 0.3))
   training_run('mnist_mlp.R', flags = c(dropout1 = dropout1))
 ```
 
+<!---
 The article on [Tuning](tuning.html) goes into more depth on best practices for using flags.
-
+--->
 Analyzing Runs
 --------------
 
@@ -218,8 +219,9 @@ You can also use the `copy_run()` function to export an run directory. Note that
 copy_run(ls_runs(eval_acc >= 0.98), to = "best-runs")
 ```
 
+<!---
 See the article on [Managing Runs](managing.html) for additional details on functions used to manipulate run output.
-
+--->
 RStudio IDE
 -----------
 
@@ -249,11 +251,12 @@ Training run views and comparisons are HTML documents which can be saved and sha
 
 If you are not running within RStudio then you can use the `save_run_view()` and `save_run_comparison()` functions to create standalone HTML versions of run reports.
 
-Learning More
--------------
+<!---
+## Learning More
 
--   [Run Visualization](visualization.html) describes the various options for viewing and comparing runs, including the ability to save and publish run reports.
+- [Run Visualization](visualization.html) describes the various options for viewing and comparing runs, including the ability to save and publish run reports. 
 
--   [Training Run Flags](flags.html) covers the use of flags to paramaterize key hyperparameters of your model.
+- [Training Run Flags](flags.html) covers the use of flags to paramaterize key hyperparameters of your model.
 
--   [Managing Training Runs](managing.html) provides documentation on listing runs (including sorting and filtering by various criteria), exporting run data (e.g. model artifacts), and purging runs no longer of interest.
+- [Managing Training Runs](managing.html) provides documentation on listing runs (including sorting and filtering by various criteria), exporting run data (e.g. model artifacts), and purging runs no longer of interest.
+--->
