@@ -4,7 +4,7 @@ output:
   rmarkdown::html_vignette: 
     readme: true
 vignette: >
-  %\VignetteIndexEntry{Training}
+  %\VignetteIndexEntry{Introduction to tfruns}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
