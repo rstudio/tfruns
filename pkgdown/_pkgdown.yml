@@ -8,14 +8,6 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "Articles"
-      menu:
-        - text: Run Visualization
-          href: articles/visualization.html
-        - text: Training Run Flags
-          href: articles/flags.html
-        - text: Managing Runs
-          href: articles/managing.html
     - text: "Reference"
       href: reference/index.html
   right:
