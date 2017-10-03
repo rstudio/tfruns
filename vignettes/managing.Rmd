@@ -1,0 +1,105 @@
+---
+title: "Managing Runs"
+output: 
+  rmarkdown::html_vignette: default
+vignette: >
+  %\VignetteIndexEntry{Managing Runs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+type: docs
+repo: https://github.com/rstudio/tfruns
+menu:
+  main:
+    name: "Managing Training Runs"
+    identifier: "tools-tfruns-managing"
+    parent: "tfruns-top"
+    weight: 20
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+## Run Output
+
+Any graphical or console output as well as file artifacts created by a training run (e.g. saved models or saved model weights) can be viewed from the **Output** tab of the run view:
+
+<kbd><img src="images/view_run_output.png" width=675/></kbd>
+
+You can use the `copy_run_files()` function to export file artifacts from runs into another directory. For example:
+
+```{r}
+copy_run_files("runs/2017-09-24T10-54-00Z", to = "saved-model")
+```
+
+You can also use the `copy_run()` function to export a run directory in it's entirety. For example, this code exports the specified run to a "best-run" directory:
+
+```{r}
+copy_run("runs/2017-09-24T10-54-00Z", to = "best-run")
+```
+
+Note that `copy_run()` will accept any number of runs. For example, this code exports all run directories with an evaluation accuracy greater than 0.98 to a "best-runs" directory:
+
+```{r}
+copy_run(ls_runs(eval_acc >= 0.98), to = "best-runs")
+```
+
+## Cleaning Runs
+
+You can use the `clean_runs()` function to archive a set of runs you no longer need the data from. For example, this code archives all runs with an eval accuracy less than 0.98:
+
+```{r}
+clean_runs(ls_runs(eval_acc < 0.98))
+```
+
+If you don't specify a set of runs to clean then all runs will be archived:
+
+```{r}
+clean_runs() # archives all runs in the "runs" directory
+```
+
+Note that you'll always get a confirmation prompt before the runs are actually archived.
+
+## Purging Runs
+
+When runs are archived they are moved to the "archive" subdirectory of the "runs" directory. If you want to permanently remove runs from the archive you call the `purge_runs()` function:
+
+```{r}
+purge_runs()
+```
+
+## Experiment Scopes
+
+By default all runs go into the "runs" sub-directory of the current working directory. For various types of ad-hoc experimentation this works well, but in some cases you may want to create a separate directory scope for the set of runs that compose an experiment.
+
+To do this you can either call `clean_runs()` before beginning work on a new experiment, or you can set the `tfruns.runs_dir` global option to ensure that all run operations (including queries with `ls_runs()` use a separate scope). To return to the previous example of experimenting with various dropout values, I might have a driver script that looks like this:
+
+```{r}
+library(tfruns)
+
+# use 'dropout_experiment_runs' as the run_dir
+options(tfruns.runs_dir = "dropout_experiment_runs")
+
+# try 9 perumutations of dropout
+for (dropout1 in c(0.1, 0.2, 0.3))
+  for (dropout2 in c(0.1, 0.2, 0.3))
+    training_run('mnist_mlp.R', flags = c(dropout1 = dropout1, dropout2 = dropout2))
+
+# see which combination of dropout values performed best
+ls_runs(order = eval_acc)[,c("eval_acc", "metric_acc", "flag_dropout1", "flag_dropout2")]
+```
+```
+# A tibble: 9 x 4
+  eval_acc metric_acc flag_dropout1 flag_dropout2
+     <dbl>      <dbl>         <dbl>         <dbl>
+1   0.9832     0.9936           0.2           0.1
+2   0.9827     0.9920           0.2           0.3
+3   0.9824     0.9903           0.3           0.2
+4   0.9817     0.9949           0.1           0.3
+5   0.9813     0.9932           0.2           0.2
+6   0.9811     0.9968           0.1           0.1
+7   0.9810     0.9883           0.3           0.3
+8   0.9798     0.9958           0.1           0.2
+9   0.9794     0.9904           0.3           0.1
+```
+
