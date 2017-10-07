@@ -14,6 +14,8 @@ menu:
     identifier: "tools-tfruns-overview"
     parent: "tfruns-top"
     weight: 10
+aliases:
+  - /tools/tfruns/
 ---
 
 ```{r setup, include=FALSE}
@@ -21,7 +23,7 @@ knitr::opts_chunk$set(eval = FALSE)
 ```
 
 
-<img src="images/view_run.png" align="right" style="border: 1px solid #CCCCCC;" width=220/>
+<img src="images/view_run.png" align="right" style="border: 1px solid #CCCCCC; margin-left: 15px;" width=220/>
 
 The **tfruns** package provides a suite of tools for tracking, visualizing, and managing TensorFlow training runs and experiments from R:
 
@@ -48,7 +50,7 @@ The package is intended to be used with the [keras](https://tensorflow.rstudio.c
 install.packages("keras")
 
 # tfestimators
-devtools::install_github("rstudio/tfestimators")
+devtools::install_github("rstudio/tfestimators", ref = "v1.3.0")
 ```
 
 ## Training
@@ -168,6 +170,8 @@ for (dropout1 in c(0.1, 0.2, 0.3))
 ```
 
 Flag values are automatically included in run data with a "flag_" prefix (e.g. `flag_dropout1`, `flag_dropout2`).
+
+See the article on [training flags](https://tensorflow.rstudio.com/tools/training_flags.html) for additional documentation on using flags.
 
 ## Analyzing Runs
 
