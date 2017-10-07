@@ -23,7 +23,7 @@ ls_runs <- function(subset = NULL,
   # default empty run list
   run_list <- NULL
 
-  if (file.exists(runs_dir)) {
+  if (utils::file_test("-d", runs_dir)) {
 
     # list runs
     runs <- list_run_dirs(latest_n = latest_n, runs_dir = runs_dir)
