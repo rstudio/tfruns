@@ -7,4 +7,8 @@
 ^docs$
 ^index\.Rmd$
 ^index\.html$
+^inst/examples/
+^tests/testthat/runs/
+^images$
+
 
