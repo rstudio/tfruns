@@ -1,7 +1,7 @@
 Package: tfruns
 Type: Package
 Title: Training Run Tools for 'TensorFlow'
-Version: 1.0
+Version: 1.0.0.9000
 Authors@R: c(
   person("JJ", "Allaire", role = c("aut", "cre"), email = "jj@rstudio.com"),
   person(family = "RStudio", role = c("cph", "fnd")),
@@ -39,7 +39,7 @@ Depends:
   R (>= 3.1)
 Imports:
   utils,
-  jsonlite,
+  jsonlite (>= 1.2),
   base64enc,
   yaml,
   config,
