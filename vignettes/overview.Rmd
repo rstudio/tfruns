@@ -47,7 +47,7 @@ The package is intended to be used with the [keras](https://tensorflow.rstudio.c
 
 ```{r}
 # keras
-install.packages("keras")
+devtools::install_github("rstudio/keras")
 
 # tfestimators
 devtools::install_github("rstudio/tfestimators")
