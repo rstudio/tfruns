@@ -238,14 +238,15 @@ reset_tf_graph <- function() {
     if (reticulate::py_module_available("tensorflow")) {
       tf <- reticulate::import("tensorflow")
       tf$reset_default_graph()
-      if (reticulate::py_has_attr(tf$contrib, "keras"))
+      if (reticulate::py_has_attr(tf, "keras"))
+        tf$keras$backend$clear_session()
+      else if (reticulate::py_has_attr(tf$contrib, "keras"))
         tf$contrib$keras$backend$clear_session()
-      else if (reticulate::py_has_attr(tf, "keras"))
-        tf$keras$clear_session()
     }
     if (reticulate::py_module_available("keras")) {
       keras <- reticulate::import("keras")
-      keras$backend$clear_session()
+      if (reticulate::py_has_attr(keras$backend, "clear_session"))
+        keras$backend$clear_session()
     }
   }, error = function(e) {
     warning("Error occurred resetting tf graph: ", e$message)
