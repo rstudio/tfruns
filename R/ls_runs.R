@@ -242,7 +242,9 @@ run_record <- function(run_dir) {
     json_path <- file.path(meta_dir, file)
     if (file.exists(json_path)) {
       columns <- jsonlite::read_json(json_path)
-      names(columns) <- paste0(prefix, "_", names(columns))
+      if (length(columns) > 0) {
+        names(columns) <- paste0(prefix, "_", names(columns))
+      }
       columns
     } else {
       NULL
