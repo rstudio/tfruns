@@ -38,4 +38,17 @@ test_that("flags_parse overrides based on config file values", {
   expect_equal(FLAGS$learning_rate, 0.03)
 })
 
+test_that("flags_parse skips --args for passthrough args", {
+  FLAGS <- flags(
+    flag_string("job_dir", ""),
+    flag_numeric("gradient_descent_optimizer", 0.5),
+    arguments = list(
+      "--args",
+      "--gradient-descent-optimizer",
+      "0.47",
+      "--job-dir",
+      "gs://rstudio-cloudml/mnist/staging/2")
+  )
 
+  expect_equal(FLAGS$gradient_descent_optimizer, 0.47)
+})
