@@ -44,9 +44,17 @@ training_run <- function(file = "train.R",
                          envir = parent.frame(),
                          encoding = getOption("encoding")) {
 
+  # if file is not specified then see if there is a single R source file
+  # within the current working directory
+  if (missing(file)) {
+    all_r_scripts <- list.files(pattern = glob2rx("*.r"), ignore.case = TRUE)
+    if (length(all_r_scripts) == 1)
+      file <- all_r_scripts
+  }
+
   # verify that the file exists
   if (!file.exists(file))
-    stop("The specified R script '", file, "' does not exist.")
+    stop("The R script '", file, "' does not exist.")
 
   # setup run context
   run_dir <- initialize_run(
