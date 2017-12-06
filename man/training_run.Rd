@@ -18,7 +18,7 @@ training_run(file = "train.R", context = "local",
 for the current environment (as specified by the \code{R_CONFIG_ACTIVE}
 environment variable), or \code{default} when unset.}
 
-\item{flags}{Named character vector with flag values (see \code{\link[=flags]{flags()}}) or path
+\item{flags}{Named list with flag values (see \code{\link[=flags]{flags()}}) or path
 to YAML file containing flag values.}
 
 \item{properties}{Named character vector with run properties. Properties are

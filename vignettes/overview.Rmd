@@ -37,10 +37,10 @@ The **tfruns** package provides a suite of tools for tracking, visualizing, and 
 
 ## Installation
 
-You can install the **tfruns** package from CRAN as follows:
+You can install the **tfruns** package from GitHub as follows:
 
 ```{r}
-install.packages("tfruns")
+devtools::install_github("rstudio/tfruns")
 ```
 
 The package is intended to be used with the [keras](https://tensorflow.rstudio.com/keras) and/or the [tfestimators](https://tensorflow.rstudio.com/keras) packages, both of which provide higher level interfaces to TensorFlow from R. These packages can be installed with:
@@ -157,7 +157,7 @@ model %>%
 Once we've defined flags, we can pass alternate flag values to `training_run()` as follows:
 
 ```{r}
-training_run('mnist_mlp.R', flags = c(dropout1 = 0.2, dropout2 = 0.2))
+training_run('mnist_mlp.R', flags = list(dropout1 = 0.2, dropout2 = 0.2))
 ```
 
 You aren't required to specify all of the flags (any flags excluded will simply use their default value).
@@ -166,7 +166,7 @@ Flags make it very straightforward to systematically explore the impact of chang
 
 ```{r}
 for (dropout1 in c(0.1, 0.2, 0.3))
-  training_run('mnist_mlp.R', flags = c(dropout1 = dropout1))
+  training_run('mnist_mlp.R', flags = list(dropout1 = dropout1))
 ```
 
 Flag values are automatically included in run data with a "flag_" prefix (e.g. `flag_dropout1`, `flag_dropout2`).
@@ -218,6 +218,47 @@ compare_runs(ls_runs(eval_acc > 0.98, order = eval_acc))
 ```
 
 <kbd><img src="images/ls_runs_compare.png" style="border: 1px solid #CCCCCC;" width=675/></kbd>
+
+## Hyperparamter Tuning
+
+The `tuning_run()` function allows you to specify multiple values for each flag, and will execute training runs for all permutations of the specified flags. For example:
+
+```{r}
+# run various permutations of dropout1 and dropout2
+runs <- tuning_run("mnist_mlp.R", flags = list(
+  dropout1 = c(0.2, 0.3, 0.4),
+  dropout2 = c(0.2, 0.3, 0.4)
+))
+
+# find the best evaluation accuracies
+runs[order(runs$eval_acc, decreasing = TRUE), ]
+```
+
+The `tuning_run()` function returns a data frame containing a summary of all of the executed training runs.
+
+You can also specify that all of the runs go into a dedicated runs directory, for example:
+
+```{r}
+# run various permutations of dropout1 and dropout2
+tuning_run("mnist_mlp.R", runs_dir = "dropout_tuning", flags = list(
+  dropout1 = c(0.2, 0.3, 0.4),
+  dropout2 = c(0.2, 0.3, 0.4)
+))
+
+# list runs witin the specified runs_dir
+ls_runs(order = eval_acc, runs_dir = "dropout_tuning")
+```
+
+If the number of flag permutations is very large, you can also specify that only a random sample of permutations should be tried using the `sample` parmaeter. For example:
+
+```{r}
+# run random sample (0.3) of dropout1 and dropout2 permutations
+runs <- tuning_run("mnist_mlp.R", sample = 0.3, flags = list(
+  dropout1 = c(0.2, 0.3, 0.4),
+  dropout2 = c(0.2, 0.3, 0.4)
+))
+```
+
 
 ## RStudio IDE
 

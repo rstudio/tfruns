@@ -4,7 +4,7 @@
 #' @inheritParams ls_runs
 #' @param file Path to training script (defaults to "train.R")
 #' @param context Run context (defaults to "local")
-#' @param flags Named character vector with flag values (see [flags()]) or path
+#' @param flags Named list with flag values (see [flags()]) or path
 #'   to YAML file containing flag values.
 #' @param properties Named character vector with run properties. Properties are
 #'   additional metadata about the run which will be subsequently available via
@@ -47,7 +47,7 @@ training_run <- function(file = "train.R",
   # if file is not specified then see if there is a single R source file
   # within the current working directory
   if (missing(file)) {
-    all_r_scripts <- list.files(pattern = glob2rx("*.r"), ignore.case = TRUE)
+    all_r_scripts <- list.files(pattern = utils::glob2rx("*.r"), ignore.case = TRUE)
     if (length(all_r_scripts) == 1)
       file <- all_r_scripts
   }
@@ -103,6 +103,112 @@ training_run <- function(file = "train.R",
 
   }
 }
+
+
+#' Tune hyperparameters using training flags
+#'
+#' Run all permutations of the specifed training flags. The number of
+#' permutations can be reduced by specified the `sample` parameter, which
+#' will result in a random sample of the flag permutations beign run.
+#'
+#' @inheritParams training_run
+#' @inheritParams ls_runs
+#'
+#' @param flags Named list with flag values (multiple values can be
+#'   provided for each flag)
+#' @param sample Sampling rate for flag permutations (defaults to
+#'   running all permutations).
+#' @param confirm Confirm before executing tuning run.
+#'
+#' @return Data frame with summary of all training runs performed
+#'   during tuning.
+#'
+#' @examples \dontrun{
+#' library(tfruns)
+#'
+#' runs <- tuning_run("mnist_mlp.R", flags = list(
+#'   batch_size = c(64, 128),
+#'   dropout1 = c(0.2, 0.3, 0.4),
+#'   dropout2 = c(0.2, 0.3, 0.4)
+#' ))
+#'
+#' runs[order(runs$eval_acc, decreasing = TRUE), ]
+#'
+#' }
+#'
+#' @export
+tuning_run <- function(file = "train.R",
+                       context = "local",
+                       config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
+                       flags = NULL,
+                       sample = NULL,
+                       properties = NULL,
+                       runs_dir = getOption("tfruns.runs_dir", "runs"),
+                       echo = TRUE,
+                       confirm = interactive(),
+                       envir = parent.frame(),
+                       encoding = getOption("encoding")) {
+
+   if (!is.list(flags) || is.null(names(flags)))
+     stop("flags must be specified as a named list")
+
+   # set runs dir if specified
+   old_runs_dir <- getOption("tfruns.runs_dir")
+   options(tfruns.runs_dir = runs_dir)
+   if (!is.null(old_runs_dir))
+     on.exit(options(tfruns.runs_dir = old_runs_dir), add = TRUE)
+
+   # calculate the flag grid
+   flag_grid <- do.call(expand.grid, flags)
+   cat(prettyNum(nrow(flag_grid), big.mark = ","), "total permutations of flags ")
+
+   # sample if requested
+   if (!is.null(sample)) {
+     if (sample >= 1)
+       stop("sample must be a floating point value less than 1")
+     indices <- sample(1:nrow(flag_grid), size = sample * nrow(flag_grid))
+     flag_grid <- flag_grid[indices, , drop = FALSE]
+     cat("(sampled to", prettyNum(nrow(flag_grid), big.mark = ","), "permutations)\n")
+   } else {
+     cat("(use sample parameter to run a random subset)\n")
+   }
+
+   if (confirm) {
+     prompt <- readline("Proceed with tuning run? [Y/n]: ")
+     if (nzchar(prompt) && tolower(prompt) != 'y')
+       return(invisible(NULL))
+   }
+
+   # execute tuning
+   for (i in 1:nrow(flag_grid)) {
+
+     # flags
+     flags = as.list(flag_grid[i,, drop = FALSE])
+     message(sprintf(
+       "Training run %d/%d (flags = %s) ",
+       i,
+       nrow(flag_grid),
+       deparse(flags, control = c("keepInteger", "keepNA"))
+     ))
+
+     # execute run
+     training_run(
+       file = file,
+       config = config,
+       flags = flags,
+       properties = properties,
+       run_dir = NULL,
+       echo = echo,
+       view = FALSE,
+       envir = new.env(parent = envir),
+       encoding = encoding
+     )
+   }
+
+   # return data frame with all runs
+   invisible(ls_runs(latest_n = nrow(flag_grid), runs_dir = runs_dir))
+}
+
 
 #' @export
 print.tfruns_viewed_run <- function(x, ...) {
