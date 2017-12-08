@@ -8,7 +8,7 @@ compare_runs(runs = ls_runs(latest_n = 2),
   viewer = getOption("tfruns.viewer"))
 }
 \arguments{
-\item{runs}{@param run_dir Character vector of 2 training run directories or
+\item{runs}{Character vector of 2 training run directories or
 data frame returned from \code{\link[=ls_runs]{ls_runs()}} with at least 2 elements.}
 
 \item{viewer}{Viewer to display training run information within

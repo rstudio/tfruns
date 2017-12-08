@@ -7,7 +7,7 @@
 save_run_comparison(runs = ls_runs(latest_n = 2), filename = "auto")
 }
 \arguments{
-\item{runs}{@param run_dir Character vector of 2 training run directories or
+\item{runs}{Character vector of 2 training run directories or
 data frame returned from \code{\link[=ls_runs]{ls_runs()}} with at least 2 elements.}
 
 \item{filename}{Path to save the HTML to. If no \code{filename} is specified

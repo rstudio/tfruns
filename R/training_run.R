@@ -473,7 +473,7 @@ view_run <- function(run_dir = latest_run(), viewer = getOption("tfruns.viewer")
 #'
 #' @inheritParams save_run_view
 #'
-#' @param runs @param run_dir Character vector of 2 training run directories or
+#' @param runs Character vector of 2 training run directories or
 #'   data frame returned from [ls_runs()] with at least 2 elements.
 #'
 #' @export
@@ -593,7 +593,6 @@ run_view_data <- function(run) {
   data$attributes <- list(
     context = run$context,
     script = script,
-    run_dir = run$run_dir,
     started = paste(as.POSIXct(run$start, origin="1970-01-01", tz = "GMT"),
                     "GMT"),
     time = format(as.POSIXct(as.character(Sys.Date()), tz = "GMT") +

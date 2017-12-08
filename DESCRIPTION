@@ -1,7 +1,7 @@
 Package: tfruns
 Type: Package
 Title: Training Run Tools for 'TensorFlow'
-Version: 1.0.0.9000
+Version: 1.0.0.9001
 Authors@R: c(
   person("JJ", "Allaire", role = c("aut", "cre"), email = "jj@rstudio.com"),
   person(family = "RStudio", role = c("cph", "fnd")),
@@ -56,6 +56,5 @@ Suggests:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.0.1
+RoxygenNote: 6.0.1.9000
 VignetteBuilder: knitr
-

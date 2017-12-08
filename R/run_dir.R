@@ -97,7 +97,16 @@ as_run_dir <- function(x) {
 
 #' @export
 as_run_dir.character <- function(x) {
-  x
+  if (all(utils::file_test("-d", x)))
+    x
+  else {
+    runs_dir <- getOption("tfruns.runs_dir", "runs")
+    run_dir <- file.path(runs_dir, x)
+    if (all(utils::file_test("-d", run_dir)))
+      run_dir
+    else
+      x
+  }
 }
 
 #' @export
