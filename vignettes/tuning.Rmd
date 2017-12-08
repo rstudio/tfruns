@@ -1,0 +1,134 @@
+---
+title: "Hyperparameter Tuning"
+output: 
+  rmarkdown::html_vignette: default
+vignette: >
+  %\VignetteIndexEntry{Hyperparameter Tuning}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+type: docs
+repo: https://github.com/rstudio/tfruns
+menu:
+  main:
+    name: "Hyperparameter Tuning"
+    identifier: "tools-tfruns-tuning"
+    parent: "tfruns-top"
+    weight: 20
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+
+## Overview
+
+Tuning a model often requires exploring the impact of changes to many hyperparameters. The best way to approach this is generally not by changing the source code of the training script as we did above, but instead by defining flags for key parameters then training over the permutations of those flags to determine which combination of flags yields the best model.
+
+## Training Flags
+
+Here's a declaration of 2 flags that control dropout rate within a model:
+
+```{r}
+FLAGS <- flags(
+  flag_numeric("dropout1", 0.4),
+  flag_numeric("dropout2", 0.3)
+)
+```
+
+These flags are then used in the definition of the model here:
+
+```{r}
+model <- keras_model_sequential()
+model %>%
+  layer_dense(units = 128, activation = 'relu', input_shape = c(784)) %>%
+  layer_dropout(rate = FLAGS$dropout1) %>%
+  layer_dense(units = 128, activation = 'relu') %>%
+  layer_dropout(rate = FLAGS$dropout2) %>%
+  layer_dense(units = 10, activation = 'softmax')
+```
+
+Once we've defined flags, we can pass alternate flag values to `training_run()` as follows:
+
+```{r}
+training_run('mnist_mlp.R', flags = list(dropout1 = 0.2, dropout2 = 0.2))
+```
+
+You aren't required to specify all of the flags (any flags excluded will simply use their default value).
+
+Flags make it very straightforward to systematically explore the impact of changes to hyperparameters on model performance, for example:
+
+```{r}
+for (dropout1 in c(0.1, 0.2, 0.3))
+  training_run('mnist_mlp.R', flags = list(dropout1 = dropout1))
+```
+
+Flag values are automatically included in run data with a "flag_" prefix (e.g. `flag_dropout1`, `flag_dropout2`).
+
+See the article on [training flags](https://tensorflow.rstudio.com/tools/training_flags.html) for additional documentation on using flags.
+
+## Tuning Runs
+
+Above we demonstrated writing a loop to call `training_run()` with various different flag values. A better way to accomplish this is the `tuning_run()` function, which allows you to specify multiple values for each flag, and executes training runs for all permutations of the specified flags. For example:
+
+```{r}
+# run various permutations of dropout1 and dropout2
+runs <- tuning_run("mnist_mlp.R", flags = list(
+  dropout1 = c(0.2, 0.3, 0.4),
+  dropout2 = c(0.2, 0.3, 0.4)
+))
+
+# find the best evaluation accuracy
+runs[order(runs$eval_acc, decreasing = TRUE), ]
+```
+```
+# A tibble: 6 x 27
+                    run_dir eval_loss eval_acc metric_loss metric_acc metric_val_loss
+                      <chr>     <dbl>    <dbl>       <dbl>      <dbl>           <dbl>
+1 runs/2017-10-02T14-55-11Z    0.1407   0.9804      0.0348     0.9914          0.1542
+2 runs/2017-10-02T14-51-44Z    0.1164   0.9801      0.0448     0.9882          0.1396
+3 runs/2017-10-02T14-23-38Z    0.0956   0.9796      0.0624     0.9835          0.0962
+4 runs/2017-10-02T14-56-57Z    0.1263   0.9784      0.0773     0.9807          0.1283
+5 runs/2017-10-02T14-56-04Z    0.1323   0.9783      0.0545     0.9860          0.1414
+6 runs/2017-10-02T14-37-00Z    0.1338   0.9750      0.1097     0.9732          0.1328
+
+# ... with 21 more variables: metric_val_acc <dbl>, flag_dropout1 <dbl>,
+#   flag_dropout2 <dbl>, samples <int>, validation_samples <int>, batch_size <int>,
+#   epochs <int>, epochs_completed <int>, metrics <chr>, model <chr>, loss_function <chr>,
+#   optimizer <chr>, learning_rate <dbl>, script <chr>, start <dttm>, end <dttm>,
+#   completed <lgl>, output <chr>, source_code <chr>, context <chr>, type <chr>
+```
+
+As you can see above, the `tuning_run()` function returns a data frame containing a summary of all of the executed training runs.
+
+You can also specify that all of the runs go into a dedicated runs directory, for example:
+
+```{r}
+# run various permutations of dropout1 and dropout2
+tuning_run("mnist_mlp.R", runs_dir = "dropout_tuning", flags = list(
+  dropout1 = c(0.2, 0.3, 0.4),
+  dropout2 = c(0.2, 0.3, 0.4)
+))
+
+# list runs witin the specified runs_dir
+ls_runs(order = eval_acc, runs_dir = "dropout_tuning")
+```
+
+If the number of flag permutations is very large, you can also specify that only a random sample of permutations should be tried using the `sample` parmaeter. For example:
+
+```{r}
+# run random sample (0.3) of dropout1 and dropout2 permutations
+runs <- tuning_run("mnist_mlp.R", sample = 0.3, flags = list(
+  dropout1 = c(0.2, 0.3, 0.4),
+  dropout2 = c(0.2, 0.3, 0.4)
+))
+```
+
+
+
+
+
+
+
+
+

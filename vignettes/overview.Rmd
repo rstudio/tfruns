@@ -131,48 +131,6 @@ The comparison report shows the model attributes and metrics side-by-side, as we
 
 Note that `compare_runs()` will by default compare the last two runs, however you can pass any two run directories you like to be compared.
 
-## Using Flags
-
-Tuning a model often requires exploring the impact of changes to many hyperparameters. The best way to approach this is generally not by changing the source code of the training script as we did above, but instead by defining flags for key parameters you may want to vary. In the example script you can see that we have done this for the `dropout` layers:
-
-```{r}
-FLAGS <- flags(
-  flag_numeric("dropout1", 0.4),
-  flag_numeric("dropout2", 0.3)
-)
-```
-
-These flags are then used in the definition of our model here:
-
-```{r}
-model <- keras_model_sequential()
-model %>%
-  layer_dense(units = 128, activation = 'relu', input_shape = c(784)) %>%
-  layer_dropout(rate = FLAGS$dropout1) %>%
-  layer_dense(units = 128, activation = 'relu') %>%
-  layer_dropout(rate = FLAGS$dropout2) %>%
-  layer_dense(units = 10, activation = 'softmax')
-```
-
-Once we've defined flags, we can pass alternate flag values to `training_run()` as follows:
-
-```{r}
-training_run('mnist_mlp.R', flags = list(dropout1 = 0.2, dropout2 = 0.2))
-```
-
-You aren't required to specify all of the flags (any flags excluded will simply use their default value).
-
-Flags make it very straightforward to systematically explore the impact of changes to hyperparameters on model performance, for example:
-
-```{r}
-for (dropout1 in c(0.1, 0.2, 0.3))
-  training_run('mnist_mlp.R', flags = list(dropout1 = dropout1))
-```
-
-Flag values are automatically included in run data with a "flag_" prefix (e.g. `flag_dropout1`, `flag_dropout2`).
-
-See the article on [training flags](https://tensorflow.rstudio.com/tools/training_flags.html) for additional documentation on using flags.
-
 ## Analyzing Runs
 
 We've demonstrated visualizing and comparing one or two runs, however as you accumulate more runs you'll generally want to analyze and compare runs many runs. You can use the `ls_runs()` function to yield a data frame with summary information on all of the runs you've conducted within a given directory:
@@ -219,47 +177,6 @@ compare_runs(ls_runs(eval_acc > 0.98, order = eval_acc))
 
 <kbd><img src="images/ls_runs_compare.png" style="border: 1px solid #CCCCCC;" width=675/></kbd>
 
-## Hyperparamter Tuning
-
-The `tuning_run()` function allows you to specify multiple values for each flag, and will execute training runs for all permutations of the specified flags. For example:
-
-```{r}
-# run various permutations of dropout1 and dropout2
-runs <- tuning_run("mnist_mlp.R", flags = list(
-  dropout1 = c(0.2, 0.3, 0.4),
-  dropout2 = c(0.2, 0.3, 0.4)
-))
-
-# find the best evaluation accuracies
-runs[order(runs$eval_acc, decreasing = TRUE), ]
-```
-
-The `tuning_run()` function returns a data frame containing a summary of all of the executed training runs.
-
-You can also specify that all of the runs go into a dedicated runs directory, for example:
-
-```{r}
-# run various permutations of dropout1 and dropout2
-tuning_run("mnist_mlp.R", runs_dir = "dropout_tuning", flags = list(
-  dropout1 = c(0.2, 0.3, 0.4),
-  dropout2 = c(0.2, 0.3, 0.4)
-))
-
-# list runs witin the specified runs_dir
-ls_runs(order = eval_acc, runs_dir = "dropout_tuning")
-```
-
-If the number of flag permutations is very large, you can also specify that only a random sample of permutations should be tried using the `sample` parmaeter. For example:
-
-```{r}
-# run random sample (0.3) of dropout1 and dropout2 permutations
-runs <- tuning_run("mnist_mlp.R", sample = 0.3, flags = list(
-  dropout1 = c(0.2, 0.3, 0.4),
-  dropout2 = c(0.2, 0.3, 0.4)
-))
-```
-
-
 ## RStudio IDE
 
 If you use RStudio with **tfruns**, it's strongly recommended that you update to the current [Preview Release](https://www.rstudio.com/products/rstudio/download/preview/) of RStudio v1.1, as there are are a number of points of integration with the IDE that require this newer release.
@@ -288,6 +205,10 @@ Training run views and comparisons are HTML documents which can be saved and sha
 
 If you are not running within RStudio then you can use the `save_run_view()` and `save_run_comparison()` functions to create standalone HTML versions of run reports.
 
+
+## Hyperparameter Tuning
+
+Tuning a model often requires exploring the impact of changes to many hyperparameters. The best way to approach this is generally to systematically train over the permutations of those parameters to determine which combination yields the best model. See the [Hyperparmeter Tuning](https://tensorflow.rstudio.com/tools/tfruns/articles/tuning.html) article for details on how to accomplish this with tfruns.
 
 ## Managing Runs
 

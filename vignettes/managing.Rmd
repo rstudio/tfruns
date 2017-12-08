@@ -13,7 +13,7 @@ menu:
     name: "Managing Training Runs"
     identifier: "tools-tfruns-managing"
     parent: "tfruns-top"
-    weight: 20
+    weight: 30
 ---
 
 ```{r setup, include=FALSE}
