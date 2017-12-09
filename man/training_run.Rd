@@ -32,7 +32,8 @@ additional metadata about the run which will be subsequently available via
 \item{view}{View the results of the run after training. The default "auto"
 will view the run when executing a top-level (printed) statement in an
 interactive session. Pass \code{TRUE} or \code{FALSE} to control whether the view is
-shown explictly.}
+shown explictly. You can also pass "save" to save a copy of the
+run report at \code{tfruns.d/view.html}}
 
 \item{envir}{The environment in which the script should be evaluated}
 

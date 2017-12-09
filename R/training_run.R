@@ -14,7 +14,8 @@
 #' @param view View the results of the run after training. The default "auto"
 #'   will view the run when executing a top-level (printed) statement in an
 #'   interactive session. Pass `TRUE` or `FALSE` to control whether the view is
-#'   shown explictly.
+#'   shown explictly. You can also pass "save" to save a copy of the
+#'   run report at `tfruns.d/view.html`
 #' @param envir The environment in which the script should be evaluated
 #' @param encoding The encoding of the training script; see [file()].
 #'
@@ -91,10 +92,16 @@ training_run <- function(file = "train.R",
 
   # regular view means give it a class that will result in a view
   # when executed as a top-level statement
-  } else if (view) {
+  } else if (isTRUE(view)) {
 
     class(run_return) <- c("tfruns_viewed_run", class(run_return))
     run_return
+
+  # save a copy of the run view
+  } else if (identical(view, "save")) {
+
+    save_run_view(run_dir, file.path(run_dir, "tfruns.d", "view.html"))
+    invisible(run_return)
 
   # otherwise just return invisibly
   } else {
