@@ -14,7 +14,7 @@ FLAGS <- flags(
 )
 
 num_classes <- 10
-epochs <- 5
+epochs <- 30
 
 # the data, shuffled and split between train and test sets
 mnist <- dataset_mnist()

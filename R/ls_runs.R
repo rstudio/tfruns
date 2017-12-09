@@ -281,6 +281,8 @@ run_record <- function(run_dir) {
     metrics <- jsonlite::read_json(metrics_json_path, simplifyVector = TRUE)
     if (length(metrics) > 0) {
       for (metric in names(metrics)) {
+        if (metric == "epoch")
+          next
         values <- metrics[[metric]]
         available_values <- values[!is.na(values)]
         epochs_completed <- length(available_values)

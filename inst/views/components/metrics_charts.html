@@ -19,12 +19,11 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
     // determine metrics we will be plotting (filter out val_ prefixed ones)
     var keys = Object.keys(this.$metrics);
     for (var k = 0; k<keys.length; k++) {
-      if (keys[k].lastIndexOf('val_', 0) !== 0)
+      if (keys[k].lastIndexOf('val_', 0) !== 0 && keys[k] !== 'epoch')
         this.$metric_names.push(keys[k]);
     }
 
     // create a C3 chart for each metric
-    var total_epochs = this.$get_total_epochs(this.$metrics);
     for (var i = 0; i<this.$metric_names.length; i++) {
 
       // get the metric
@@ -51,14 +50,14 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
         bindto: c3_div,
         axis: {
           x: {
-            min: 1,
             tick: {
-              values: this.$get_x_axis_ticks(total_epochs)
+              values: this.$get_x_axis_ticks(this.$metrics)
             }
           },
           y: y_axis
         },
         data: {
+          x: 'epoch',
           columns: this.$chart_columns(metric, this.$metrics)
         },
         color: {
@@ -110,6 +109,7 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
       var metric = this.$metric_names[i];
       var chart = this.$c3_charts[i];
       chart.load({
+        x: 'epoch',
         columns: this.$chart_columns(metric, data)
       });
       this.$adjust_axes(chart, metric, data);
@@ -199,14 +199,15 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
   this.$adjust_axes = function(chart, metric, data) {
 
     // adjust x-axis range
-    var total_epochs = this.$get_total_epochs(data);
+    var epoch = this.$epoch_column(data);
+    var total_epochs = epoch[epoch.length - 1];
     chart.axis.max({
       x: total_epochs
     });
 
     // define new x axis tick generator
     chart.internal.axis.getXAxisTickValues = function() {
-      return thiz.$get_x_axis_ticks(total_epochs);
+      return thiz.$get_x_axis_ticks(data);
     }
 
     // adjust y-axis range
@@ -220,19 +221,40 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
   // yield chart column data
   this.$chart_columns = function(metric, data) {
 
-    var columns = [
-      [metric,null].concat(data[metric])
-    ];
+    var columns = [];
+
+    columns.push(
+      ['epoch'].concat(this.$epoch_column(data))
+    );
+
+    columns.push(
+      [metric].concat(data[metric])
+    );
 
     var val_metric = "val_" + metric;
     if (data.hasOwnProperty(val_metric)) {
       columns.push(
-        [val_metric,null].concat(data[val_metric])
+        [val_metric].concat(data[val_metric])
       );
     }
 
     return columns;
   };
+
+  this.$epoch_column = function(data) {
+    var epoch = data.epoch;
+    if (!epoch)
+      epoch = this.$x_axis_range(data[Object.keys(data)[0]].length);
+    return epoch;
+  }
+
+  this.$x_axis_range = function(size) {
+    var range = new Array(size);
+    for (var i = 1; i<=size; i++)
+      range[i-1] = i;
+    return range;
+  };
+
 
   // load metrics from the update url
   this.$load_metrics = function(callback, on_error) {
@@ -260,17 +282,16 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
   };
 
   // determine ticks for x-axis
-  this.$get_x_axis_ticks = function(total_epochs) {
+  this.$get_x_axis_ticks = function(data) {
 
-      // TODO: should depend on width of chart?
+      // get the epoch column
+      var epoch = this.$epoch_column(data);
+      var total_epochs = epoch.length;
+
+      // if we are have less than 10 epochs we are done
       var total_ticks = 10;
-
-      if (total_epochs < total_ticks) {
-        var ticks = [];
-        for (var i = 0; i < total_epochs; i++)
-          ticks.push(i);
-        return ticks;
-      }
+      if (total_epochs <= total_ticks)
+        return epoch;
 
       // otherwise, choose an appropriate increment and
       // use that when drawing ticks
@@ -295,7 +316,11 @@ function MetricsCharts(container, metrics, update_url, auto_resize) {
         current = current + increment;
       }
 
-      return ticks;
+      // the ticks are used as indexes into epochs
+      var axis_ticks = [];
+      for (var i = 0; i<ticks.length; i++)
+        axis_ticks.push(epoch[ticks[i]-1]);
+      return axis_ticks;
   }
 
   // initialize
