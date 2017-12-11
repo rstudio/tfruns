@@ -40,12 +40,11 @@ test_that("flags_parse overrides based on config file values", {
 
 test_that("flags_parse skips --args for passthrough args", {
   FLAGS <- flags(
-    flag_string("job_dir", ""),
     flag_numeric("gradient_descent_optimizer", 0.5),
     arguments = list(
-      "--args",
       "--gradient-descent-optimizer",
       "0.47",
+      "--args",
       "--job-dir",
       "gs://rstudio-cloudml/mnist/staging/2")
   )

@@ -305,8 +305,12 @@ parse_command_line <- function(arguments) {
     argument <- arguments[[i]]
 
     # skip any command line arguments without a '--' prefix
-    if (!grepl("^--", argument) || grepl("^--args$", argument))
+    if (!grepl("^--", argument))
       next
+
+    # terminate if we see "--args" (implies passthrough args)
+    if (grepl("^--args$", argument))
+      break
 
     # check to see if an '=' was specified for this argument
     equals_idx <- regexpr("=", argument)
