@@ -429,18 +429,19 @@ Vue.component('error-panel', {
 <card caption="Files">
 <div class="files-list">
   <div class="chip file-chip" v-for="file in files">
-    <i class="material-icons">attach_file</i>
-    <span class="icon-text">### file ###</span>
+    <i class="material-icons" v-if="file.directory">folder_open</i>
+    <i class="material-icons" v-else>attach_file</i>
+    <span class="icon-text">### file.name ###</span>
   </div>
 </div>
 <div class="files-copy">
-<pre>copy_run_files("runs/2017-09-24T10-54-00Z", to = "<i>target-dir</i>")</pre>
+<pre>copy_run_files("### run_dir ###", to = "<i>target-dir</i>")</pre>
 </div>
 </card>
 </script>
 <script type="application/javascript">
 Vue.component('files-card', {
-  props: ['caption', 'files'],
+  props: ['caption', 'files', 'run_dir'],
   template: '#files-card-template',
   delimiters: ["###","###"]
 })

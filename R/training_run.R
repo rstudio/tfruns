@@ -693,13 +693,17 @@ run_view_data <- function(run) {
   data$source_code <- run_source_code(script, run$run_dir)
 
   # files
-  files <- list.files(run$run_dir, recursive = TRUE)
+  files <- list.files(run$run_dir, recursive = FALSE)
   files <- gsub("\\\\", "/", files)
-  files <- files[!grepl("^tfruns.d/", files)]
-  files <- files[!grepl("^plots/", files)]
-  files <- files[!grepl("^logs/", files)]
-  if (length(files) > 0)
-    data$files <- as.list(files)
+  files <- files[!files %in% c("tfruns.d", "plots", "logs")]
+  if (length(files) > 0) {
+    data$files <- lapply(files, function(file) {
+      list(
+        name = file,
+        directory = utils::file_test("-d", file.path(run$run_dir, file))
+      )
+    })
+  }
 
   # plots
   plots <- list.files(file.path(run$run_dir, "plots"),
