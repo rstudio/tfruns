@@ -581,6 +581,7 @@ run_view_data <- function(run) {
 
   # default some potentially empty sections to null
   data <- list(
+    cloudml = NULL,
     history = NULL,
     model = NULL,
     metrics = NULL,
@@ -608,6 +609,13 @@ run_view_data <- function(run) {
                     run$end - run$start,
                   "%H:%M:%S")
   )
+
+  # cloudml attributes
+  if (identical(run$context, "cloudml")) {
+    cloudml <- with_preface("cloudml")
+    if (!is.null(cloudml))
+      data$cloudml <- cloudml
+  }
 
   # metrics
   metrics <- with_preface("metric")

@@ -99,6 +99,12 @@
 
 <template v-if="output_tab">
 
+<template v-if="cloudml">
+<cloudml-card
+  v-bind:cloudml="cloudml">
+</cloudml-card>
+</template>
+
 <template v-if="error">
 <error-panel
   v-bind:error="error">
@@ -121,6 +127,12 @@
 </template>
 
 <template v-else>
+
+<template v-if="cloudml">
+<cloudml-card
+  v-bind:cloudml="cloudml">
+</cloudml-card>
+</template>
 
 <template v-if="files">
 <files-card

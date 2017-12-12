@@ -425,6 +425,19 @@ Vue.component('error-panel', {
 })
 </script>
 
+<script type="text/x-template" id="cloudml-card-template">
+<card caption="CloudML">
+CloudML
+</card>
+</script>
+<script type="application/javascript">
+Vue.component('cloudml-card', {
+  props: ['cloudml'],
+  template: '#cloudml-card-template',
+  delimiters: ["###","###"]
+})
+</script>
+
 <script type="text/x-template" id="files-card-template">
 <card caption="Files">
 <div class="files-list">
