@@ -315,7 +315,8 @@ Vue.component('card', {
 <tbody>
 <tr v-for="(value, key) in data">
 <td>### key ###</td>
-<td>### value ###</td>
+<td v-if="typeof value ==='string'">### value ###</td>
+<td v-else><a v-bind:href="value.href">### value.text ###</a></td>
 </tr>
 </tbody>
 </table>
@@ -421,19 +422,6 @@ Vue.component('code-diff', {
 Vue.component('error-panel', {
   props: ['error'],
   template: '#error-panel-template',
-  delimiters: ["###","###"]
-})
-</script>
-
-<script type="text/x-template" id="cloudml-card-template">
-<card caption="CloudML">
-CloudML
-</card>
-</script>
-<script type="application/javascript">
-Vue.component('cloudml-card', {
-  props: ['cloudml'],
-  template: '#cloudml-card-template',
   delimiters: ["###","###"]
 })
 </script>

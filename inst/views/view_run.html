@@ -50,9 +50,16 @@
 
 <div class="col s12 m4 l4 xl4 push-m8 push-l8 push-xl8">
 
+<template v-if="cloudml">
+<property-card
+  caption="CloudML"
+  v-bind:data="cloudml">
+</property-card>
+</template>
+
 <template v-if="attributes">
 <property-card
-  caption="Attributes"
+  caption="Run"
   v-bind:data="attributes">
 </property-card>
 </template>
@@ -99,12 +106,6 @@
 
 <template v-if="output_tab">
 
-<template v-if="cloudml">
-<cloudml-card
-  v-bind:cloudml="cloudml">
-</cloudml-card>
-</template>
-
 <template v-if="error">
 <error-panel
   v-bind:error="error">
@@ -127,12 +128,6 @@
 </template>
 
 <template v-else>
-
-<template v-if="cloudml">
-<cloudml-card
-  v-bind:cloudml="cloudml">
-</cloudml-card>
-</template>
 
 <template v-if="files">
 <files-card
