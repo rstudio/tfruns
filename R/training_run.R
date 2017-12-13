@@ -614,26 +614,27 @@ run_view_data <- function(run) {
   if (identical(run$context, "cloudml")) {
     cloudml <- with_preface("cloudml")
     if (!is.null(cloudml)) {
-      data$cloudml <- list(
-        job = list(
-          href = cloudml$console_url,
-          text = cloudml$job_id
-        ),
-        logs = list(
-          href = cloudml$log_url,
-          text = "View logs"
-        ),
-        status = cloudml$state,
-        started = paste(as.POSIXct(as.numeric(cloudml$create_time),
-                                   origin="1970-01-01", tz = "GMT"),
-                        "GMT"),
-        time = format(as.POSIXct(as.character(Sys.Date()), tz = "GMT") +
-                        as.numeric(cloudml$end_time) - as.numeric(cloudml$create_time),
-                      "%H:%M:%S"),
-        ml_units = cloudml$ml_units
+      data$cloudml <- list()
+      data$cloudml$job <- list(
+        href = cloudml$console_url,
+        text = cloudml$job_id
       )
+      data$cloudml$logs <- list(
+        href = cloudml$log_url,
+        text = "View logs"
+      )
+      data$cloudml$scale_tier <- cloudml$scale_tier
+      data$cloudml$status <- cloudml$state
+      data$cloudml$started <- paste(
+        as.POSIXct(as.numeric(cloudml$create_time),
+                   origin="1970-01-01", tz = "GMT"),
+        "GMT"
+      )
+      data$cloudml$time <- format(as.POSIXct(as.character(Sys.Date()), tz = "GMT") +
+                     as.numeric(cloudml$end_time) - as.numeric(cloudml$create_time),
+                     "%H:%M:%S")
+      data$cloudml$ml_units <- cloudml$ml_units
     }
-
   }
 
   # metrics
