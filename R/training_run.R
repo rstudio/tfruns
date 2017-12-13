@@ -399,8 +399,8 @@ with_changed_file_copy <- function(training_dir, run_dir, expr) {
     # filter out files within the run_dir and packrat/gs files (cloudml)
     changed_files <- c(changed_files$changed, changed_files$added)
     changed_files <- changed_files[!grepl(basename(run_dir), changed_files)]
-    changed_files <- changed_files[!grepl("packrat", changed_files)]
-    changed_files <- changed_files[!grepl("gs", changed_files)]
+    changed_files <- changed_files[!grepl("^packrat[/\\]", changed_files)]
+    changed_files <- changed_files[!grepl("^gs[/\\]", changed_files)]
 
     # copy the changed files to the run_dir
     for (file in changed_files) {
