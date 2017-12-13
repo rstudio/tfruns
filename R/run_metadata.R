@@ -23,6 +23,9 @@
 #'   - "<custom>" -- Function used to write the data
 #'     (see *Custom Types* section below).
 #'
+#' @param run_dir Run directory to write metadata into (defaults
+#'   to currently active run)
+#'
 #' @template roxlate-metrics-format
 #'
 #' @section Custom Types:
@@ -44,7 +47,7 @@
 #' @keywords internal
 #'
 #' @export
-write_run_metadata <- function(type, data) {
+write_run_metadata <- function(type, data, run_dir = NULL) {
 
   # we need to create a write_fn so that the write can be deferred
   # until after a run_dir is actually established. Create the function
@@ -104,7 +107,9 @@ write_run_metadata <- function(type, data) {
 
   # check for a run_dir. if we have one write the run data, otherwise
   # defer the write until we (maybe) acquire a run_dir later
-  if (is_run_active())
+  if (!is.null(run_dir))
+    write_fn(meta_dir(run_dir))
+  else if (is_run_active())
     write_fn(meta_dir(run_dir()))
   else
     .globals$run_dir$pending_writes[[type]] <- write_fn

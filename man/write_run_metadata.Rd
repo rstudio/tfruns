@@ -4,7 +4,7 @@
 \alias{write_run_metadata}
 \title{Write run metadata}
 \usage{
-write_run_metadata(type, data)
+write_run_metadata(type, data, run_dir = NULL)
 }
 \arguments{
 \item{type}{Type of metadata to write. Standard types include "flags",
@@ -24,6 +24,9 @@ that properties will be stored as strings.
 \item "<custom>" -- Function used to write the data
 (see \emph{Custom Types} section below).
 }}
+
+\item{run_dir}{Run directory to write metadata into (defaults
+to currently active run)}
 }
 \description{
 Record various types of training run metadata This function can be called
