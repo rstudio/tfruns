@@ -596,7 +596,7 @@ run_view_data <- function(run) {
   )
 
   # run_dir
-  data$run_dir <- run$run_dir
+  data$run_dir <- basename(run$run_dir)
 
   # attributes
   script <- basename(run$script)
