@@ -184,6 +184,13 @@
 </code-card>
 </div> <!-- /code -->
 
+<template v-if="session_info">
+<div id="session_info">
+<code-card caption="R Session" v-bind:code="session_info">
+</code-card>
+</div> <!-- /session_info -->
+</template>
+
 </div> <!-- /container -->
 
 </div> <!-- /app -->

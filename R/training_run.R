@@ -222,6 +222,11 @@ print.tfruns_viewed_run <- function(x, ...) {
   view_run(x)
 }
 
+write_session_info <- function() {
+  r_session_info <- paste(capture.output(sessionInfo()), collapse = "\n")
+  write_run_property("session_info", r_session_info)
+}
+
 
 do_training_run <- function(file, run_dir, echo, envir, encoding) {
 
@@ -233,6 +238,9 @@ do_training_run <- function(file, run_dir, echo, envir, encoding) {
     # write begin and end times
     write_run_property("start", as.double(Sys.time()))
     on.exit(write_run_property("end", as.double(Sys.time())), add = TRUE)
+
+    # write session info on exit
+    on.exit(write_session_info(), add = TRUE)
 
     # clear run on exit
     on.exit(clear_run(), add = TRUE)
@@ -592,7 +600,8 @@ run_view_data <- function(run) {
     files = NULL,
     plots = NULL,
     output = NULL,
-    error = NULL
+    error = NULL,
+    session_info = NULL
   )
 
   # run_dir
@@ -693,6 +702,9 @@ run_view_data <- function(run) {
     )
   }
 
+  if (!is.null(run$session_info))
+    data$session_info <- run$session_info
+
   # metrics history
   if (!is.null(run$metrics))
     data$history <- run$metrics
@@ -709,6 +721,10 @@ run_view_data <- function(run) {
     list(href = "#output", title = "Output"),
     list(href = "#code", title = "Code")
   )
+
+  # provide session info tab if we have it
+  if (!is.null(data$session_info))
+    data$tabs[[length(data$tabs) + 1]] <- list(href = "#session", title = "Session")
 
   # determine if we have an output tab (remove it if we don't)
   data$output_tab <- !is.null(data$error) ||

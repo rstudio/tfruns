@@ -139,6 +139,7 @@ print.tfruns_run <- function(x, ...) {
   }
   x$metrics <- summarize("metrics", "(metrics data frame)")
   x$model <- summarize("model", "(model summary)")
+  x$session_info <- summarize("session_info", "(session info)")
   x$source_code <- summarize("source_code", "(source archive)")
   x$output <- summarize("output", "(script ouptut)")
 
