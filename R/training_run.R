@@ -114,17 +114,17 @@ training_run <- function(file = "train.R",
 
 #' Tune hyperparameters using training flags
 #'
-#' Run all permutations of the specifed training flags. The number of
-#' permutations can be reduced by specified the `sample` parameter, which
-#' will result in a random sample of the flag permutations beign run.
+#' Run all combinations of the specifed training flags. The number of
+#' combinations can be reduced by specifying the `sample` parameter, which
+#' will result in a random sample of the flag combinations being run.
 #'
 #' @inheritParams training_run
 #' @inheritParams ls_runs
 #'
 #' @param flags Named list with flag values (multiple values can be
 #'   provided for each flag)
-#' @param sample Sampling rate for flag permutations (defaults to
-#'   running all permutations).
+#' @param sample Sampling rate for flag combinations (defaults to
+#'   running all combinations).
 #' @param confirm Confirm before executing tuning run.
 #'
 #' @return Data frame with summary of all training runs performed
@@ -167,7 +167,7 @@ tuning_run <- function(file = "train.R",
 
    # calculate the flag grid
    flag_grid <- do.call(expand.grid, flags)
-   cat(prettyNum(nrow(flag_grid), big.mark = ","), "total permutations of flags ")
+   cat(prettyNum(nrow(flag_grid), big.mark = ","), "total combinations of flags ")
 
    # sample if requested
    if (!is.null(sample)) {
@@ -175,7 +175,7 @@ tuning_run <- function(file = "train.R",
        stop("sample must be a floating point value less than 1")
      indices <- sample(1:nrow(flag_grid), size = sample * nrow(flag_grid))
      flag_grid <- flag_grid[indices, , drop = FALSE]
-     cat("(sampled to", prettyNum(nrow(flag_grid), big.mark = ","), "permutations)\n")
+     cat("(sampled to", prettyNum(nrow(flag_grid), big.mark = ","), "combinations)\n")
    } else {
      cat("(use sample parameter to run a random subset)\n")
    }

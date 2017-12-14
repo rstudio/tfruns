@@ -23,8 +23,8 @@ environment variable), or \code{default} when unset.}
 \item{flags}{Named list with flag values (multiple values can be
 provided for each flag)}
 
-\item{sample}{Sampling rate for flag permutations (defaults to
-running all permutations).}
+\item{sample}{Sampling rate for flag combinations (defaults to
+running all combinations).}
 
 \item{properties}{Named character vector with run properties. Properties are
 additional metadata about the run which will be subsequently available via
@@ -47,9 +47,9 @@ Data frame with summary of all training runs performed
 during tuning.
 }
 \description{
-Run all permutations of the specifed training flags. The number of
-permutations can be reduced by specified the \code{sample} parameter, which
-will result in a random sample of the flag permutations beign run.
+Run all combinations of the specifed training flags. The number of
+combinations can be reduced by specifying the \code{sample} parameter, which
+will result in a random sample of the flag combinations being run.
 }
 \examples{
 \dontrun{

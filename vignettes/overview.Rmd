@@ -208,7 +208,7 @@ If you are not running within RStudio then you can use the `save_run_view()` and
 
 ## Hyperparameter Tuning
 
-Tuning a model often requires exploring the impact of changes to many hyperparameters. The best way to approach this is generally to systematically train over the permutations of those parameters to determine which combination yields the best model. See the [Hyperparmeter Tuning](https://tensorflow.rstudio.com/tools/tfruns/articles/tuning.html) article for details on how to accomplish this with tfruns.
+Tuning a model often requires exploring the impact of changes to many hyperparameters. The best way to approach this is generally to systematically train over the combinations of those parameters to determine which combination yields the best model. See the [Hyperparmeter Tuning](https://tensorflow.rstudio.com/tools/tfruns/articles/tuning.html) article for details on how to accomplish this with tfruns.
 
 ## Managing Runs
 
