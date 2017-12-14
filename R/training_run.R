@@ -617,7 +617,7 @@ run_view_data <- function(run) {
       data$cloudml <- list()
       data$cloudml$job <- list(
         href = cloudml$console_url,
-        text = cloudml$job_id
+        text = cloudml$job
       )
       data$cloudml$logs <- list(
         href = cloudml$log_url,
@@ -625,13 +625,13 @@ run_view_data <- function(run) {
       )
       data$cloudml$scale_tier <- cloudml$scale_tier
       data$cloudml$status <- cloudml$state
-      data$cloudml$started <- paste(
-        as.POSIXct(as.numeric(cloudml$create_time),
+      data$cloudml$created <- paste(
+        as.POSIXct(as.numeric(cloudml$created),
                    origin="1970-01-01", tz = "GMT"),
         "GMT"
       )
       data$cloudml$time <- format(as.POSIXct(as.character(Sys.Date()), tz = "GMT") +
-                     as.numeric(cloudml$end_time) - as.numeric(cloudml$create_time),
+                     as.numeric(cloudml$end) - as.numeric(cloudml$created),
                      "%H:%M:%S")
       data$cloudml$ml_units <- cloudml$ml_units
     }

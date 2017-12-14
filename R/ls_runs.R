@@ -50,8 +50,17 @@ ls_runs <- function(subset = NULL,
     run_list <- eval(parse(text = order_expr))
 
     # convert date columns
-    run_list$start <- as.POSIXct(run_list$start, tz = "GMT", origin = "1970-01-01")
-    run_list$end <- as.POSIXct(run_list$end, tz = "GMT", origin = "1970-01-01")
+    as_date <- function(value) {
+      if (!is.null(value))
+        as.POSIXct(value, tz = "GMT", origin = "1970-01-01")
+      else
+        NULL
+    }
+    run_list$start <- as_date(run_list$start)
+    run_list$end <- as_date(run_list$end)
+    run_list$cloudml_created <- as_date(run_list$cloudml_created)
+    run_list$cloudml_start <- as_date(run_list$cloudml_start)
+    run_list$cloudml_end <- as_date(run_list$cloudml_end)
 
   } else {
     run_list <- tibble::data_frame(
@@ -266,6 +275,10 @@ run_record <- function(run_dir) {
   properties$batch_size <- as_integer(properties, "batch_size")
   properties$completed <- as_logical(properties, "completed")
   properties$learning_rate <- as_numeric(properties, "learning_rate")
+  properties$cloudml_created <- as_integer(properties, "cloudml_created")
+  properties$cloudml_start <- as_integer(properties, "cloudml_start")
+  properties$cloudml_end <- as_integer(properties, "cloudml_end")
+  properties$cloudml_ml_units <- as_numeric(properties, "cloudml_ml_units")
 
   # add properties to columns
   columns <- append(columns, properties)
