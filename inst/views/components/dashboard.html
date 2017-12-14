@@ -315,7 +315,7 @@ Vue.component('card', {
 <tbody>
 <tr v-for="(value, key) in data">
 <td>### key ###</td>
-<td v-if="typeof value ==='string'">### value ###</td>
+<td v-if="typeof value !=='object'">### value ###</td>
 <td v-else><a v-bind:href="value.href" target="_blank">### value.text ###</a></td>
 </tr>
 </tbody>
