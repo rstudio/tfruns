@@ -58,9 +58,9 @@ ls_runs <- function(subset = NULL,
     }
     run_list$start <- as_date(run_list$start)
     run_list$end <- as_date(run_list$end)
-    run_list$cloudml_created <- as_date(run_list$cloudml_created)
-    run_list$cloudml_start <- as_date(run_list$cloudml_start)
-    run_list$cloudml_end <- as_date(run_list$cloudml_end)
+    run_list$cloudml_created <- as_date(run_list[["cloudml_created"]])
+    run_list$cloudml_start <- as_date(run_list[["cloudml_start"]])
+    run_list$cloudml_end <- as_date(run_list[["cloudml_end"]])
 
   } else {
     run_list <- tibble::data_frame(
