@@ -623,7 +623,7 @@ run_view_data <- function(run) {
         href = cloudml$log_url,
         text = "View logs"
       )
-      data$cloudml$scale_tier <- cloudml$scale_tier
+      data$cloudml$master_type <- cloudml$master_type
       data$cloudml$status <- cloudml$state
       data$cloudml$created <- paste(
         as.POSIXct(as.numeric(cloudml$created),
