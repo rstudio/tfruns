@@ -37,20 +37,17 @@ The **tfruns** package provides a suite of tools for tracking, visualizing, and 
 
 ## Installation
 
-You can install the **tfruns** package from GitHub as follows:
+You can install the **tfruns** package from CRAN as follows:
 
 ```{r}
-devtools::install_github("rstudio/tfruns")
+install.packages("tfruns")
 ```
 
 The package is intended to be used with the [keras](https://tensorflow.rstudio.com/keras) and/or the [tfestimators](https://tensorflow.rstudio.com/keras) packages, both of which provide higher level interfaces to TensorFlow from R. These packages can be installed with:
 
 ```{r}
-# keras
-devtools::install_github("rstudio/keras")
-
-# tfestimators
-devtools::install_github("rstudio/tfestimators")
+install.packages("keras")
+install.packages("tfestimators")
 ```
 
 ## Training
