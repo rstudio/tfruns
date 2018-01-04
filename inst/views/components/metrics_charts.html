@@ -1,5 +1,11 @@
 <script type="application/javascript">
 
+// polyfill for Math.log10
+Math.log10 = Math.log10 || function(x) {
+  return Math.log(x) * Math.LOG10E;
+};
+
+
 function MetricsCharts(container, metrics, update_url, auto_resize) {
 
   // instance variables
