@@ -166,7 +166,7 @@ tuning_run <- function(file = "train.R",
      on.exit(options(tfruns.runs_dir = old_runs_dir), add = TRUE)
 
    # calculate the flag grid
-   flag_grid <- do.call(expand.grid, flags)
+   flag_grid <- do.call(function(...) expand.grid(..., stringsAsFactors = FALSE), flags)
    cat(prettyNum(nrow(flag_grid), big.mark = ","), "total combinations of flags ")
 
    # sample if requested
