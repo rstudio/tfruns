@@ -136,23 +136,17 @@ We've demonstrated visualizing and comparing one or two runs, however as you acc
 ls_runs()
 ```
 ```
-# A tibble: 6 x 27
-                    run_dir eval_loss eval_acc metric_loss metric_acc metric_val_loss
-                      <chr>     <dbl>    <dbl>       <dbl>      <dbl>           <dbl>
-1 runs/2017-10-02T14-56-57Z    0.1263   0.9784      0.0773     0.9807          0.1283
-2 runs/2017-10-02T14-56-04Z    0.1323   0.9783      0.0545     0.9860          0.1414
-3 runs/2017-10-02T14-55-11Z    0.1407   0.9804      0.0348     0.9914          0.1542
-4 runs/2017-10-02T14-51-44Z    0.1164   0.9801      0.0448     0.9882          0.1396
-5 runs/2017-10-02T14-37-00Z    0.1338   0.9750      0.1097     0.9732          0.1328
-6 runs/2017-10-02T14-23-38Z    0.0956   0.9796      0.0624     0.9835          0.0962
-# ... with 21 more variables: metric_val_acc <dbl>, flag_dropout1 <dbl>,
-#   flag_dropout2 <dbl>, samples <int>, validation_samples <int>, batch_size <int>,
-#   epochs <int>, epochs_completed <int>, metrics <chr>, model <chr>, loss_function <chr>,
-#   optimizer <chr>, learning_rate <dbl>, script <chr>, start <dttm>, end <dttm>,
-#   completed <lgl>, output <chr>, source_code <chr>, context <chr>, type <chr>
+                    run_dir metric_loss metric_val_loss
+1 runs/2017-12-09T21-01-11Z      0.2577          0.1482
+2 runs/2017-12-09T21-00-11Z      0.2655          0.1505
+3 runs/2017-12-09T19-59-44Z      0.2597          0.1402
+4 runs/2017-12-09T19-56-48Z      0.2610          0.1459
+
+
+Use View(ls_runs()) to view all columns
 ```
 
-Since `ls_runs()` returns a data frame you can also render a sortable, filterable version of it within RStudio using the `View()` function:
+Note that when printing the data frame returned from `ls_runs()`, only the `run_dir`, `metric_loss`, and `metric_val_loss` columns are printed. You can also render a sortable, filterable version all of the columns within RStudio using the `View()` function:
 
 ```{r}
 View(ls_runs())

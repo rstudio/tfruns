@@ -2,7 +2,7 @@
 % Please edit documentation in R/ls_runs.R
 \name{ls_runs}
 \alias{ls_runs}
-\title{List training runs}
+\title{List or view training runs}
 \usage{
 ls_runs(subset = NULL, order = "start", decreasing = TRUE,
   latest_n = NULL, runs_dir = getOption("tfruns.runs_dir", "runs"))
@@ -26,5 +26,12 @@ option if specified).}
 Data frame with training runs
 }
 \description{
-List training runs
+List or view training runs
+}
+\details{
+When printing the results of \code{ls_runs()}, only \code{run_dir},
+\code{metric_loss}, \code{metric_val_loss},  and any columns specified in \code{order} will
+be printed.
+
+To view all fields, use \code{View(ls_runs())}.
 }

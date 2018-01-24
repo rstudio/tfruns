@@ -1,5 +1,5 @@
 
-#' List training runs
+#' List or view training runs
 #'
 #' @param subset Logical expression indicating rows to keep (missing values are
 #'   taken as false). See [subset()].
@@ -12,6 +12,12 @@
 #'   option if specified).
 #'
 #' @return Data frame with training runs
+#'
+#' @details When printing the results of `ls_runs()`, only `run_dir`,
+#' `metric_loss`, `metric_val_loss`,  and any columns specified in `order` will
+#' be printed.
+#'
+#' To view all fields, use `View(ls_runs())`.
 #'
 #' @export
 ls_runs <- function(subset = NULL,
@@ -63,11 +69,12 @@ ls_runs <- function(subset = NULL,
     run_list$cloudml_end <- as_date(run_list[["cloudml_end"]])
 
   } else {
-    run_list <- tibble::data_frame(
+    run_list <- data.frame(
       type = character(),
       run_dir = character(),
       start = numeric(),
-      end = numeric()
+      end = numeric(),
+      stringsAsFactors = FALSE
     )
   }
 
@@ -81,6 +88,7 @@ ls_runs <- function(subset = NULL,
   # return runs
   return_runs(run_list, order)
 }
+
 
 
 #' Latest training run
@@ -158,10 +166,15 @@ print.tfruns_runs_df <- function(x, ...) {
   } else if (nrow(x) == 1) {
     print(as_run_info(x))
   } else {
+    cols <- c("run_dir", attr(x, "order"))
+    cols <- c(cols, "metric_loss", "metric_val_loss")
+    cols <- intersect(cols, colnames(x))
+    x <- x[, cols, drop = FALSE]
     cls <- class(x)
     cls <- cls[cls != "tfruns_runs_df"]
     class(x) <- cls
     print(x)
+    cat("\nUse View(ls_runs()) to view all columns\n")
   }
 }
 
@@ -333,7 +346,7 @@ run_record <- function(run_dir) {
     columns$source_code <- source_code
 
   # convert to data frame for calls to rbind
-  tibble::as_data_frame(columns)
+  as.data.frame(columns, stringsAsFactors = FALSE)
 }
 
 combine_runs <- function(x, y) {
@@ -379,8 +392,9 @@ return_runs <- function(runs, order = NULL) {
   # re-order cols (always have type and run_dir at the beginning)
   runs <- runs[, cols]
 
-  # apply special class
+  # apply special class and add order attribute
   class(runs) <- c("tfruns_runs_df", class(runs))
+  attr(runs, "order") <- order
 
   # return runs
   runs
