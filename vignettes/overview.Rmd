@@ -136,17 +136,19 @@ We've demonstrated visualizing and comparing one or two runs, however as you acc
 ls_runs()
 ```
 ```
-                    run_dir metric_loss metric_val_loss
-1 runs/2017-12-09T21-01-11Z      0.2577          0.1482
-2 runs/2017-12-09T21-00-11Z      0.2655          0.1505
-3 runs/2017-12-09T19-59-44Z      0.2597          0.1402
-4 runs/2017-12-09T19-56-48Z      0.2610          0.1459
-
-
-Use View(ls_runs()) to view all columns
+Data frame: 4 x 28 
+                    run_dir eval_loss eval_acc metric_loss metric_acc metric_val_loss metric_val_acc
+1 runs/2017-12-09T21-01-11Z    0.1485   0.9562      0.2577     0.9240          0.1482         0.9545
+2 runs/2017-12-09T21-00-11Z    0.1438   0.9573      0.2655     0.9208          0.1505         0.9559
+3 runs/2017-12-09T19-59-44Z    0.1407   0.9580      0.2597     0.9241          0.1402         0.9578
+4 runs/2017-12-09T19-56-48Z    0.1437   0.9555      0.2610     0.9227          0.1459         0.9551
+# ... with 21 more columns:
+#   flag_batch_size, flag_dropout1, flag_dropout2, samples, validation_samples, batch_size,
+#   epochs, epochs_completed, metrics, model, loss_function, optimizer, learning_rate, script,
+#   start, end, completed, output, source_code, context, type
 ```
 
-Note that when printing the data frame returned from `ls_runs()`, only the `run_dir`, `metric_loss`, and `metric_val_loss` columns are printed. You can also render a sortable, filterable version all of the columns within RStudio using the `View()` function:
+You can also render a sortable, filterable version all of the columns within RStudio using the `View()` function:
 
 ```{r}
 View(ls_runs())
@@ -157,13 +159,23 @@ View(ls_runs())
 The `ls_runs()` function also supports `subset` and `order` arguments. For example, the following will yield all runs with an eval accuracy better than 0.98:
 
 ```{r}
-ls_runs(eval_acc > 0.98, order = eval_acc)
+ls_runs(eval_acc > 0.9570, order = eval_acc)
+```
+```
+Data frame: 2 x 28 
+                    run_dir eval_acc eval_loss metric_loss metric_acc metric_val_loss metric_val_acc
+1 runs/2017-12-09T19-59-44Z   0.9580    0.1407      0.2597     0.9241          0.1402         0.9578
+2 runs/2017-12-09T21-00-11Z   0.9573    0.1438      0.2655     0.9208          0.1505         0.9559
+# ... with 21 more columns:
+#   flag_batch_size, flag_dropout1, flag_dropout2, samples, validation_samples, batch_size,
+#   epochs, epochs_completed, metrics, model, loss_function, optimizer, learning_rate, script,
+#   start, end, completed, output, source_code, context, type
 ```
 
 You can pass the results of `ls_runs()` to compare runs (which will always compare the first two runs passed). For example, this will compare the two runs that performed best in terms of evaluation accuracy:
 
 ```{r}
-compare_runs(ls_runs(eval_acc > 0.98, order = eval_acc))
+compare_runs(ls_runs(eval_acc > 0.9570, order = eval_acc))
 ```
 
 <kbd><img src="images/ls_runs_compare.png" style="border: 1px solid #CCCCCC;" width=675/></kbd>
