@@ -51,7 +51,7 @@ a training run. Optionally read overrides of the default values from a
 Config file flags are defined a YAML configuration file (by default
 named "flags.yml"). Flags can either appear at the top-level of
 the YAML or can be inclued in named configuration sections
-(see the \href{config package}{https://github.com/rstudio/config} for
+(see the \href{https://github.com/rstudio/config}{config package} for
 details).
 }
 
