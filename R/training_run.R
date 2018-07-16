@@ -171,8 +171,8 @@ tuning_run <- function(file = "train.R",
 
    # sample if requested
    if (!is.null(sample)) {
-     if (sample >= 1)
-       stop("sample must be a floating point value less than 1")
+     if (sample > 1)
+       stop("sample must be a floating point value less or equal to 1")
      indices <- sample(1:nrow(flag_grid), size = sample * nrow(flag_grid))
      flag_grid <- flag_grid[indices, , drop = FALSE]
      cat("(sampled to", prettyNum(nrow(flag_grid), big.mark = ","), "combinations)\n")
