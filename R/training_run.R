@@ -10,6 +10,8 @@
 #'   additional metadata about the run which will be subsequently available via
 #'   [ls_runs()].
 #' @param run_dir Directory to store run data within
+#' @param artifacts_dir Directory to capture created and modified files within.
+#'   Pass `NULL` to not capture any artifcats.
 #' @param echo Print expressions within training script
 #' @param view View the results of the run after training. The default "auto"
 #'   will view the run when executing a top-level (printed) statement in an
@@ -40,6 +42,7 @@ training_run <- function(file = "train.R",
                          flags = NULL,
                          properties = NULL,
                          run_dir = NULL,
+                         artifacts_dir = getwd(),
                          echo = TRUE,
                          view = "auto",
                          envir = parent.frame(),
@@ -69,7 +72,7 @@ training_run <- function(file = "train.R",
   )
 
   # execute the training run
-  do_training_run(file, run_dir, echo = echo, envir = envir, encoding = encoding)
+  do_training_run(file, run_dir, artifacts_dir, echo = echo, envir = envir, encoding = encoding)
 
   # check for forced view
   force_view <- isTRUE(view)
@@ -151,6 +154,7 @@ tuning_run <- function(file = "train.R",
                        sample = NULL,
                        properties = NULL,
                        runs_dir = getOption("tfruns.runs_dir", "runs"),
+                       artifacts_dir = getwd(),
                        echo = TRUE,
                        confirm = interactive(),
                        envir = parent.frame(),
@@ -205,6 +209,7 @@ tuning_run <- function(file = "train.R",
        flags = flags,
        properties = properties,
        run_dir = NULL,
+       artifacts_dir = artifacts_dir,
        echo = echo,
        view = FALSE,
        envir = new.env(parent = envir),
@@ -223,9 +228,9 @@ print.tfruns_viewed_run <- function(x, ...) {
 }
 
 
-do_training_run <- function(file, run_dir, echo, envir, encoding) {
+do_training_run <- function(file, run_dir, artifacts_dir, echo, envir, encoding) {
 
-  with_changed_file_copy(getwd(), run_dir, {
+  with_changed_file_copy(artifacts_dir, run_dir, {
 
     # write script
     write_run_property("script", basename(file))
@@ -385,32 +390,34 @@ capture_stacktrace <- function(stack) {
   rev(stack)
 }
 
-with_changed_file_copy <- function(training_dir, run_dir, expr) {
+with_changed_file_copy <- function(artifacts_dir, run_dir, expr) {
 
-  # snapshot the files in the training script directory before training
-  files_before <- utils::fileSnapshot(path = training_dir, recursive = TRUE)
+  if (!is.null(artifacts_dir)) {
+    # snapshot the files in the training script directory before training
+    files_before <- utils::fileSnapshot(path = artifacts_dir, recursive = TRUE)
 
-  # copy changed files on exit
-  on.exit({
-    # snapshot the files in the run_dir after training then compute changed files
-    files_after <- utils::fileSnapshot(path = training_dir, recursive = TRUE)
-    changed_files <- utils::changedFiles(files_before, files_after)
+    # copy changed files on exit
+    on.exit({
+      # snapshot the files in the run_dir after training then compute changed files
+      files_after <- utils::fileSnapshot(path = artifacts_dir, recursive = TRUE)
+      changed_files <- utils::changedFiles(files_before, files_after)
 
-    # filter out files within the run_dir and packrat/gs files (cloudml)
-    changed_files <- c(changed_files$changed, changed_files$added)
-    changed_files <- changed_files[!grepl(basename(run_dir), changed_files)]
-    changed_files <- changed_files[!grepl("^packrat[/\\]", changed_files)]
-    changed_files <- changed_files[!grepl("^gs[/\\]", changed_files)]
+      # filter out files within the run_dir and packrat/gs files (cloudml)
+      changed_files <- c(changed_files$changed, changed_files$added)
+      changed_files <- changed_files[!grepl(basename(run_dir), changed_files)]
+      changed_files <- changed_files[!grepl("^packrat[/\\]", changed_files)]
+      changed_files <- changed_files[!grepl("^gs[/\\]", changed_files)]
 
-    # copy the changed files to the run_dir
-    for (file in changed_files) {
-      dir <- dirname(file)
-      target_dir <- file.path(run_dir, dir)
-      if (!utils::file_test("-d", target_dir))
-        dir.create(target_dir, recursive = TRUE)
-      file.copy(from = file.path(training_dir, file), to = target_dir)
-    }
-  }, add = TRUE)
+      # copy the changed files to the run_dir
+      for (file in changed_files) {
+        dir <- dirname(file)
+        target_dir <- file.path(run_dir, dir)
+        if (!utils::file_test("-d", target_dir))
+          dir.create(target_dir, recursive = TRUE)
+        file.copy(from = file.path(artifacts_dir, file), to = target_dir)
+      }
+    }, add = TRUE)
+  }
 
   # execute the expression
   force(expr)
