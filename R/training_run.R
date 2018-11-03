@@ -125,7 +125,10 @@ training_run <- function(file = "train.R",
 #' @inheritParams ls_runs
 #'
 #' @param flags Named list with flag values (multiple values can be
-#'   provided for each flag)
+#'   provided for each flag).
+#' @param flag_grid A data frame that contains pre-generated
+#'   combinations of flags (e.g. via [base::expand.grid()]). This can
+#'   be useful for batch processing of large grids. See 'Examples'.
 #' @param sample Sampling rate for flag combinations (defaults to
 #'   running all combinations).
 #' @param confirm Confirm before executing tuning run.
@@ -133,17 +136,32 @@ training_run <- function(file = "train.R",
 #' @return Data frame with summary of all training runs performed
 #'   during tuning.
 #'
-#' @examples \dontrun{
+#' @examples
+#' \dontrun{
 #' library(tfruns)
 #'
+#' # using the flags argument
 #' runs <- tuning_run("mnist_mlp.R", flags = list(
 #'   batch_size = c(64, 128),
 #'   dropout1 = c(0.2, 0.3, 0.4),
 #'   dropout2 = c(0.2, 0.3, 0.4)
 #' ))
-#'
 #' runs[order(runs$eval_acc, decreasing = TRUE), ]
 #'
+#' # using the flag_grid argument
+#' grid <- grid.expand(
+#'   batch_size = 2^c(1:5),
+#'   dropout1 = seq(0.2, 0.8, by = 0.1),
+#'   dropout2 = seq(0.2, 0.8, by = 0.1)
+#' )
+#' grid$id <- 1:nrow(grid)
+#' runs <- tuning_run("mnist_mlp.R", flag_grid = grid, sample = 0.01)
+#' # check if an arbitrary run has been completed
+#' completed_runs <- runs[runs$completed]$id
+#' 2 %in% completed_runs
+#' # continue evaluating the grid if the process was paused / interrupted etc.
+#' grid <- grid[!(grid$id %in% completed_runs), ]
+#' runs <- tuning_run("mnist_mlp.R", flag_grid = grid, sample = 0.01)
 #' }
 #'
 #' @export
@@ -151,6 +169,7 @@ tuning_run <- function(file = "train.R",
                        context = "local",
                        config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
                        flags = NULL,
+                       flag_grid = NULL,
                        sample = NULL,
                        properties = NULL,
                        runs_dir = getOption("tfruns.runs_dir", "runs"),
@@ -159,8 +178,11 @@ tuning_run <- function(file = "train.R",
                        confirm = interactive(),
                        envir = parent.frame(),
                        encoding = getOption("encoding")) {
+  #' TODO must be data frame, must not have facor levels!
+  if ((is.null(flags) && is.null(flag_grid)) || (!is.null(flags) && !is.null(flag_grid)))
+    stop("Flags must be specified either via the argument 'flags' or 'flag_grid'")
 
-   if (!is.list(flags) || is.null(names(flags)))
+  if (is.list(flags) && is.null(names(flags)))
      stop("flags must be specified as a named list")
 
    # set runs dir if specified
@@ -170,8 +192,10 @@ tuning_run <- function(file = "train.R",
      on.exit(options(tfruns.runs_dir = old_runs_dir), add = TRUE)
 
    # calculate the flag grid
-   flag_grid <- do.call(function(...) expand.grid(..., stringsAsFactors = FALSE), flags)
-   cat(prettyNum(nrow(flag_grid), big.mark = ","), "total combinations of flags ")
+   if (is.null(flag_grid)) {
+     flag_grid <- do.call(function(...) expand.grid(..., stringsAsFactors = FALSE), flags)
+     cat(prettyNum(nrow(flag_grid), big.mark = ","), "total combinations of flags ")
+   }
 
    # sample if requested
    if (!is.null(sample)) {
