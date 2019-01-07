@@ -25,7 +25,8 @@ provided for each flag).}
 
 \item{flag_grid}{A data frame that contains pre-generated
 combinations of flags (e.g. via \code{\link[base:expand.grid]{base::expand.grid()}}). This can
-be useful for batch processing of large grids. See 'Examples'.}
+be useful for batch processing of large grids as well as
+for subsetting combinations. See 'Examples'.}
 
 \item{sample}{Sampling rate for flag combinations (defaults to
 running all combinations).}
@@ -70,13 +71,16 @@ runs <- tuning_run("mnist_mlp.R", flags = list(
 ))
 runs[order(runs$eval_acc, decreasing = TRUE), ]
 
-# using the flag_grid argument
-grid <- grid.expand(
+# using the flag_grid argument, but remove combinations
+# where the combined dropout rate exceeds 1
+grid <- expand.grid(
   batch_size = 2^c(1:5),
   dropout1 = seq(0.2, 0.8, by = 0.1),
   dropout2 = seq(0.2, 0.8, by = 0.1)
 )
+grid$combined_droput <- grid$dropout1 + grid$dropout2
 grid$id <- 1:nrow(grid)
+grid <- grid[grid$combined_droput <= 1,]
 runs <- tuning_run("mnist_mlp.R", flag_grid = grid, sample = 0.01)
 # check if an arbitrary run has been completed
 completed_runs <- runs[runs$completed]$id
