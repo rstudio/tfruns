@@ -178,7 +178,6 @@ tuning_run <- function(file = "train.R",
                        confirm = interactive(),
                        envir = parent.frame(),
                        encoding = getOption("encoding")) {
-  #' TODO must be data frame, must not have facor levels!
   if ((is.null(flags) && is.null(flag_grid)) || (!is.null(flags) && !is.null(flag_grid)))
     stop("Flags must be specified either via the argument 'flags' or 'flag_grid'")
 

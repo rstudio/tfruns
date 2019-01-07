@@ -6,7 +6,7 @@
 \usage{
 tuning_run(file = "train.R", context = "local",
   config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
-  flags = NULL, sample = NULL, properties = NULL,
+  flags = NULL, flag_grid = NULL, sample = NULL, properties = NULL,
   runs_dir = getOption("tfruns.runs_dir", "runs"),
   artifacts_dir = getwd(), echo = TRUE, confirm = interactive(),
   envir = parent.frame(), encoding = getOption("encoding"))
@@ -21,7 +21,11 @@ for the current environment (as specified by the \code{R_CONFIG_ACTIVE}
 environment variable), or \code{default} when unset.}
 
 \item{flags}{Named list with flag values (multiple values can be
-provided for each flag)}
+provided for each flag).}
+
+\item{flag_grid}{A data frame that contains pre-generated
+combinations of flags (e.g. via \code{\link[base:expand.grid]{base::expand.grid()}}). This can
+be useful for batch processing of large grids. See 'Examples'.}
 
 \item{sample}{Sampling rate for flag combinations (defaults to
 running all combinations).}
@@ -58,14 +62,28 @@ will result in a random sample of the flag combinations being run.
 \dontrun{
 library(tfruns)
 
+# using the flags argument
 runs <- tuning_run("mnist_mlp.R", flags = list(
   batch_size = c(64, 128),
   dropout1 = c(0.2, 0.3, 0.4),
   dropout2 = c(0.2, 0.3, 0.4)
 ))
-
 runs[order(runs$eval_acc, decreasing = TRUE), ]
 
+# using the flag_grid argument
+grid <- grid.expand(
+  batch_size = 2^c(1:5),
+  dropout1 = seq(0.2, 0.8, by = 0.1),
+  dropout2 = seq(0.2, 0.8, by = 0.1)
+)
+grid$id <- 1:nrow(grid)
+runs <- tuning_run("mnist_mlp.R", flag_grid = grid, sample = 0.01)
+# check if an arbitrary run has been completed
+completed_runs <- runs[runs$completed]$id
+2 \%in\% completed_runs
+# continue evaluating the grid if the process was paused / interrupted etc.
+grid <- grid[!(grid$id \%in\% completed_runs), ]
+runs <- tuning_run("mnist_mlp.R", flag_grid = grid, sample = 0.01)
 }
 
 }
