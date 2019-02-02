@@ -6,7 +6,7 @@
 \usage{
 tuning_run(file = "train.R", context = "local",
   config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
-  flags = NULL, flag_grid = NULL, sample = NULL, properties = NULL,
+  flags = NULL, sample = NULL, properties = NULL,
   runs_dir = getOption("tfruns.runs_dir", "runs"),
   artifacts_dir = getwd(), echo = TRUE, confirm = interactive(),
   envir = parent.frame(), encoding = getOption("encoding"))
@@ -20,11 +20,9 @@ tuning_run(file = "train.R", context = "local",
 for the current environment (as specified by the \code{R_CONFIG_ACTIVE}
 environment variable), or \code{default} when unset.}
 
-\item{flags}{Named list with flag values (multiple values can be
-provided for each flag).}
-
-\item{flag_grid}{A data frame that contains pre-generated
-combinations of flags (e.g. via \code{\link[base:expand.grid]{base::expand.grid()}}). This can
+\item{flags}{Either a named list with flag values (multiple values can be
+provided for each flag) or a data frame that contains pre-generated
+combinations of flags (e.g. via \code{\link[base:expand.grid]{base::expand.grid()}}). This second can
 be useful for batch processing of large grids as well as
 for subsetting combinations. See 'Examples'.}
 
@@ -63,7 +61,7 @@ will result in a random sample of the flag combinations being run.
 \dontrun{
 library(tfruns)
 
-# using the flags argument
+# using a list as input to the flags argument
 runs <- tuning_run("mnist_mlp.R", flags = list(
   batch_size = c(64, 128),
   dropout1 = c(0.2, 0.3, 0.4),
@@ -71,7 +69,8 @@ runs <- tuning_run("mnist_mlp.R", flags = list(
 ))
 runs[order(runs$eval_acc, decreasing = TRUE), ]
 
-# using the flag_grid argument, but remove combinations
+# using a data frame as input to the flags argument
+# resulting in the same combinations above, but remove those
 # where the combined dropout rate exceeds 1
 grid <- expand.grid(
   batch_size = 2^c(1:5),
@@ -81,7 +80,7 @@ grid <- expand.grid(
 grid$combined_droput <- grid$dropout1 + grid$dropout2
 grid$id <- 1:nrow(grid)
 grid <- grid[grid$combined_droput <= 1,]
-runs <- tuning_run("mnist_mlp.R", flag_grid = grid, sample = 0.01)
+runs <- tuning_run("mnist_mlp.R", flags = grid, sample = 0.01)
 # check if an arbitrary run has been completed
 completed_runs <- runs[runs$completed]$id
 2 \%in\% completed_runs

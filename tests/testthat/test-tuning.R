@@ -19,23 +19,14 @@ test_that("tuning_run can correctly handles interaction of flags flag_grid", {
     max_steps = c(2500, 500, 99)
   )
   runs <- tuning_run("write_run_data.R",
-    confirm = FALSE, flag_grid = grid
+    confirm = FALSE, flags = grid
   )
   expect_equal(nrow(runs), 6)
-
-  # specify both flag_grid and flags
-  expect_error(
-    tuning_run("write_run_data.R",
-      confirm = FALSE, flag_grid = grid,
-      flags = list(learning_rate = c(0.01, 0.02), max_steps = c(2500, 500))
-    ),
-    "either via the argument"
-  )
 
   # specify none
   expect_error(
     tuning_run("write_run_data.R", confirm = FALSE),
-    "either via the argument"
+    "flags must be specified as a named list"
   )
 
   # supply unnamed flags
