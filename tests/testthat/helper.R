@@ -1,5 +1,5 @@
 with_tests_dir <- function(code){
-  test_dir <- system.file("tests/testthat", package = "tfruns")
+  test_dir <- here::here("tests/testthat")
   withr::with_dir(test_dir, code)
 }
 

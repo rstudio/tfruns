@@ -5,7 +5,7 @@ context("copy")
 
 # context 3 fake training runs (one of which that generates files)
 
-test_that("can creat training runs",{
+test_that("can create training runs",{
   with_tests_dir({
     lr <- training_run(view = FALSE, echo = FALSE)
     expect_is(lr, "data.frame")
