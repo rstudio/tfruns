@@ -4,13 +4,27 @@ context("copy")
 
 
 # context 3 fake training runs (one of which that generates files)
-with_tests_dir( latest_run() )
 
-with_tests_dir( training_run(view = FALSE, echo = FALSE) )
-with_tests_dir( training_run(view = FALSE, echo = FALSE) )
-with_tests_dir({
-  training_run("write_run_data.R", view = FALSE, echo = FALSE)
+test_that("can creat training runs",{
+  with_tests_dir({
+    lr <- training_run(view = FALSE, echo = FALSE)
+    expect_is(lr, "data.frame")
+  })
+  with_tests_dir({
+    training_run(view = FALSE, echo = FALSE)
+    expect_is(lr, "data.frame")
+  })
+  with_tests_dir({
+    training_run("write_run_data.R", view = FALSE, echo = FALSE)
+    expect_is(lr, "data.frame")
+  })
+
+  with_tests_dir({
+    lr <- latest_run()
+    expect_is(lr, "tfruns_run")
+  })
 })
+
 test_that("copy_run copies run directory", {
   with_tests_dir({
     copy_run(latest_run(), rename = "copied-run-dir")
