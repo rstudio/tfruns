@@ -50,8 +50,9 @@ Imports:
   rstudioapi (>= 0.7),
   reticulate
 Suggests: 
-  testthat,
-  knitr
+    testthat,
+    knitr,
+    withr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
