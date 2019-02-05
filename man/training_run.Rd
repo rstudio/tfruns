@@ -5,8 +5,9 @@
 \title{Run a training script}
 \usage{
 training_run(file = "train.R", context = "local",
-  config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"), flags = NULL,
-  properties = NULL, run_dir = NULL, echo = TRUE, view = "auto",
+  config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
+  flags = NULL, properties = NULL, run_dir = NULL,
+  artifacts_dir = getwd(), echo = TRUE, view = "auto",
   envir = parent.frame(), encoding = getOption("encoding"))
 }
 \arguments{
@@ -26,6 +27,9 @@ additional metadata about the run which will be subsequently available via
 \code{\link[=ls_runs]{ls_runs()}}.}
 
 \item{run_dir}{Directory to store run data within}
+
+\item{artifacts_dir}{Directory to capture created and modified files within.
+Pass \code{NULL} to not capture any artifcats.}
 
 \item{echo}{Print expressions within training script}
 

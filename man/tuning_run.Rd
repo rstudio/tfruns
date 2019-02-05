@@ -5,11 +5,11 @@
 \title{Tune hyperparameters using training flags}
 \usage{
 tuning_run(file = "train.R", context = "local",
-  config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"), flags = NULL,
-  sample = NULL, properties = NULL,
-  runs_dir = getOption("tfruns.runs_dir", "runs"), echo = TRUE,
-  confirm = interactive(), envir = parent.frame(),
-  encoding = getOption("encoding"))
+  config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
+  flags = NULL, sample = NULL, properties = NULL,
+  runs_dir = getOption("tfruns.runs_dir", "runs"),
+  artifacts_dir = getwd(), echo = TRUE, confirm = interactive(),
+  envir = parent.frame(), encoding = getOption("encoding"))
 }
 \arguments{
 \item{file}{Path to training script (defaults to "train.R")}
@@ -33,6 +33,9 @@ additional metadata about the run which will be subsequently available via
 \item{runs_dir}{Directory containing runs. Defaults to "runs" beneath the
 current working directory (or to the value of the \code{tfruns.runs_dir} R
 option if specified).}
+
+\item{artifacts_dir}{Directory to capture created and modified files within.
+Pass \code{NULL} to not capture any artifcats.}
 
 \item{echo}{Print expressions within training script}
 

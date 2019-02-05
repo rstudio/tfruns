@@ -137,7 +137,7 @@ Data frame: 9 x 28
 
 ## Sampling Flag Combinations
 
-If the number of flag combinations is very large, you can also specify that only a random sample of combinations should be tried using the `sample` parmaeter. For example:
+If the number of flag combinations is very large, you can also specify that only a random sample of combinations should be tried using the `sample` parameter. For example:
 
 ```{r}
 # run random sample (0.3) of dropout1 and dropout2 combinations
