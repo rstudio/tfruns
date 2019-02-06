@@ -10,5 +10,4 @@
 ^inst/examples/
 ^tests/testthat/runs/
 ^images$
-
-
+^\.travis\.yml$

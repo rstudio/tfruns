@@ -1,33 +1,85 @@
 context("tuning")
 
-source("utils.R")
+
+test_that("tuning_run throws graceful errors with wrong sample argument", {
+
+  with_tests_dir({
+    expect_error(
+      tuning_run("write_run_data.R",
+                 confirm = FALSE,
+                 flags = list(
+                   learning_rate = c(0.01, 0.02),
+                   max_steps = c(2500, 500)
+                 ),
+                 sample = 1.1,
+                 echo = FALSE
+      )
+    )
+  })
+
+  with_tests_dir({
+    expect_error(
+      tuning_run("write_run_data.R",
+                 confirm = FALSE,
+                 flags = list(
+                   learning_rate = c(0.01, 0.02),
+                   max_steps = c(2500, 500)
+                 ),
+                 sample = 0,
+                 echo = FALSE
+      )
+    )
+  })
+
+  runs <- with_tests_dir({
+    tuning_run("write_run_data.R",
+               confirm = FALSE,
+               flags = list(
+                 learning_rate = c(0.01, 0.02),
+                 max_steps = c(2500, 500)
+               ),
+               sample = 1e-6,
+               echo = FALSE
+    )
+  })
+  expect_equal(nrow(runs), 1)
+
+})
 
 test_that("tuning_run can execute multiple runs", {
-  runs <- tuning_run("write_run_data.R", confirm = FALSE, flags = list(
-    learning_rate = c(0.01, 0.02),
-    max_steps = c(2500, 500)
-  ))
+
+  runs <- with_tests_dir({
+    tuning_run("write_run_data.R",
+               confirm = FALSE,
+               flags = list(
+                 learning_rate = c(0.01, 0.02),
+                 max_steps = c(2500, 500)
+               ),
+               sample = 1,
+               echo = FALSE
+    )
+  })
 
   expect_equal(nrow(runs), 4)
 })
 
-test_that("tuning_run can correctly handles interaction of flags flag_grid", {
+test_that("tuning_run can correctly handles different types of input for flags", {
 
   # specify only flag_grid
   grid <- expand.grid(
     learning_rate = c(0.01, 0.02),
     max_steps = c(2500, 500, 99)
   )
-  runs <- tuning_run("write_run_data.R",
+  runs <- with_tests_dir(tuning_run("write_run_data.R",
     confirm = FALSE, flags = grid
-  )
+  ))
   expect_equal(nrow(runs), 6)
 
   # specify none
   expect_error(
-    tuning_run("write_run_data.R", confirm = FALSE),
+    with_tests_dir(tuning_run("write_run_data.R", confirm = FALSE),
     "flags must be specified as a named list"
-  )
+  ))
 
   # supply unnamed flags
   # specify both flag_grid and flags
@@ -39,3 +91,8 @@ test_that("tuning_run can correctly handles interaction of flags flag_grid", {
     "as a named list"
   )
 })
+
+
+# tear down
+runs_dirs <- with_tests_dir(normalizePath(list.dirs("runs", recursive = FALSE)))
+unlink(runs_dirs, recursive = TRUE)
