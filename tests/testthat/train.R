@@ -1,5 +1,5 @@
 
-# train script callbed by training_run in tests
+# train script called by training_run in tests
 
 library(tfruns)
 
