@@ -181,7 +181,7 @@ tuning_run <- function(file = "train.R",
        stop("sample must be a floating point value greater than 0")
      indices <- sample.int(nrow(flag_grid), size = ceiling(sample * nrow(flag_grid)))
      flag_grid <- flag_grid[indices, , drop = FALSE]
-     message("(sampled to", prettyNum(nrow(flag_grid), big.mark = ","), " combinations)\n")
+     message("(sampled to ", prettyNum(nrow(flag_grid), big.mark = ","), " combinations)\n")
    } else {
      message("(use sample parameter to run a random subset)")
    }
