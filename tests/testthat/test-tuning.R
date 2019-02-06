@@ -1,5 +1,3 @@
-if (interactive()) library(testthat)
-
 context("tuning")
 
 test_that("tuning_run can execute multiple runs", {

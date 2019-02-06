@@ -1,5 +1,3 @@
-if (interactive()) library(testthat)
-
 context("runs")
 
 run_dir <- with_tests_dir({

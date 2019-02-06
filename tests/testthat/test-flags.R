@@ -1,5 +1,3 @@
-if (interactive()) library(testthat)
-
 context("flags")
 
 test_that("flags can be defined", {

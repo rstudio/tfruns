@@ -1,5 +1,3 @@
-if (interactive()) library(testthat)
-
 context("run_data")
 
 
