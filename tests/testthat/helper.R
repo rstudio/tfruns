@@ -1,3 +1,9 @@
+with_tests_dir <- function(code){
+  test_dir <- here::here("tests/testthat")
+  withr::with_dir(test_dir, code)
+}
+
+
 define_flags <- function(...) {
   flags(
     flag_numeric('learning_rate', 0.01, 'Initial learning rate.'),

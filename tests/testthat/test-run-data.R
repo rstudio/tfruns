@@ -1,11 +1,18 @@
 context("run_data")
 
-source("utils.R")
 
-run_dir <- training_run("write_run_data.R")$run_dir
+run_dir <- with_tests_dir({
+  x <- training_run("write_run_data.R", echo = FALSE)$run_dir
+  normalizePath(x, winslash = "/")
+})
+
 
 run_data <- function(...) {
-  file.path(run_dir, "tfruns.d", ...)
+  with_tests_dir({
+    run_dir <- training_run("write_run_data.R", echo = FALSE)$run_dir
+    run_dir <- normalizePath(run_dir, winslash = "/")
+    file.path(run_dir, "tfruns.d", ...)
+  })
 }
 
 expect_run_data <- function(...) {
