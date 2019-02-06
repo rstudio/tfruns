@@ -141,31 +141,38 @@ training_run <- function(file = "train.R",
 #' library(tfruns)
 #'
 #' # using a list as input to the flags argument
-#' runs <- tuning_run("mnist_mlp.R", flags = list(
-#'   batch_size = c(64, 128),
-#'   dropout1 = c(0.2, 0.3, 0.4),
-#'   dropout2 = c(0.2, 0.3, 0.4)
-#' ))
+#' runs <- tuning_run(
+#'   system.file("examples/mnist_mlp/mnist_mlp.R", package = "tfruns"),
+#'   flags = list(
+#'     dropout1 = c(0.2, 0.3, 0.4),
+#'     dropout2 = c(0.2, 0.3, 0.4)
+#'   )
+#' )
 #' runs[order(runs$eval_acc, decreasing = TRUE), ]
 #'
 #' # using a data frame as input to the flags argument
 #' # resulting in the same combinations above, but remove those
 #' # where the combined dropout rate exceeds 1
 #' grid <- expand.grid(
-#'   batch_size = 2^c(1:5),
 #'   dropout1 = seq(0.2, 0.8, by = 0.1),
 #'   dropout2 = seq(0.2, 0.8, by = 0.1)
 #' )
 #' grid$combined_droput <- grid$dropout1 + grid$dropout2
 #' grid$id <- 1:nrow(grid)
-#' grid <- grid[grid$combined_droput <= 1,]
-#' runs <- tuning_run("mnist_mlp.R", flags = grid, sample = 0.01)
+#' grid <- grid[grid$combined_droput <= 1, ]
+#' runs <- tuning_run(
+#'   system.file("examples/mnist_mlp/mnist_mlp.R", package = "tfruns"),
+#'   flags = grid[, c("dropout1", "dropout2")], sample = 0.1
+#' )
 #' # check if an arbitrary run has been completed
 #' completed_runs <- runs[runs$completed]$id
 #' 2 %in% completed_runs
 #' # continue evaluating the grid if the process was paused / interrupted etc.
 #' grid <- grid[!(grid$id %in% completed_runs), ]
-#' runs <- tuning_run("mnist_mlp.R", flag_grid = grid, sample = 0.01)
+#' runs <- tuning_run(
+#'   system.file("examples/mnist_mlp/mnist_mlp.R", package = "tfruns"),
+#'   flags = grid[, c("dropout1", "dropout2")], sample = 0.1
+#' )
 #' }
 #'
 #' @export
