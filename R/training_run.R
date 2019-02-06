@@ -171,17 +171,19 @@ tuning_run <- function(file = "train.R",
 
    # calculate the flag grid
    flag_grid <- do.call(function(...) expand.grid(..., stringsAsFactors = FALSE), flags)
-   cat(prettyNum(nrow(flag_grid), big.mark = ","), "total combinations of flags ")
+   message(prettyNum(nrow(flag_grid), big.mark = ","), " total combinations of flags ")
 
    # sample if requested
    if (!is.null(sample)) {
      if (sample > 1)
        stop("sample must be a floating point value less or equal to 1")
-     indices <- sample(1:nrow(flag_grid), size = sample * nrow(flag_grid))
+     if (sample <= 0)
+       stop("sample must be a floating point value greater than 0")
+     indices <- sample.int(nrow(flag_grid), size = ceiling(sample * nrow(flag_grid)))
      flag_grid <- flag_grid[indices, , drop = FALSE]
-     cat("(sampled to", prettyNum(nrow(flag_grid), big.mark = ","), "combinations)\n")
+     message("(sampled to ", prettyNum(nrow(flag_grid), big.mark = ","), " combinations)\n")
    } else {
-     cat("(use sample parameter to run a random subset)\n")
+     message("(use sample parameter to run a random subset)")
    }
 
    if (confirm) {
