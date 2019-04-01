@@ -124,8 +124,10 @@ training_run <- function(file = "train.R",
 #' @inheritParams training_run
 #' @inheritParams ls_runs
 #'
-#' @param flags Named list with flag values (multiple values can be
-#'   provided for each flag)
+#' @param flags Either a named list with flag values (multiple values can be
+#'   provided for each flag) or a data frame that contains pre-generated
+#'   combinations of flags (e.g. via [base::expand.grid()]). The latter can
+#'   be useful for subsetting combinations. See 'Examples'.
 #' @param sample Sampling rate for flag combinations (defaults to
 #'   running all combinations).
 #' @param confirm Confirm before executing tuning run.
@@ -133,19 +135,34 @@ training_run <- function(file = "train.R",
 #' @return Data frame with summary of all training runs performed
 #'   during tuning.
 #'
-#' @examples \dontrun{
+#' @examples
+#' \dontrun{
 #' library(tfruns)
 #'
-#' runs <- tuning_run("mnist_mlp.R", flags = list(
-#'   batch_size = c(64, 128),
-#'   dropout1 = c(0.2, 0.3, 0.4),
-#'   dropout2 = c(0.2, 0.3, 0.4)
-#' ))
-#'
+#' # using a list as input to the flags argument
+#' runs <- tuning_run(
+#'   system.file("examples/mnist_mlp/mnist_mlp.R", package = "tfruns"),
+#'   flags = list(
+#'     dropout1 = c(0.2, 0.3, 0.4),
+#'     dropout2 = c(0.2, 0.3, 0.4)
+#'   )
+#' )
 #' runs[order(runs$eval_acc, decreasing = TRUE), ]
 #'
+#' # using a data frame as input to the flags argument
+#' # resulting in the same combinations above, but remove those
+#' # where the combined dropout rate exceeds 1
+#' grid <- expand.grid(
+#'   dropout1 = c(0.2, 0.3, 0.4),
+#'   dropout2 = c(0.2, 0.3, 0.4)
+#' )
+#' grid$combined_droput <- grid$dropout1 + grid$dropout2
+#' grid <- grid[grid$combined_droput <= 1, ]
+#' runs <- tuning_run(
+#'   system.file("examples/mnist_mlp/mnist_mlp.R", package = "tfruns"),
+#'   flags = grid[, c("dropout1", "dropout2")]
+#' )
 #' }
-#'
 #' @export
 tuning_run <- function(file = "train.R",
                        context = "local",
@@ -160,8 +177,10 @@ tuning_run <- function(file = "train.R",
                        envir = parent.frame(),
                        encoding = getOption("encoding")) {
 
-   if (!is.list(flags) || is.null(names(flags)))
-     stop("flags must be specified as a named list")
+  if (!is.list(flags) || is.null(names(flags))) {
+    stop("flags must be specified as a named list or a data frame")
+  }
+
 
    # set runs dir if specified
    old_runs_dir <- getOption("tfruns.runs_dir")
@@ -170,8 +189,12 @@ tuning_run <- function(file = "train.R",
      on.exit(options(tfruns.runs_dir = old_runs_dir), add = TRUE)
 
    # calculate the flag grid
-   flag_grid <- do.call(function(...) expand.grid(..., stringsAsFactors = FALSE), flags)
-   message(prettyNum(nrow(flag_grid), big.mark = ","), " total combinations of flags ")
+   if (!is.data.frame(flags)) {
+     flag_grid <- do.call(function(...) expand.grid(..., stringsAsFactors = FALSE), flags)
+     message(prettyNum(nrow(flag_grid), big.mark = ","), " total combinations of flags ")
+   } else {
+     flag_grid <- flags
+   }
 
    # sample if requested
    if (!is.null(sample)) {

@@ -20,8 +20,10 @@ tuning_run(file = "train.R", context = "local",
 for the current environment (as specified by the \code{R_CONFIG_ACTIVE}
 environment variable), or \code{default} when unset.}
 
-\item{flags}{Named list with flag values (multiple values can be
-provided for each flag)}
+\item{flags}{Either a named list with flag values (multiple values can be
+provided for each flag) or a data frame that contains pre-generated
+combinations of flags (e.g. via \code{\link[base:expand.grid]{base::expand.grid()}}). The latter can
+be useful for subsetting combinations. See 'Examples'.}
 
 \item{sample}{Sampling rate for flag combinations (defaults to
 running all combinations).}
@@ -58,14 +60,28 @@ will result in a random sample of the flag combinations being run.
 \dontrun{
 library(tfruns)
 
-runs <- tuning_run("mnist_mlp.R", flags = list(
-  batch_size = c(64, 128),
-  dropout1 = c(0.2, 0.3, 0.4),
-  dropout2 = c(0.2, 0.3, 0.4)
-))
-
+# using a list as input to the flags argument
+runs <- tuning_run(
+  system.file("examples/mnist_mlp/mnist_mlp.R", package = "tfruns"),
+  flags = list(
+    dropout1 = c(0.2, 0.3, 0.4),
+    dropout2 = c(0.2, 0.3, 0.4)
+  )
+)
 runs[order(runs$eval_acc, decreasing = TRUE), ]
 
+# using a data frame as input to the flags argument
+# resulting in the same combinations above, but remove those
+# where the combined dropout rate exceeds 1
+grid <- expand.grid(
+  dropout1 = c(0.2, 0.3, 0.4),
+  dropout2 = c(0.2, 0.3, 0.4)
+)
+grid$combined_droput <- grid$dropout1 + grid$dropout2
+grid <- grid[grid$combined_droput <= 1, ]
+runs <- tuning_run(
+  system.file("examples/mnist_mlp/mnist_mlp.R", package = "tfruns"),
+  flags = grid[, c("dropout1", "dropout2")]
+)
 }
-
 }
