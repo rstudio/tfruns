@@ -63,9 +63,9 @@ test_that("tuning_run can execute multiple runs", {
   expect_equal(nrow(runs), 4)
 })
 
-test_that("tuning_run can correctly handles different types of input for flags", {
+test_that("tuning_run can correctly handle different types of inputs for flags", {
 
-  # specify only flag_grid
+  # specify flags as data frame
   grid <- expand.grid(
     learning_rate = c(0.01, 0.02),
     max_steps = c(2500, 500, 99)
@@ -82,7 +82,6 @@ test_that("tuning_run can correctly handles different types of input for flags",
   ))
 
   # supply unnamed flags
-  # specify both flag_grid and flags
   expect_error(
     tuning_run("write_run_data.R",
       confirm = FALSE,

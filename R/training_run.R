@@ -126,9 +126,8 @@ training_run <- function(file = "train.R",
 #'
 #' @param flags Either a named list with flag values (multiple values can be
 #'   provided for each flag) or a data frame that contains pre-generated
-#'   combinations of flags (e.g. via [base::expand.grid()]). This second can
-#'   be useful for batch processing of large grids as well as
-#'   for subsetting combinations. See 'Examples'.
+#'   combinations of flags (e.g. via [base::expand.grid()]). The latter can
+#'   be useful for subsetting combinations. See 'Examples'.
 #' @param sample Sampling rate for flag combinations (defaults to
 #'   running all combinations).
 #' @param confirm Confirm before executing tuning run.
@@ -154,27 +153,16 @@ training_run <- function(file = "train.R",
 #' # resulting in the same combinations above, but remove those
 #' # where the combined dropout rate exceeds 1
 #' grid <- expand.grid(
-#'   dropout1 = seq(0.2, 0.8, by = 0.1),
-#'   dropout2 = seq(0.2, 0.8, by = 0.1)
+#'   dropout1 = c(0.2, 0.3, 0.4),
+#'   dropout2 = c(0.2, 0.3, 0.4)
 #' )
 #' grid$combined_droput <- grid$dropout1 + grid$dropout2
-#' grid$id <- 1:nrow(grid)
 #' grid <- grid[grid$combined_droput <= 1, ]
 #' runs <- tuning_run(
 #'   system.file("examples/mnist_mlp/mnist_mlp.R", package = "tfruns"),
-#'   flags = grid[, c("dropout1", "dropout2")], sample = 0.1
-#' )
-#' # check if an arbitrary run has been completed
-#' completed_runs <- runs[runs$completed]$id
-#' 2 %in% completed_runs
-#' # continue evaluating the grid if the process was paused / interrupted etc.
-#' grid <- grid[!(grid$id %in% completed_runs), ]
-#' runs <- tuning_run(
-#'   system.file("examples/mnist_mlp/mnist_mlp.R", package = "tfruns"),
-#'   flags = grid[, c("dropout1", "dropout2")], sample = 0.1
+#'   flags = grid[, c("dropout1", "dropout2")]
 #' )
 #' }
-#'
 #' @export
 tuning_run <- function(file = "train.R",
                        context = "local",
