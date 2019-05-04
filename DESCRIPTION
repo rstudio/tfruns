@@ -38,17 +38,18 @@ BugReports: https://github.com/rstudio/tfruns/issues
 Depends:
   R (>= 3.1)
 Imports:
-  utils,
-  jsonlite (>= 1.2),
-  base64enc,
-  yaml,
-  config,
-  magrittr,
-  whisker,
-  tidyselect,
-  rlang,
-  rstudioapi (>= 0.7),
-  reticulate
+    utils,
+    jsonlite (>= 1.2),
+    base64enc,
+    yaml,
+    config,
+    magrittr,
+    whisker,
+    tidyselect,
+    rlang,
+    rstudioapi (>= 0.7),
+    reticulate,
+    tensorflow
 Suggests: 
     testthat,
     knitr,
