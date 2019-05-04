@@ -388,7 +388,7 @@ reset_tf_graph <- function() {
   tryCatch({
     if (reticulate::py_module_available("tensorflow")) {
       tf <- reticulate::import("tensorflow")
-      if (tensorflow::tf_version() < "2.0")
+      if (tf_version() < "2.0")
         tf$reset_default_graph()
       else
         tf$compat$v1$reset_default_graph()
