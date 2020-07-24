@@ -8,7 +8,7 @@ The **tfruns** package provides a suite of tools for managing TensorFlow trainin
 
 -   Track the hyperparameters, metrics, output, and source code of every training run.
 
--   Compare hyperparmaeters and metrics across runs to find the best performing model.
+-   Compare hyperparameters and metrics across runs to find the best performing model.
 
 -   Automatically generate reports to visualize individual training runs or comparisons between runs.
 
