@@ -389,7 +389,11 @@ reset_tf_graph <- function() {
     if (reticulate::py_module_available("tensorflow")) {
       tf <- reticulate::import("tensorflow")
       if (tf_version(tf) >= 1.13 && !tf$executing_eagerly())
-        tf$reset_default_graph()
+        if(tf_version(tf) >= 2.0) {
+          tf$compat$v1$reset_default_graph()
+        } else {
+          tf$reset_default_graph()
+        }
       if (reticulate::py_has_attr(tf, "keras"))
         tf$keras$backend$clear_session()
       else if (reticulate::py_has_attr(tf$contrib, "keras"))
