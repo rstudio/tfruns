@@ -4,8 +4,7 @@
 \alias{compare_runs}
 \title{Compare training runs}
 \usage{
-compare_runs(runs = ls_runs(latest_n = 2),
-  viewer = getOption("tfruns.viewer"))
+compare_runs(runs = ls_runs(latest_n = 2), viewer = getOption("tfruns.viewer"))
 }
 \arguments{
 \item{runs}{Character vector of 2 training run directories or

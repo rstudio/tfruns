@@ -4,12 +4,20 @@
 \alias{tuning_run}
 \title{Tune hyperparameters using training flags}
 \usage{
-tuning_run(file = "train.R", context = "local",
+tuning_run(
+  file = "train.R",
+  context = "local",
   config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
-  flags = NULL, sample = NULL, properties = NULL,
+  flags = NULL,
+  sample = NULL,
+  properties = NULL,
   runs_dir = getOption("tfruns.runs_dir", "runs"),
-  artifacts_dir = getwd(), echo = TRUE, confirm = interactive(),
-  envir = parent.frame(), encoding = getOption("encoding"))
+  artifacts_dir = getwd(),
+  echo = TRUE,
+  confirm = interactive(),
+  envir = parent.frame(),
+  encoding = getOption("encoding")
+)
 }
 \arguments{
 \item{file}{Path to training script (defaults to "train.R")}

@@ -61,10 +61,10 @@ are related which is useful e.g. when plotting metrics.
 
 You can pass a type with an arbitary name along with a function that
 should be used to writes the data. The function will be passed a
-single \code{data_dir} argument. For example:\preformatted{write_run_metadata("images", function(data_dir) {
+single \code{data_dir} argument. For example:\if{html}{\out{<div class="r">}}\preformatted{write_run_metadata("images", function(data_dir) \{
   # write into data_dir here
-})
-}
+\})
+}\if{html}{\out{</div>}}
 }
 
 \keyword{internal}

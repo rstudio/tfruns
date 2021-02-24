@@ -4,11 +4,19 @@
 \alias{training_run}
 \title{Run a training script}
 \usage{
-training_run(file = "train.R", context = "local",
+training_run(
+  file = "train.R",
+  context = "local",
   config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
-  flags = NULL, properties = NULL, run_dir = NULL,
-  artifacts_dir = getwd(), echo = TRUE, view = "auto",
-  envir = parent.frame(), encoding = getOption("encoding"))
+  flags = NULL,
+  properties = NULL,
+  run_dir = NULL,
+  artifacts_dir = getwd(),
+  echo = TRUE,
+  view = "auto",
+  envir = parent.frame(),
+  encoding = getOption("encoding")
+)
 }
 \arguments{
 \item{file}{Path to training script (defaults to "train.R")}
