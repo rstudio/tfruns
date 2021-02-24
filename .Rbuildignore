@@ -12,3 +12,4 @@
 ^images$
 ^\.travis\.yml$
 ^\.github$
+^cran-comments\.md$
