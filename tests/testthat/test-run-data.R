@@ -47,7 +47,7 @@ test_that("created and modified files are copied to the run_dir", {
   expect_true(file.exists(file.path(run_dir, 'subdir', 'extra.dat')))
 })
 
-test_that({
+test_that("precision of metrics", {
   run_dir <- with_tests_dir({
     x <- training_run("flags-precision.R", echo = FALSE)$run_dir
     normalizePath(x, winslash = "/")
