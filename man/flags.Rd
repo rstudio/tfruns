@@ -8,8 +8,12 @@
 \alias{flag_string}
 \title{Flags for a training run}
 \usage{
-flags(..., config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
-  file = "flags.yml", arguments = commandArgs(TRUE))
+flags(
+  ...,
+  config = Sys.getenv("R_CONFIG_ACTIVE", unset = "default"),
+  file = "flags.yml",
+  arguments = commandArgs(TRUE)
+)
 
 flag_numeric(name, default, description = NULL)
 
@@ -59,7 +63,7 @@ details).
 
 
 Command line flags should be of the form \code{--key=value} or
-\code{--key value}. The values are assumed to be valid \code{yaml} and
+\verb{--key value}. The values are assumed to be valid \code{yaml} and
 will be converted using \code{\link[=yaml.load]{yaml.load()}}.
 }
 

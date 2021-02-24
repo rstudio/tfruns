@@ -4,8 +4,13 @@
 \alias{ls_runs}
 \title{List or view training runs}
 \usage{
-ls_runs(subset = NULL, order = "start", decreasing = TRUE,
-  latest_n = NULL, runs_dir = getOption("tfruns.runs_dir", "runs"))
+ls_runs(
+  subset = NULL,
+  order = "start",
+  decreasing = TRUE,
+  latest_n = NULL,
+  runs_dir = getOption("tfruns.runs_dir", "runs")
+)
 }
 \arguments{
 \item{subset}{Logical expression indicating rows to keep (missing values are

@@ -1,9 +1,10 @@
 Package: tfruns
 Type: Package
 Title: Training Run Tools for 'TensorFlow'
-Version: 1.4.0.9000
+Version: 1.5.0
 Authors@R: c(
-  person("JJ", "Allaire", role = c("aut", "cre"), email = "jj@rstudio.com"),
+  person("Daniel", "Falbel", role = c("ctb", "cre"), email = "daniel@rstudio.com"),
+  person("JJ", "Allaire", role = c("aut"), email = "jj@rstudio.com"),
   person(family = "RStudio", role = c("cph", "fnd")),
   person("Mike", "Bostock", role = c("cph"),
          comment = "D3 library - https://d3js.org/"),
@@ -53,9 +54,10 @@ Suggests:
     testthat,
     knitr,
     withr,
-    here
+    here,
+    rmarkdown
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr

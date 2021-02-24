@@ -51,6 +51,7 @@ copy_run(ls_runs(order = eval_acc)[1:3,], to = "best-runs")
 }
 }
 \seealso{
-Other run management: \code{\link{clean_runs}}
+Other run management: 
+\code{\link{clean_runs}()}
 }
 \concept{run management}

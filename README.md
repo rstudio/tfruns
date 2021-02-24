@@ -18,4 +18,4 @@ The **tfruns** package provides a suite of tools for managing TensorFlow trainin
 
 -   No changes to source code required (run data is automatically captured for all Keras and TF Estimator models).
 
-You can find documentation for the tfruns package at <https://tensorflow.rstudio.com/tools/tfruns>
+You can find documentation for the tfruns package at <https://tensorflow.rstudio.com/tools/tfruns/>
