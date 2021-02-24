@@ -65,7 +65,7 @@ for (dropout1 in c(0.1, 0.2, 0.3))
 
 Flag values are automatically included in run data with a "flag_" prefix (e.g. `flag_dropout1`, `flag_dropout2`).
 
-See the article on [training flags](https://tensorflow.rstudio.com/tools/training_flags.html) for additional documentation on using flags.
+See the article on [training flags](https://tensorflow.rstudio.com/tools/tfruns/overview/) for additional documentation on using flags.
 
 ## Tuning Runs
 
