@@ -1,5 +1,5 @@
 with_tests_dir <- function(code){
-  test_dir <- here::here("tests/testthat")
+  test_dir <- testthat::test_path()
   withr::with_dir(test_dir, code)
 }
 
