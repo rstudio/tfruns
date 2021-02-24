@@ -1,6 +1,10 @@
 tfruns: Track, Visualize, and Manage Training Runs
 ================
 
+<!-- badges: start -->
+  [![R-CMD-check](https://github.com/rstudio/tfruns/workflows/R-CMD-check/badge.svg)](https://github.com/rstudio/tfruns/actions)
+<!-- badges: end -->
+
 Overview
 --------
 

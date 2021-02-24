@@ -11,3 +11,4 @@
 ^tests/testthat/runs/
 ^images$
 ^\.travis\.yml$
+^\.github$
