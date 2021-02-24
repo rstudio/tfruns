@@ -62,7 +62,9 @@ write_run_metadata <- function(type, data, run_dir = NULL) {
         path = file.path(data_dir, paste0(type, ".json")),
         auto_unbox = TRUE, # length-1 vectors as scalar
         pretty = TRUE,     # formatted output
-        force = TRUE)      # flags as unclassed named list
+        force = TRUE, # flags as unclassed named list,
+        digits = NA # save data with full precision
+      )
     }
   }
 
