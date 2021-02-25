@@ -182,7 +182,7 @@ compare_runs(ls_runs(eval_acc > 0.9570, order = eval_acc))
 
 ## RStudio IDE
 
-If you use RStudio with **tfruns**, it's strongly recommended that you update to the current [Preview Release](https://www.rstudio.com/products/rstudio/download/preview/) of RStudio v1.1, as there are are a number of points of integration with the IDE that require this newer release.
+If you use RStudio with **tfruns**, it's strongly recommended that you use RStudio v1.1 or higher, as there are are a number of points of integration with the IDE that require this newer releases.
 
 ### Addin
 
