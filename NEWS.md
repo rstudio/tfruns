@@ -1,5 +1,7 @@
 # tfruns (development version)
 
+* Updated Rd docs for compatibility with R-4.2 / HTML5
+
 # tfruns 1.5.0
 
 # tfruns 1.4.0.9000
