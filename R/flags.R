@@ -223,7 +223,7 @@ parse_flags <- function(FLAGS, config, file, arguments) {
   }
 
   # set discovered values in FLAGS (set one at a time so that
-  # we can do type coercion and preseve the attributes of FLAGS)
+  # we can do type coercion and preserve the attributes of FLAGS)
   names <- names(FLAGS)
   types <- attr(FLAGS, "types")
   for (i in 1:length(FLAGS)) {
