@@ -35,21 +35,20 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v2
 
-      - name: Install system dependencies
-        if: runner.os == 'Linux'
-        env:
-          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
-        run: |
-          Rscript -e "install.packages('remotes')" -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: rcmdcheck remotes reticulate
 
-      - name: Install dependencies
-        run: >
-          Rscript
-          -e "install.packages('remotes')"
-          -e "remotes::install_deps(dependencies = TRUE)"
-          -e "remotes::install_cran('rcmdcheck')"
+      # - name: Install system dependencies
+      #   if: runner.os == 'Linux'
+      #   shell: bash
+      #   run: |
+      #     . /etc/os-release
+      #     while read -r cmd
+      #     do
+      #       echo "$cmd"
+      #       sudo $cmd
+      #     done < <(Rscript -e "writeLines(remotes::system_requirements('$ID-$VERSION_ID'))")
 
       - uses: actions/setup-python@v4
         with:
