@@ -21,7 +21,7 @@ that properties will be stored as strings.
 (see \emph{Metrics Data Frame} below).
 \item "evaluation" --- Named list of evaluation metrics.
 \item "error" --- Named list with 'message' and 'traceback'
-\item "<custom>" -- Function used to write the data
+\item "\<custom\>" -- Function used to write the data
 (see \emph{Custom Types} section below).
 }}
 
@@ -43,12 +43,14 @@ for backward compatibility.
 Metrics should be passed as a data frame with one column for each metric.
 If the metrics are not yet complete (e.g. only metrics for the
 first several epochs are provided) then metrics in yet to be completed
-epochs should use \code{NA} as their values. For example:\preformatted{data.frame':	30 obs. of  4 variables:
+epochs should use \code{NA} as their values. For example:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{data.frame':	30 obs. of  4 variables:
 $ loss    : num  0.423 0.201 NA NA NA ...
 $ acc     : num  0.873 0.942 NA NA NA ...
 $ val_loss: num  0.174 0.121 NA NA NA ...
 $ val_acc : num  0.949 0.964 NA NA NA ...
-}
+}\if{html}{\out{</div>}}
 
 If both metrics and validation metrics are provided, you should preface the
 name of the validation metric with \code{"val_"} (e.g. for a metric named \code{"loss"}
@@ -61,7 +63,9 @@ are related which is useful e.g. when plotting metrics.
 
 You can pass a type with an arbitary name along with a function that
 should be used to writes the data. The function will be passed a
-single \code{data_dir} argument. For example:\if{html}{\out{<div class="r">}}\preformatted{write_run_metadata("images", function(data_dir) \{
+single \code{data_dir} argument. For example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{write_run_metadata("images", function(data_dir) \{
   # write into data_dir here
 \})
 }\if{html}{\out{</div>}}

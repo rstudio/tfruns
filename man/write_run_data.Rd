@@ -21,7 +21,7 @@ that properties will be stored as strings.
 (see \emph{Metrics Data Frame} below).
 \item "evaluation" --- Named list of evaluation metrics.
 \item "error" --- Named list with 'message' and 'traceback'
-\item "<custom>" -- Function used to write the data
+\item "\<custom\>" -- Function used to write the data
 (see \emph{Custom Types} section below).
 }}
 }

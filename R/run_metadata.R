@@ -20,7 +20,7 @@
 #'     (see *Metrics Data Frame* below).
 #'   - "evaluation" --- Named list of evaluation metrics.
 #'   - "error" --- Named list with 'message' and 'traceback'
-#'   - "<custom>" -- Function used to write the data
+#'   - "\<custom\>" -- Function used to write the data
 #'     (see *Custom Types* section below).
 #'
 #' @param run_dir Run directory to write metadata into (defaults

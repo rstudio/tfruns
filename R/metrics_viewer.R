@@ -5,8 +5,6 @@
 #' be displayed in the RStudio Viewer (if available), otherwise will be
 #' displayed in an external web browser.
 #'
-#' @inheritParams write_run_metrics
-#'
 #' @param metrics Data frame containing run metrics
 #' @param viewer Viewer object returned from `view_run_metrics()`.
 #'
@@ -29,6 +27,7 @@
 #'   update_run_metrics(viewer, updated_metrics)
 #'   ```
 #'
+#' @seealso write_run_metrics
 #' @export
 view_run_metrics <- function(metrics) {
 
