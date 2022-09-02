@@ -43,11 +43,10 @@ You can install the **tfruns** package from CRAN as follows:
 install.packages("tfruns")
 ```
 
-The package is intended to be used with the [keras](https://tensorflow.rstudio.com/keras/) and/or the [tfestimators](https://tensorflow.rstudio.com/keras/) packages, both of which provide higher level interfaces to TensorFlow from R. These packages can be installed with:
+The package is intended to be used with the [keras](https://tensorflow.rstudio.com/keras/) package, which provides a higher level interfaces to TensorFlow from R. It can be installed with:
 
 ```{r}
 install.packages("keras")
-install.packages("tfestimators")
 ```
 
 ## Training
