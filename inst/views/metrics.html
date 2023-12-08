@@ -16,7 +16,16 @@
 
 <style type="text/css">
 body {
-  background-color: white;
+  background-color: {{background_color}};
+}
+
+.c3 path, .c3 line {
+  stroke: {{foreground_color}};
+}
+
+.c3 text, .tick text{
+  fill: {{foreground_color}};
+  font-size: {{font_size}};
 }
 
 #c3-container {
