@@ -32,6 +32,13 @@ render_view <- function(view, output_file, variables = list()) {
     dashboard = read_component("dashboard")
   ))
 
+  if (view == "metrics") {
+    # then we are running on rstudio and we want to match backgrounds and etc
+    theme_info <- rstudioapi::getThemeInfo()
+    variables[["background_color"]] <- theme_info$background
+    variables[["foreground_color"]] <- theme_info$foreground
+  }
+
   # read the template
   template <- readLines(system.file("views", paste0(view, ".html"), package = "tfruns"),
                         encoding = "UTF-8")
