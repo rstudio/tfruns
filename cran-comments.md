@@ -1,3 +1,2 @@
-* Change maintainer
 * New release
 
