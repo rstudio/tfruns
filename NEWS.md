@@ -1,4 +1,4 @@
-# tfruns (development version)
+# tfruns 1.5.3
 
 * Updates for R-devel (4.4)
 
