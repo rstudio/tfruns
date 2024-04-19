@@ -1,5 +1,7 @@
 # tfruns (development version)
 
+* Updates for R-devel (4.4)
+
 # tfruns 1.5.2
 
 * Added support for dark mode in the keras metrics viewer.
