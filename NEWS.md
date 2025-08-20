@@ -1,4 +1,4 @@
-# tfruns (development version)
+# tfruns 1.5.4
 
 * Updates to man pages for CRAN (#67)
 
