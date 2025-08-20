@@ -30,7 +30,7 @@
 #'
 #' Command line flags should be of the form `--key=value` or
 #' `--key value`. The values are assumed to be valid `yaml` and
-#' will be converted using [yaml.load()].
+#' will be converted using [yaml::yaml.load()].
 #'
 #' @examples
 #' \dontrun{

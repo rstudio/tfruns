@@ -64,7 +64,7 @@ details).
 
 Command line flags should be of the form \code{--key=value} or
 \verb{--key value}. The values are assumed to be valid \code{yaml} and
-will be converted using \code{\link[=yaml.load]{yaml.load()}}.
+will be converted using \code{\link[yaml:yaml.load]{yaml::yaml.load()}}.
 }
 
 \examples{
