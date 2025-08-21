@@ -1,5 +1,9 @@
 # tfruns (development version)
 
+# tfruns 1.5.4
+
+* Updates to man pages for CRAN (#67)
+
 # tfruns 1.5.3
 
 * Updates for R-devel (4.4)
